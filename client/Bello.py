@@ -20,12 +20,24 @@ class Bello:
 
         elif response == "createdAccount":
             print("account created successsfully")
+            
+        elif response == "loginSuccessful":
+            print("login successful!")
+        
+        elif response == "loginFail":
+            print("login fail")
 
         else:
             return
 
     def verifyPassword(self, password):
-        pass
+        return True if len(password) >= 4 else False
+
+    async def __handleServer(self):
+        async for message in self.__websocket:
+            message = json.loads(message)
+
+            self.__handleMessage(message)
 
     async def signUp(self, username, password):
         await self.__websocket.send(json.dumps({"action": "signUp",
@@ -34,17 +46,18 @@ class Bello:
                                                     "password": password}
                                                 }))
 
-    async def __handleServer(self):
-        async for message in self.__websocket:
-            message = json.loads(message)
-
-            self.__handleMessage(message)
+    async def login(self, username, password):
+        await self.__websocket.send(json.dumps({"action": "login",
+                                                "data": {
+                                                    "username": username,
+                                                    "password": password}
+                                                }))
 
     async def start(self):
         await self.__connect()
 
         task = asyncio.create_task(self.__handleServer())
-
+        
         await task
 
 
