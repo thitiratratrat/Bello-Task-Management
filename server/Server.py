@@ -1,3 +1,5 @@
+from Board import Board
+from Account import Account
 import websockets
 import asyncio
 from mongoengine import *
@@ -5,7 +7,6 @@ import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
-from Account import Account
 
 connect('bello')
 
@@ -31,19 +32,30 @@ class Server:
     async def __login(self, data, websocket):
         username = data["username"]
         password = data["password"]
-        
+
         if not self.__isValidAccount(username, password):
             await websocket.send(json.dumps({"response": "loginFail"}))
             return
-        
+
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardsToClient(username, websocket)
 
-    async def __sendUserBoardsToClient(sef, usernameInput, websocket):
+    async def __sendUserBoardNamesToClient(self, usernameInput, websocket):
         account = Account.objects(username=usernameInput)
-        boardId = account.board_id
-        pass
-    
+        boardIds = account.board_id
+
+        boardNames = self.__getBoardNamesFromBoardIds(boardIds)
+        await websocket.send(json.dumps({"response": "userBoardNames", "data":  boardNames}))
+
+    def __getBoardNamesFromBoardIds(self, boardIds):
+        boardNames = []
+
+        for boardId in boardIds:
+            board = Board.objects(board_id=boardId)
+            boardNames.append(board.board_title)
+
+        return boardNames
+
     def __isValidAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
 

@@ -26,6 +26,9 @@ class Bello:
         
         elif response == "loginFail":
             print("login fail")
+            
+        elif response == "userBoardNames":
+            print(message["data"])
 
         else:
             return
