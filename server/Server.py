@@ -1,11 +1,11 @@
-from functools import partial
-from Account import Account
 import websockets
 import asyncio
 from mongoengine import *
+import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
+from Account import Account
 
 connect('bello')
 
@@ -15,29 +15,28 @@ class Server:
         self.__port = 8765
         self.__address = "localhost"
 
-    def __signUp(self, data, websocket):
+    async def __signUp(self, data, websocket):
         username = data["username"]
         password = data["password"]
 
         if self.__checkExistedUsername(username):
-            await websocket.send({"response": "existedUsername"})
+            await websocket.send(json.dumps({"response": "existedUsername"}))
             return
 
         account = Account(username=username, password=password)
 
         account.save()
-        await websocket.send({"response": "createdAccount"})
+        await websocket.send(json.dumps({"response": "createdAccount"}))
 
     def __checkExistedUsername(self, usernameInput):
         return True if Account.objects(username=usernameInput).count() >= 1 else False
 
-    def __handleMessage(self, message, websocket):
+    async def __handleMessage(self, message, websocket):
         action = message["action"]
-        data = message["data"]
 
         if action == 'signUp':
-            self.__signUp(data, websocket)
-            return
+            await self.__signUp(message["data"], websocket)
+
         else:
             return
 
@@ -49,7 +48,9 @@ class Server:
 
     async def handleClient(self, websocket, path):
         async for message in websocket:
-            self.__handleMessage(message, websocket)
+            message = json.loads(message)
+
+            await self.__handleMessage(message, websocket)
 
 
 websocketServer = Server()
