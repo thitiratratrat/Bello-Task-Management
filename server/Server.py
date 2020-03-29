@@ -37,9 +37,11 @@ class Server:
             return
         
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
-        # await self.__sendUserBoardsToClient(username, websocket)
+        await self.__sendUserBoardsToClient(username, websocket)
 
-    async def __sendUserBoardsToClient(sef, username, websocket):
+    async def __sendUserBoardsToClient(sef, usernameInput, websocket):
+        account = Account.objects(username=usernameInput)
+        boardId = account.board_id
         pass
     
     def __isValidAccount(self, usernameInput, passwordInput):
