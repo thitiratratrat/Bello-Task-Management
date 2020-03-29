@@ -19,7 +19,7 @@ class Server:
         username = data["username"]
         password = data["password"]
 
-        if self.__checkExistedUsername(username):
+        if self.__isExistedUsername(username):
             await websocket.send(json.dumps({"response": "existedUsername"}))
             return
 
@@ -28,7 +28,24 @@ class Server:
         account.save()
         await websocket.send(json.dumps({"response": "createdAccount"}))
 
-    def __checkExistedUsername(self, usernameInput):
+    async def __login(self, data, websocket):
+        username = data["username"]
+        password = data["password"]
+        
+        if not self.__isValidAccount(username, password):
+            await websocket.send(json.dumps({"response": "loginFail"}))
+            return
+        
+        await websocket.send(json.dumps({"response": "loginSuccessful"}))
+        # await self.__sendUserBoardsToClient(username, websocket)
+
+    async def __sendUserBoardsToClient(sef, username, websocket):
+        pass
+    
+    def __isValidAccount(self, usernameInput, passwordInput):
+        return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
+
+    def __isExistedUsername(self, usernameInput):
         return True if Account.objects(username=usernameInput).count() >= 1 else False
 
     async def __handleMessage(self, message, websocket):
@@ -36,6 +53,9 @@ class Server:
 
         if action == 'signUp':
             await self.__signUp(message["data"], websocket)
+
+        elif action == 'login':
+            await self.__login(message["data"], websocket)
 
         else:
             return
