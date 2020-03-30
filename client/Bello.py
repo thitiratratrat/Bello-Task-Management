@@ -20,13 +20,13 @@ class Bello:
 
         elif response == "createdAccount":
             print("account created successsfully")
-            
+
         elif response == "loginSuccessful":
             print("login successful!")
-        
+
         elif response == "loginFail":
             print("login fail")
-            
+
         elif response == "userBoardNames":
             print(message["data"])
 
@@ -60,7 +60,7 @@ class Bello:
         await self.__connect()
 
         task = asyncio.create_task(self.__handleServer())
-        
+
         await task
 
 
