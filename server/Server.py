@@ -51,7 +51,7 @@ class Server:
         boardNames = []
 
         for boardId in boardIds:
-            board = Board.objects(board_id=boardId)
+            board = Board.objects(_id=boardId)
             boardNames.append(board.board_title)
 
         return boardNames
