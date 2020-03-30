@@ -1,9 +1,12 @@
 from mongoengine import *
 
+connect('bello')
+
 
 class Board(Document):
-    board_title = StringField(required=True)
-    section_title = ListField(StringField())
+    _id = ObjectIdField()
+    title = StringField(required=True)
+    section_ids = ListField(ObjectIdField())
     members = ListField(StringField())
 
     meta = {
