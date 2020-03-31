@@ -1,5 +1,3 @@
-from Board import Board
-from Account import Account
 import websockets
 import asyncio
 from mongoengine import *
@@ -7,6 +5,8 @@ import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
+from Board import Board
+from Account import Account
 
 connect('bello')
 
@@ -39,6 +39,25 @@ class Server:
 
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
+        
+    async def __createBoard(self, data, websocket):
+        boardTitle = data["boardTitle"]
+        usernameInput = data["username"]
+        board = Board(title=boardTitle)
+        
+        board.save()
+        
+        boardId = board._id
+        account = Account.objects.get(username=usernameInput)
+        
+        account.board_ids.append(boardId)
+        account.save()
+        
+        await websocket.send(json.dumps({"response": "createdBoard", 
+                                         "data": {
+                                             "boardTitle": boardTitle,
+                                             "boardId": boardId}
+                                         }))
 
     # TODO: send task, send section
 
@@ -73,6 +92,9 @@ class Server:
 
         elif action == 'login':
             await self.__login(message["data"], websocket)
+            
+        elif action == 'createBoard':
+            await self.__createBoard(message["data", websocket])
 
         else:
             return
