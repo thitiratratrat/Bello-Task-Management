@@ -1,7 +1,7 @@
 
 
 class Board:
-    def __init__(self, title: str, id, sections={}, memberUsernames={}):
+    def __init__(self, title, id, sections={}, memberUsernames=set()):
         self.__title = title
         self.__id = id
         self.__sections = sections
@@ -15,6 +15,9 @@ class Board:
 
     def getMemberUsernames(self):
         return self.__memberUsernames
+
+    def addMemberUsername(self, username):
+        self.__memberUsernames.add(username)
 
     def getSections(self):
         return self.__sections
