@@ -38,23 +38,26 @@ class Server:
             return
 
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
-        await self.__sendUserBoardsToClient(username, websocket)
+        await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
 
-    async def __sendUserBoardNamesToClient(self, usernameInput, websocket):
-        account = Account.objects(username=usernameInput)
-        boardIds = account.board_id
+    # TODO: send task, send section
 
-        boardNames = self.__getBoardNamesFromBoardIds(boardIds)
-        await websocket.send(json.dumps({"response": "userBoardNames", "data":  boardNames}))
+    async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
+        account = Account.objects.get(username=usernameInput)
+        boardIds = account.board_ids
 
-    def __getBoardNamesFromBoardIds(self, boardIds):
-        boardNames = []
+        boardTitles = self.__getBoardTitlesFromBoardIds(boardIds)
+
+        await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitles))
+
+    def __getBoardTitlesFromBoardIds(self, boardIds):
+        boardTitles = {}
 
         for boardId in boardIds:
-            board = Board.objects(_id=boardId)
-            boardNames.append(board.board_title)
+            board = Board.objects.get(_id=boardId)
+            boardTitles[boardId] = board.title
 
-        return boardNames
+        return boardTitles
 
     def __isValidAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False

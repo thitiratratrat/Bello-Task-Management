@@ -1,7 +1,5 @@
 from mongoengine import *
 
-connect('bello')
-
 
 class Board(Document):
     _id = ObjectIdField()
