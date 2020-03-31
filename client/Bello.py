@@ -91,6 +91,12 @@ class Bello:
                                                     "boardTitle": boardTitle,
                                                     "username": self.__user.getUsername()}
                                                 }))
+    
+    async def sendRequestBoardDataToServer(self, boardId):
+        await self.__websocket.send(json.dumps("action": "requestBoardData",
+                                               "data": {
+                                                   "boardId": boardId
+                                               }))
 
     async def start(self):
         await self.__connect()

@@ -40,6 +40,13 @@ class Server:
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
         
+    async def __sendBoardData(self, data, websocket):
+        boardId = data["boardId"]
+        board = Board.objects.get(_id=boardId)
+        
+        #TODO: get section and tasks
+        pass
+        
     async def __createBoard(self, data, websocket):
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
@@ -58,8 +65,6 @@ class Server:
                                              "boardTitle": boardTitle,
                                              "boardId": boardId}
                                          }))
-
-    # TODO: send task, send section
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -94,7 +99,10 @@ class Server:
             await self.__login(message["data"], websocket)
             
         elif action == 'createBoard':
-            await self.__createBoard(message["data", websocket])
+            await self.__createBoard(message["data"], websocket)
+            
+        elif action == 'requestBoardData':
+            await self.__sendBoardData(message["data"], websocket)
 
         else:
             return
