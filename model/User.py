@@ -9,6 +9,9 @@ class User:
         self.__tasks = tasks
         self.__sections = sections
     
+    def getUsername(self):
+        return self.__username
+    
     def addBoard(self, board):
         self.__boards[board.getId()] = board
         
