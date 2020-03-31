@@ -4,7 +4,7 @@ import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
-from Member import Member
+from User import User
 from Board import Board
 
 
@@ -29,7 +29,7 @@ class Bello:
 
         elif response == "loginSuccessful":
             print("login successful!")
-            self.__initMember(username)
+            self.__initUser(username)
 
         elif response == "loginFail":
             print("login fail")
@@ -42,8 +42,8 @@ class Bello:
         else:
             return
 
-    def __initMember(self, username):
-        self.__user = Member(username)
+    def __initUser(self, username):
+        self.__user = User(username)
 
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
