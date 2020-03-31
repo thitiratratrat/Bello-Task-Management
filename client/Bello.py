@@ -4,14 +4,15 @@ import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
-from Board import Board
 from Member import Member
+from Board import Board
 
 
 class Bello:
     def __init__(self):
         self.__websocket = None
         self.__uri = "ws://localhost:8765"
+        self.__user = None
 
     async def __connect(self):
         self.__websocket = await websockets.client.connect(self.__uri)
@@ -40,14 +41,15 @@ class Bello:
 
         else:
             return
-        
+
     def __initMember(self, username):
-        
-        pass
-        
+        self.__user = Member(username)
+
     def __initUserBoards(self, boardTitlesAndIds):
-        pass
-        
+        for boardId, boardTitle in boardTitlesAndIds.items():
+            board = Board(boardTitle, boardId)
+            
+            self.__user.addBoard(board)
 
     async def __handleServer(self):
         async for message in self.__websocket:
@@ -68,7 +70,7 @@ class Bello:
                                                     "username": username,
                                                     "password": password}
                                                 }))
-        
+
     def verifyPassword(self, password):
         return True if len(password) >= 4 else False
 
@@ -78,7 +80,7 @@ class Bello:
         task = asyncio.create_task(self.__handleServer())
 
         await task
-    
+
 
 if __name__ == '__main__':
     bello = Bello()

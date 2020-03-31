@@ -8,10 +8,16 @@ class Member:
         self.__boards = boards
         self.__tasks = tasks
         self.__sections = sections
+    
+    def addBoard(self, board):
+        self.__boards[board.getId()] = board
+        
+        board.addMemberUsername(self.__username)
 
     def createBoard(self, boardTitle: str, boardId):
         board = Board(boardTitle, boardId)
-        self.__boards[boardId] = board
+        
+        self.__addBoard(board)
 
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)
