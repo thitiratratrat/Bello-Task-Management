@@ -3,16 +3,15 @@ from Board import Board
 
 
 class Member:
-    def __init__(self):
-        self.__account = None
-        self.__boards = []
-        self.__tasks = []
-        self.__sections = []
+    def __init__(self, username, boards={}, tasks={}, sections={}):
+        self.__username = username
+        self.__boards = boards
+        self.__tasks = tasks
+        self.__sections = sections
 
-    def createBoard(self, boardTitle: str):
-        board = Board(boardTitle)
-        self.__boards.append(board)
+    def createBoard(self, boardTitle: str, boardId):
+        board = Board(boardTitle, boardId)
+        self.__boards[boardId] = board
 
-    def deleteBoard(self, boardId: int):
-        self.__boards = list(filter(lambda board: (
-            board.getId() != boardId), self.__boards))
+    def deleteBoard(self, boardId):
+        self.__boards.pop(boardId, None)

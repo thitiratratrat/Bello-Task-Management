@@ -1,6 +1,11 @@
 import websockets
 import asyncio
 import json
+import sys
+sys.path.append(
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
+from Board import Board
+from Member import Member
 
 
 class Bello:
@@ -23,18 +28,26 @@ class Bello:
 
         elif response == "loginSuccessful":
             print("login successful!")
+            self.__initMember(username)
 
         elif response == "loginFail":
             print("login fail")
 
-        elif response == "userBoardNames":
-            print(message["data"])
+        elif response == "userBoardTitlesAndIds":
+            boardTitlesAndIds = message["data"]
+
+            self.__initUserBoards(boardTitlesAndIds)
 
         else:
             return
-
-    def verifyPassword(self, password):
-        return True if len(password) >= 4 else False
+        
+    def __initMember(self, username):
+        
+        pass
+        
+    def __initUserBoards(self, boardTitlesAndIds):
+        pass
+        
 
     async def __handleServer(self):
         async for message in self.__websocket:
@@ -55,6 +68,9 @@ class Bello:
                                                     "username": username,
                                                     "password": password}
                                                 }))
+        
+    def verifyPassword(self, password):
+        return True if len(password) >= 4 else False
 
     async def start(self):
         await self.__connect()
@@ -62,7 +78,7 @@ class Bello:
         task = asyncio.create_task(self.__handleServer())
 
         await task
-
+    
 
 if __name__ == '__main__':
     bello = Bello()

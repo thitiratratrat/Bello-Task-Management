@@ -1,8 +1,7 @@
-from typing import List
 
 
 class Board:
-    def __init__(self, title: str, id, sections = [], memberUsernames = []):
+    def __init__(self, title: str, id, sections={}, memberUsernames={}):
         self.__title = title
         self.__id = id
         self.__sections = sections
@@ -14,7 +13,7 @@ class Board:
     def getTitle(self) -> str:
         return self.__title
 
-    def getMemberUsernames(self) -> List[str]:
+    def getMemberUsernames(self):
         return self.__memberUsernames
 
     def getSections(self):
