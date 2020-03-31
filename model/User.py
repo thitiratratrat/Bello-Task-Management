@@ -2,7 +2,7 @@ from typing import List
 from Board import Board
 
 
-class Member:
+class User:
     def __init__(self, username, boards={}, tasks={}, sections={}):
         self.__username = username
         self.__boards = boards
