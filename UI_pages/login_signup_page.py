@@ -90,23 +90,21 @@ class LoginWidget(QWidget):
         self.setLayout(self.grid_login_layout)
     def setColor(self):
         self.pal = QPalette()
-        #self.color_white = QColor((196,196,196))
         self.setAutoFillBackground(True)
         self.pal.setColor(QPalette.Window,QColor(82,113,159))
         self.setPalette(self.pal)
     def login(self):
         print("LOG IN success")
-class Login_Signin_Page(QWidget):
-    def __init__(self):
-        QWidget.__init__(self,None)
+class Login_Signup_Page(QWidget):
+    def __init__(self,parent= None):
+        super(Login_Signup_Page,self).__init__(parent)
+        self.parent = parent
         self.tabWidget = QTabWidget()
-        #self.tabWidget.setStyleSheet("color: rgb(82,113,159)")
-        #self.tabWidget.setTabTextColor(QColor(255,255,222))
+        self.tabWidget.setStyleSheet("color: rgb(82,113,159)")
         self.login= LoginWidget()
-        #self.login.login_btn.setGeometry(0,0,49,30)
         self.tabWidget.setFixedSize(313,263)
         self.signup = SignUpWidget()
-        self.tabWidget.setFont(QFont("Century Gothic", 8))
+        self.tabWidget.setFont(QFont("Century Gothic", 9 ,QFont.Bold))
         self.tabWidget.addTab(self.login, "Log in")
         self.tabWidget.addTab(self.signup, "Sign up")
         self.setWindowTitle("Bello project")
@@ -119,26 +117,19 @@ class Login_Signin_Page(QWidget):
         self.project_name_label.setFont(QFont("Moon", 24,QFont.Bold))
         self.setLayout(self.login_signup_layout)
         self.icon_Bello = QPixmap("images/iconBello.png")
-
     def paintEvent(self,e):
         paint = QPainter()
-        self.pal = QPalette()
-        self.setAutoFillBackground(True)
-        self.pal.setColor(QPalette.Window,QColor(255,255,255))
-
-        self.setPalette(self.pal)
         paint.begin(self)
         paint.setPen(QColor(248,215,60))
         paint.setBrush(QColor(248,215,60))
         paint.drawEllipse(QPoint(20,350), 125, 125)
         paint.drawEllipse(QPoint(620,140), 125, 125)
-        '''paint.setPen(QColor(255,160,122))
+        paint.setPen(QColor(255,160,122))
         paint.setBrush(QColor(255,160,122))
-        paint.drawPolygon([QPoint(80,60),QPoint(200,110),QPoint(150,200),])
-        paint.drawPolygon([QPoint(430,300),QPoint(600,100),QPoint(500,400),])'''
+        paint.drawPolygon([QPoint( 60,60),QPoint(140,110),QPoint(130,200)])
+        paint.drawPolygon([QPoint(350,430),QPoint(540,300),QPoint(570,390),])
         paint.drawPixmap(QRect(245,60,40,40),self.icon_Bello)
         paint.end()
-    
 def main():
     app = QApplication(sys.argv)
     w = Login_Signin_Page()
