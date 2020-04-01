@@ -65,7 +65,7 @@ class DisplayBoardBox(QWidget):
         self.layout.addWidget(self.list_widget)
         self.list_widget.setIconSize(QSize(200,80))
         self.list_widget.setFont(QFont("Moon",10))
-        self.board1 = QListWidgetItem(QIcon(self.createBox()), "bello")
+        self.board1 = QListWidgetItem(QIcon(self.createBox()),"Bello")
         self.list_widget.insertItem(1,self.board1)
         self.setLayout(self.layout)
         self.i = 1
