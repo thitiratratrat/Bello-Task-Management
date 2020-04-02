@@ -28,12 +28,3 @@ class TabBar(QTabBar):
             painter.translate(-c)
             painter.drawControl(QStyle.CE_TabBarTabLabel, opt)
             painter.restore()
-
-
-class TabWidget(QTabWidget):
-    def __init__(self, *args, **kwargs):
-        QTabWidget.__init__(self, *args, **kwargs)
-        self.tabBar = TabBar(self)
-        self.tabBar.tabSizeHint(0)
-        self.setTabBar(self.tabBar)
-        self.setTabPosition(QTabWidget.West)
