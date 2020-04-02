@@ -3,58 +3,8 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from random import randint
-
-class TabBar(QTabBar):
-     def tabSizeHint(self, index):
-        s = QTabBar.tabSizeHint(self, index)
-        s.transpose()
-        return s
-     def paintEvent(self, event):
-        painter = QStylePainter(self)
-        opt = QStyleOptionTab()
-        for i in range(self.count()):
-            self.initStyleOption(opt, i)
-            painter.drawControl(QStyle.CE_TabBarTabShape, opt)
-            painter.save()
-            s = opt.rect.size()
-            s.transpose()
-            r = QRect(QPoint(), s)
-            r.moveCenter(opt.rect.center())
-            opt.rect = r
-            c = self.tabRect(i).center()
-            painter.translate(c)
-            painter.rotate(90)
-            painter.translate(-c)
-            painter.drawControl(QStyle.CE_TabBarTabLabel, opt);
-            painter.restore()
-class TabWidget(QTabWidget):
-    def __init__(self, *args, **kwargs):
-        QTabWidget.__init__(self, *args, **kwargs)
-        self.tabBar = TabBar(self)
-        self.tabBar.tabSizeHint(0)
-        self.setTabBar(self.tabBar)
-        self.setTabPosition(QTabWidget.West)
-
-class MenuBar(QWidget):
-    def __init__(self):
-        QWidget.__init__(self,None)
-        #self.setFixedSize(640,20)
-        #self.setColor()
-        # self.setContentsMargins(0,-5,30,0)
-        self.setContentsMargins(0,0,0,0)
-        self.homeBtn = QPushButton("Home")
-        self.homeBtn.setIcon(QIcon('images/homeIcon.png'))
-        self.homeBtn.setStyleSheet("background-color: rgb(87,85,85); color: white")
-        self.homeBtn.setFont(QFont("Century Gothic",8))
-        self.boardBtn = QPushButton("Board")
-        self.boardBtn.setIcon(QIcon('images/boardIcon.png'))
-        self.boardBtn.setStyleSheet("background-color: rgb(87,85,85); color: white")
-        self.boardBtn.setFont(QFont("Century Gothic",8))
-        self.menubar_widget = QHBoxLayout()
-        self.menubar_widget.addWidget(self.homeBtn)
-        self.menubar_widget.addWidget(self.boardBtn)
-        self.menubar_widget.addStretch(1)
-        self.setLayout(self.menubar_widget)
+from TabBar import * 
+from MenuBar import * 
 
 class DisplayBoardBox(QWidget):
     def __init__(self):
@@ -81,8 +31,10 @@ class DisplayBoardBox(QWidget):
         self.list_widget.insertItem(self.i,board)
 
 class Dashboard_Page(QWidget):
-    def __init__(self):
-        QWidget.__init__(self,None)
+    def __init__(self,parent):
+        super(Dashboard_Page,self).__init__(parent)
+        self.parent = parent
+        #QWidget.__init__(self,None)
         self.menuBar = MenuBar()
         self.tabBarBoard = TabWidget()
         self.tabBarBoard.setFont(QFont("Moon",10,QFont.Bold))
@@ -101,6 +53,7 @@ class Dashboard_Page(QWidget):
         self.layout.addWidget(self.add_board_btn,2,1,1,2)
         self.layout.addWidget(self.delete_board_btn,2,2,1,2)
         self.setLayout(self.layout)
+        self.show()
     def paintEvent(self,e):
         paint = QPainter()
         paint.begin(self)

@@ -2,30 +2,23 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-from login_signup_page import *
-from dashboard_page import * 
+from LoginSignUpPage import *
+from DashBoardPage import * 
 
-class BelloUI(QWidget):
-    def __init__(self):
-        QWidget.__init__(self,None)
+class BelloUI(QMainWindow):
+    def __init__(self,parent = None):
+        super(BelloUI,self).__init__(parent)
+        self.parent = parent
         self.setFixedSize(640,480)
-        self.login_widget = Login_Signup_Page()
-        self.dashboard_widget = Dashboard_Page()
-        self.stack_widget = QStackedWidget()
-        self.stack_widget.addWidget(self.login_widget)
-        self.stack_widget.addWidget(self.dashboard_widget)
+        self.initialPage()
+        self.show()
+    def initialPage(self):
+        self.login_widget = Login_Signup_Page(self)
         self.layout = QVBoxLayout()
-        self.layout.addWidget(self.stack_widget)
-        self.stack_widget.setCurrentIndex(1)
-        self.setLayout(self.layout)
-        
-    def gotoLoginPage(self):
-        self.stack_widget.setCurrentIndex(0)
-    def gotoDashBoardPage(self):
-        self.stack_widget.setCurrentIndex(1)
-        
+        self.login_widget.setLayout(self.layout)
+        self.setCentralWidget(self.login_widget)
+
 if __name__ == '__main__':
     application = QApplication(sys.argv)
     window = BelloUI()
-    window.show()
     sys.exit(application.exec_())
