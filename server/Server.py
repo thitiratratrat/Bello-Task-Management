@@ -72,7 +72,7 @@ class Server:
 
         boardTitles = self.__getBoardTitlesFromBoardIds(boardIds)
 
-        await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitles))
+        await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitles}))
 
     def __getBoardTitlesFromBoardIds(self, boardIds):
         boardTitles = {}
