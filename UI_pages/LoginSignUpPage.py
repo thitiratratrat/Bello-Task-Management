@@ -6,29 +6,28 @@ from LoginWidget import *
 from SignUpWidget import * 
 from BelloUI import *
 
-class Login_Signup_Page(QWidget):
+class LoginSignUpPage(QWidget):
     def __init__(self,parent):
-        #QWidget.__init__(self,None)
-        super(Login_Signup_Page,self).__init__(parent)
+        super(LoginSignUpPage,self).__init__(parent)
         self.parent = parent
         self.tabWidget = QTabWidget()
         self.tabWidget.setStyleSheet("color: rgb(82,113,159)")
-        self.login= LoginWidget(self)
+        self.loginWidget= LoginWidget()
         self.tabWidget.setFixedSize(313,263)
-        self.signup = SignUpWidget()
+        self.signUpWidget = SignUpWidget()
         self.tabWidget.setFont(QFont("Century Gothic", 9 ,QFont.Bold))
-        self.tabWidget.addTab(self.login, "Log in")
-        self.tabWidget.addTab(self.signup, "Sign up")
+        self.tabWidget.addTab(self.loginWidget, "Log in")
+        self.tabWidget.addTab(self.signUpWidget, "Sign up")
         self.setWindowTitle("Bello project")
-        self.project_name_label = QLabel("Bello")
-        self.login_signup_layout = QVBoxLayout()
+        self.belloLabel = QLabel("Bello")
+        self.loginSignUpLayout = QVBoxLayout()
         self.setContentsMargins(150,60,20,140)
-        self.project_name_label.setContentsMargins(133,0,0,25)
-        self.login_signup_layout.addWidget(self.project_name_label)
-        self.login_signup_layout.addWidget(self.tabWidget)
-        self.project_name_label.setFont(QFont("Moon", 24,QFont.Bold))
-        self.setLayout(self.login_signup_layout)
-        self.icon_Bello = QPixmap("images/iconBello.png")
+        self.belloLabel.setContentsMargins(133,0,0,25)
+        self.loginSignUpLayout.addWidget(self.belloLabel)
+        self.loginSignUpLayout.addWidget(self.tabWidget)
+        self.belloLabel.setFont(QFont("Moon", 24,QFont.Bold))
+        self.setLayout(self.loginSignUpLayout)
+        self.belloIcon = QPixmap("images/iconBello.png")
         self.show()
     def paintEvent(self,e):
         paint = QPainter()
@@ -41,18 +40,5 @@ class Login_Signup_Page(QWidget):
         paint.setBrush(QColor(255,160,122))
         paint.drawPolygon([QPoint( 60,60),QPoint(140,110),QPoint(130,200)])
         paint.drawPolygon([QPoint(350,430),QPoint(540,300),QPoint(570,390),])
-        paint.drawPixmap(QRect(245,60,40,40),self.icon_Bello)
+        paint.drawPixmap(QRect(245,60,40,40),self.belloIcon)
         paint.end()
-    def changetoDashPage(self):
-        self.dashboard_widget = Dashboard_Page(self.parent)
-        self.layout = QVBoxLayout()
-        self.dashboard_widget.setLayout(self.layout)
-        self.parent.setCentralWidget(self.dashboard_widget)
-def main():
-    app = QApplication(sys.argv)
-    w = Login_Signup_Page(BelloUI())
-    w.setFixedSize(640, 480)
-    
-    return app.exec_()
-if __name__ == "__main__":
-    sys.exit(main())
