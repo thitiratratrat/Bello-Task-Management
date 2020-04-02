@@ -3,7 +3,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashBoardPage import *
+from DashboardPage import *
 
 
 class BelloUI(QMainWindow):
@@ -40,20 +40,20 @@ class BelloUI(QMainWindow):
     def getConfirmPassword(self):
         return self.loginSignUpPage.signupWidget.confirmPasswordValue.text()
 
-    def gotoLoginSignUpPage(self):
+    def goToLoginSignUpPage(self):
         self.stackedWidget.setCurrentIndex(0)
 
-    def gotoDashboardPage(self):
+    def goToDashboardPage(self):
         self.stackedWidget.setCurrentIndex(1)
 
-    def addBoard(self):
-        self.dashboardPage.addBoard()
+    def addBoard(self, boardName):
+        self.dashboardPage.addBoard(boardName)
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
 
 
-if __name__ == '__main__':
-    application = QApplication(sys.argv)
-    window = BelloUI()
-    sys.exit(application.exec_())
+# if __name__ == '__main__':
+#     application = QApplication(sys.argv)
+#     window = BelloUI()
+#     sys.exit(application.exec_())
