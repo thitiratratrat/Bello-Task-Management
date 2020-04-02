@@ -1,11 +1,11 @@
-from Board import Board
-from User import User
 import websockets
 import asyncio
 import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
+from Board import Board
+from User import User
 
 
 class Bello:
@@ -38,10 +38,10 @@ class Bello:
             boardTitlesAndIds = message["data"]
 
             self.__initUserBoards(boardTitlesAndIds)
-            
+
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
-            
+
             self.__createBoard(boardTitleAndId)
 
         else:
@@ -55,13 +55,13 @@ class Bello:
             board = Board(boardTitle, boardId)
 
             self.__user.addBoard(board)
-            
+
     def __createBoard(self, boardTitleAndId):
         boardTitle = boardTitleAndId["boardTitle"]
         boardId = boardTitleAndId["boardId"]
-        
+
         self.__user.createBoard(boardTitle, boardId)
-        
+
     async def __handleServer(self):
         async for message in self.__websocket:
             message = json.loads(message)
@@ -91,12 +91,12 @@ class Bello:
                                                     "boardTitle": boardTitle,
                                                     "username": self.__user.getUsername()}
                                                 }))
-    
+
     async def sendRequestBoardDataToServer(self, boardId):
-        await self.__websocket.send(json.dumps("action": "requestBoardData",
-                                               "data": {
-                                                   "boardId": boardId
-                                               }))
+        await self.__websocket.send(json.dumps({"action": "requestBoardData",
+                                                "data": {
+                                                    "boardId": boardId}
+                                                }))
 
     async def start(self):
         await self.__connect()
