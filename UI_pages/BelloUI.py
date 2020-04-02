@@ -1,14 +1,21 @@
 import sys
+import asyncio
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
 from DashboardPage import *
+sys.path.append(
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+from Bello import *
 
 
 class BelloUI(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, bello=None):
         super(BelloUI, self).__init__(parent)
+        
+        self.bello = bello
+        
         self.parent = parent
         self.stackedWidget = QStackedWidget()
         self.loginSignUpPage = LoginSignUpPage(self)
@@ -17,10 +24,11 @@ class BelloUI(QMainWindow):
         self.stackedWidget.addWidget(self.dashboardPage)
         self.stackedWidget.setCurrentIndex(0)
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
-            self.gotoDashboardPage)
+            self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
+        
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()

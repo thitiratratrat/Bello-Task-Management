@@ -1,14 +1,17 @@
 import websockets
 import asyncio
 import json
+from PySide2.QtCore import *
+# from quamash import QEventLoop, QThreadExecutor
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
+
 from Board import Board
 from User import User
-from BelloUI import BelloUI
+from BelloUI import *
 
 
 class Bello:
@@ -16,7 +19,7 @@ class Bello:
         self.__websocket = None
         self.__uri = "ws://localhost:8765"
         self.__user = None
-        self.__UI = None
+        self.__ui = None
 
     async def __connect(self):
         self.__websocket = await websockets.client.connect(self.__uri)
@@ -67,6 +70,7 @@ class Bello:
         self.__user.createBoard(boardTitle, boardId)
 
     async def __handleServer(self):
+
         async for message in self.__websocket:
             message = json.loads(message)
 
@@ -103,11 +107,14 @@ class Bello:
                                                 }))
 
     async def start(self):
-        self.__UI = BelloUI()
         await self.__connect()
-
+        
+        application = QApplication(sys.argv)
+        self.__ui = BelloUI(None, self)
+        
         task = asyncio.create_task(self.__handleServer())
-
+        
+        sys.exit(application.exec_())
         await task
 
 
