@@ -19,12 +19,12 @@ class DisplayBoardBox(QWidget):
         self.i = 1
 
     def createBox(self):
-        self.ran_num1 = randint(0, 255)
-        self.ran_num2 = randint(0, 255)
-        self.ran_num3 = randint(0, 255)
+        self.ranNum1 = randint(0, 255)
+        self.ranNum2 = randint(0, 255)
+        self.ranNum3 = randint(0, 255)
         self.recPainter = QPixmap(120, 80)
         self.recPainter.fill(
-            QColor(self.ran_num1, self.ran_num2, self.ran_num3))
+            QColor(self.ranNum1, self.ranNum2, self.ranNum3))
         return self.recPainter
 
     def addToListWidget(self, board):
