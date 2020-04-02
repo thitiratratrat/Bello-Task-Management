@@ -74,15 +74,19 @@ class DashboardPage(QWidget):
         self.boardNameLabel.setFont(QFont("Century Gothic", 10))
         self.boardNameValue.setFont(QFont("Century Gothic",10))
         self.createBtn.setFont(QFont("Moon",10))
-        self.createBtn.clicked.connect(self.addBoard)
+        self.createBtn.clicked.connect(self.createBtnAddBoard)
         self.createBoardDialog.show()
+    
     def getBoardName(self):
         return self.boardNameValue.text()
-    def addBoard(self):
-        #boardName = self.getBoardName()
+    def addBoard(self,boardName):
         self.board = QListWidgetItem(QIcon(self.displayBoard.createBox()), boardName)
         self.displayBoard.addToListWidget(self.board)
-        #self.closeDialog()
+    def createBtnAddBoard(self):
+        boardName = self.getBoardName()
+        self.board = QListWidgetItem(QIcon(self.displayBoard.createBox()), boardName)
+        self.displayBoard.addToListWidget(self.board)
+        self.closeDialog()
 
     def closeDialog(self):
         self.createBoardDialog.reject()
