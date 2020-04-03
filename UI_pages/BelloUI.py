@@ -5,6 +5,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
 from DashboardPage import *
+from asyncqt import *
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 from Bello import *
@@ -12,10 +13,8 @@ from Bello import *
 
 class BelloUI(QMainWindow):
     def __init__(self, parent=None, bello=None):
-        super(BelloUI, self).__init__(parent)
-        
+        super(BelloUI, self).__init__(parent) 
         self.bello = bello
-        
         self.parent = parent
         self.stackedWidget = QStackedWidget()
         self.loginSignUpPage = LoginSignUpPage(self)
@@ -24,11 +23,23 @@ class BelloUI(QMainWindow):
         self.stackedWidget.addWidget(self.dashboardPage)
         self.stackedWidget.setCurrentIndex(0)
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
-            self.goToDashboardPage)
+            self.validateAccount)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
+    
+    def buff(self):
+        username = self.getUsernameLogin()
+        password = self.getPasswordLogin()
+        asyncio.ensure_future(self.validateAccount(username, password, self.bello))
         
+    @asyncSlot()
+    async def validateAccount(self):
+        print("pass")
+        username = self.getUsernameLogin()
+        password = self.getPasswordLogin()
+        
+        await self.bello.login(username, password)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -59,9 +70,3 @@ class BelloUI(QMainWindow):
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
-
-
-# if __name__ == '__main__':
-#     application = QApplication(sys.argv)
-#     window = BelloUI()
-#     sys.exit(application.exec_())

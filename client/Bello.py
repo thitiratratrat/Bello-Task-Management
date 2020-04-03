@@ -2,7 +2,6 @@ import websockets
 import asyncio
 import json
 from PySide2.QtCore import *
-# from quamash import QEventLoop, QThreadExecutor
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
@@ -84,6 +83,7 @@ class Bello:
                                                 }))
 
     async def login(self, username, password):
+        print("send login")
         await self.__websocket.send(json.dumps({"action": "login",
                                                 "data": {
                                                     "username": username,
