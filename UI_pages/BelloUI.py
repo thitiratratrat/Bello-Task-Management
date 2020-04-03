@@ -35,8 +35,8 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(0)
     def gotoDashboardPage(self):
         self.stackedWidget.setCurrentIndex(1)
-    def addBoard(self):
-        self.dashboardPage.addBoard()
+    def addBoard(self,boardName):
+        self.dashboardPage.addBoard(boardName)
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
 if __name__ == '__main__':

@@ -4,7 +4,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginWidget import * 
 from SignUpWidget import * 
-from BelloUI import *
 
 class LoginSignUpPage(QWidget):
     def __init__(self,parent):
