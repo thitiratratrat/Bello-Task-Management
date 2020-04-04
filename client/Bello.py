@@ -35,7 +35,8 @@ class Bello:
             self.__ui.showUsernameAlreadyExists()
 
         elif response == "createdAccount":
-            self.__ui.goToLoginSignUpPage()
+            print("here")
+            self.__ui.gotoLoginTab()
 
         elif response == "loginSuccessful":
             username = self.__ui.getUsernameLogin()
