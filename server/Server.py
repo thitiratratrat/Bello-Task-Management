@@ -6,6 +6,7 @@ import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
 from Account import Account
+from Board import Board
 
 connect('bello')
 
@@ -19,7 +20,7 @@ class Server:
         username = data["username"]
         password = data["password"]
 
-        if self.__checkExistedUsername(username):
+        if self.__isExistedUsername(username):
             await websocket.send(json.dumps({"response": "existedUsername"}))
             return
 
@@ -28,7 +29,64 @@ class Server:
         account.save()
         await websocket.send(json.dumps({"response": "createdAccount"}))
 
-    def __checkExistedUsername(self, usernameInput):
+    async def __login(self, data, websocket):
+        username = data["username"]
+        password = data["password"]
+
+        if not self.__isValidAccount(username, password):
+            await websocket.send(json.dumps({"response": "loginFail"}))
+            return
+
+        await websocket.send(json.dumps({"response": "loginSuccessful"}))
+        await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
+
+    async def __sendBoardData(self, data, websocket):
+        boardId = data["boardId"]
+        board = Board.objects.get(_id=boardId)
+
+        # TODO: get section and tasks
+        pass
+
+    async def __createBoard(self, data, websocket):
+        boardTitle = data["boardTitle"]
+        usernameInput = data["username"]
+        board = Board(title=boardTitle)
+
+        board.save()
+
+        boardId = board._id
+        account = Account.objects.get(username=usernameInput)
+
+        account.board_ids.append(boardId)
+        account.save()
+
+        await websocket.send(json.dumps({"response": "createdBoard",
+                                         "data": {
+                                             "boardTitle": boardTitle,
+                                             "boardId": boardId}
+                                         }))
+
+    async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
+        account = Account.objects.get(username=usernameInput)
+        boardIds = account.board_ids
+
+        boardTitles = self.__getBoardTitlesFromBoardIds(boardIds)
+
+        await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitles}))
+
+    def __getBoardTitlesFromBoardIds(self, boardIds):
+        boardTitles = {}
+
+        for boardId in boardIds:
+            board = Board.objects.get(_id=boardId)
+            boardTitles[boardId] = board.title
+
+        return boardTitles
+
+    def __isValidAccount(self, usernameInput, passwordInput):
+        return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
+
+    def __isExistedUsername(self, usernameInput):
         return True if Account.objects(username=usernameInput).count() >= 1 else False
 
     async def __handleMessage(self, message, websocket):
@@ -36,6 +94,15 @@ class Server:
 
         if action == 'signUp':
             await self.__signUp(message["data"], websocket)
+
+        elif action == 'login':
+            await self.__login(message["data"], websocket)
+
+        elif action == 'createBoard':
+            await self.__createBoard(message["data"], websocket)
+
+        elif action == 'requestBoardData':
+            await self.__sendBoardData(message["data"], websocket)
 
         else:
             return
