@@ -29,9 +29,10 @@ class Server:
         account.save()
         await websocket.send(json.dumps({"response": "createdAccount"}))
 
-    async def __login(self, data, websocket):
+    async def __login(self, data, websocket):        
         username = data["username"]
         password = data["password"]
+        
 
         if not self.__isValidAccount(username, password):
             await websocket.send(json.dumps({"response": "loginFail"}))

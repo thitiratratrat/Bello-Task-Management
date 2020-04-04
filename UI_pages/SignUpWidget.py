@@ -26,8 +26,6 @@ class SignUpWidget(QWidget):
         self.signUpBtn = QPushButton("SIGN UP")
         self.signUpBtn.setStyleSheet(
             "background-color:rgb(250,231,110);color:rgb(49,68,111)")
-        self.signUpBtn.clicked.connect(self.signUp)
-        self.isHasUser = False
         self.signUpBtn.setFont(QFont("Moon", 10, QFont.Bold))
         self.signUpBtn.setFixedSize(100, 30)
         self.formSignUpLayout = QFormLayout()
@@ -49,22 +47,18 @@ class SignUpWidget(QWidget):
             self.signUpBtn, 1, 0, 1, 1, Qt.AlignCenter)
         self.setLayout(self.gridSignUpLayout)
 
-    def signUp(self):
-        if(self.isHasUser == True):
-            print("Success Sign Up")
-        else:
-            dialog = QDialog(self)
-            dialog.setWindowTitle("Error")
-            layout = QVBoxLayout()
-            errMessage = QLabel(self)
-            errMessage.setText("This number is already registered")
-            close = QPushButton('Close')
-            close.clicked.connect(dialog.close)
-            layout.addWidget(errMessage)
-            layout.addWidget(close)
-            dialog.setLayout(layout)
-            dialog.show()
-            print("Error Message")
+    def showUsernameAlreadyExists(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Error")
+        layout = QVBoxLayout()
+        errMessage = QLabel(self)
+        errMessage.setText("This username already exists.")
+        close = QPushButton('Close')
+        close.clicked.connect(dialog.close)
+        layout.addWidget(errMessage)
+        layout.addWidget(close)
+        dialog.setLayout(layout)
+        dialog.show()
 
     def setColor(self):
         self.palette = QPalette()
