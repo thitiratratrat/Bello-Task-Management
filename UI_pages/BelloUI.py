@@ -85,6 +85,9 @@ class BelloUI(QMainWindow):
     def showAccountDoesNotExist(self):
         pass
 
+    def gotoLoginTab(self):
+        self.loginSignUpPage.tabWidget.setCurrentIndex(0)
+    
     def goToLoginSignUpPage(self):
         self.stackedWidget.setCurrentIndex(0)
 
