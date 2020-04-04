@@ -4,9 +4,9 @@ from mongoengine import *
 import json
 import sys
 sys.path.append(
-'database_model')
-from Board import Board
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
 from Account import Account
+from Board import Board
 
 connect('bello')
 
@@ -29,10 +29,9 @@ class Server:
         account.save()
         await websocket.send(json.dumps({"response": "createdAccount"}))
 
-    async def __login(self, data, websocket):        
+    async def __login(self, data, websocket):
         username = data["username"]
         password = data["password"]
-        
 
         if not self.__isValidAccount(username, password):
             await websocket.send(json.dumps({"response": "loginFail"}))
@@ -40,28 +39,28 @@ class Server:
 
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
-        
+
     async def __sendBoardData(self, data, websocket):
         boardId = data["boardId"]
         board = Board.objects.get(_id=boardId)
-        
-        #TODO: get section and tasks
+
+        # TODO: get section and tasks
         pass
-        
+
     async def __createBoard(self, data, websocket):
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
         board = Board(title=boardTitle)
-        
+
         board.save()
-        
+
         boardId = board._id
         account = Account.objects.get(username=usernameInput)
-        
+
         account.board_ids.append(boardId)
         account.save()
-        
-        await websocket.send(json.dumps({"response": "createdBoard", 
+
+        await websocket.send(json.dumps({"response": "createdBoard",
                                          "data": {
                                              "boardTitle": boardTitle,
                                              "boardId": boardId}
@@ -98,10 +97,10 @@ class Server:
 
         elif action == 'login':
             await self.__login(message["data"], websocket)
-            
+
         elif action == 'createBoard':
             await self.__createBoard(message["data"], websocket)
-            
+
         elif action == 'requestBoardData':
             await self.__sendBoardData(message["data"], websocket)
 
