@@ -32,7 +32,7 @@ class BelloUI(QMainWindow):
         self.show()
     
     def __loginAccount(self):
-        username = self.__getUsernameLogin()
+        username = self.getUsernameLogin()
         password = self.__getPasswordLogin()
         
         self.bello.login(username, password)
@@ -54,13 +54,13 @@ class BelloUI(QMainWindow):
         return self.loginSignUpPage.loginWidget.passwordValueLogin.text()
 
     def __getUsernameSignUp(self):
-        return self.loginSignUpPage.signupWidget.usernameValueSignUp.text()
+        return self.loginSignUpPage.signUpWidget.usernameValueSignUp.text()
 
     def __getPasswordSignUp(self):
-        return self.loginSignUpPage.signupWidget.passwordValueSignUp.text()
+        return self.loginSignUpPage.signUpWidget.passwordValueSignUp.text()
     
     def __getConfirmPassword(self):
-        return self.loginSignUpPage.signupWidget.confirmPasswordValue.text()
+        return self.loginSignUpPage.signUpWidget.confirmPasswordValue.text()
     
     def __showConfirmPasswordMismatch(self):
         pass
