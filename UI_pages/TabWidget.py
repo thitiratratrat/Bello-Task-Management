@@ -3,6 +3,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from TabBar import *
 
+
 class TabWidget(QTabWidget):
     def __init__(self, *args, **kwargs):
         QTabWidget.__init__(self, *args, **kwargs)
