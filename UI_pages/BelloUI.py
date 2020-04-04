@@ -5,9 +5,8 @@ from PySide2.QtGui import *
 from LoginSignUpPage import *
 from DashboardPage import *
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\client')
 from Bello import *
-
 
 class BelloUI(QMainWindow):
     def __init__(self, parent=None, bello=None):
@@ -92,6 +91,8 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(0)
 
     def goToDashboardPage(self):
+        username = self.getUsernameLogin()
+        self.dashboardPage.menuBar.setFirstChaOfUsername(username)
         self.stackedWidget.setCurrentIndex(1)
 
     def addBoard(self, boardName):
