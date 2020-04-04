@@ -23,8 +23,8 @@ class Bello:
 
         self.__connect()
         
-        receiveThread = threading.Thread(target=self.__handleServer, args=[])
-        receiveThread.start()
+        self.receiveThread = threading.Thread(target=self.__handleServer, args=[])
+        self.receiveThread.start()
 
     def __connect(self):
         self.__websocket.connect(self.__uri)
@@ -41,7 +41,6 @@ class Bello:
 
         elif response == "loginSuccessful":
             username = self.__ui.getUsernameLogin()
-            
             self.__ui.goToDashboardPage()
             self.__initUser(username)
 
@@ -125,4 +124,3 @@ if __name__ == '__main__':
     
     bello.addUI(belloUI)
     sys.exit(application.exec_())
-
