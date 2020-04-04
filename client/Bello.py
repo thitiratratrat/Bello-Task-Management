@@ -6,9 +6,9 @@ sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
-from BelloUI import *
-from User import User
 from Board import Board
+from User import User
+from BelloUI import *
 
 
 class Bello:
@@ -20,8 +20,9 @@ class Bello:
         self.__ui = None
 
         self.__connect()
-        
-        self.receiveThread = threading.Thread(target=self.__handleServer, args=[])
+
+        self.receiveThread = threading.Thread(
+            target=self.__handleServer, args=[])
         self.receiveThread.start()
 
     def __connect(self):
@@ -35,7 +36,6 @@ class Bello:
             self.__ui.showUsernameAlreadyExists()
 
         elif response == "createdAccount":
-            print("here")
             self.__ui.gotoLoginTab()
 
         elif response == "loginSuccessful":
@@ -83,43 +83,43 @@ class Bello:
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
-                                                "data": {
+                                          "data": {
                                                     "username": username,
                                                     "password": password}
-                                                }))
+                                          }))
 
     def login(self, username, password):
         self.__websocket.send(json.dumps({"action": "login",
-                                                "data": {
+                                          "data": {
                                                     "username": username,
                                                     "password": password}
-                                                }))
+                                          }))
 
     def validatePassword(self, password):
         return True if len(password) >= 4 else False
 
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",
-                                                "data": {
+                                          "data": {
                                                     "boardTitle": boardTitle,
                                                     "username": self.__user.getUsername()}
-                                                }))
+                                          }))
 
     def sendRequestBoardDataToServer(self, boardId):
         self.__websocket.send(json.dumps({"action": "requestBoardData",
-                                                "data": {
+                                          "data": {
                                                     "boardId": boardId}
-                                                }))
-        
+                                          }))
+
     def addUI(self, ui):
         self.__ui = ui
 
 
 if __name__ == '__main__':
-    application=QApplication(sys.argv)
-    
+    application = QApplication(sys.argv)
+
     bello = Bello()
     belloUI = BelloUI(None, bello)
-    
+
     bello.addUI(belloUI)
     sys.exit(application.exec_())
