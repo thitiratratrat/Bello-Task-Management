@@ -1,5 +1,7 @@
 import sys
 import asyncio
+import threading
+from multiprocessing import Pool
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
@@ -23,41 +25,69 @@ class BelloUI(QMainWindow):
         self.stackedWidget.addWidget(self.dashboardPage)
         self.stackedWidget.setCurrentIndex(0)
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
-            self.validateAccount)
+            self.__loginAccount)
+        self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(self.__signUpAccount)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
     
-    def buff(self):
-        username = self.getUsernameLogin()
-        password = self.getPasswordLogin()
-        asyncio.ensure_future(self.validateAccount(username, password, self.bello))
+    def __loginAccount(self):
+        username = self.__getUsernameLogin()
+        password = self.__getPasswordLogin()
         
-    @asyncSlot()
-    async def validateAccount(self):
-        print("pass")
-        username = self.getUsernameLogin()
-        password = self.getPasswordLogin()
+        self.bello.login(username, password)
         
-        await self.bello.login(username, password)
+    def __validateSignUpPassword(self, password):
+        confirmPassword = self.__getConfirmPassword()
+        
+        if password != confirmPassword:
+            self.__showConfirmPasswordMismatch()
+            return False    
 
+        elif not self.bello.validatePassword(password):
+            self.__showInvalidPasswordLength()
+            return False
+        
+        return True
+
+    def __getPasswordLogin(self):
+        return self.loginSignUpPage.loginWidget.passwordValueLogin.text()
+
+    def __getUsernameSignUp(self):
+        return self.loginSignUpPage.signupWidget.usernameValueSignUp.text()
+
+    def __getPasswordSignUp(self):
+        return self.loginSignUpPage.signupWidget.passwordValueSignUp.text()
+    
+    def __getConfirmPassword(self):
+        return self.loginSignUpPage.signupWidget.confirmPasswordValue.text()
+    
+    def __showConfirmPasswordMismatch(self):
+        pass
+    
+    def __showInvalidPasswordLength(self):
+        pass
+        
+    def __signUpAccount(self):
+        username = self.__getUsernameSignUp()
+        password = self.__getPasswordSignUp()
+        
+        if not self.__validateSignUpPassword(password):
+            return
+        
+        self.bello.signUp(username, password)
+        
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
 
-    def getPasswordLogin(self):
-        return self.loginSignUpPage.loginWidget.passwordValueLogin.text()
-
-    def getUsernameSignUp(self):
-        return self.loginSignUpPage.signupWidget.usernameValueSignUp.text()
-
-    def getPasswordSignUp(self):
-        return self.loginSignUpPage.signupWidget.passwordValueSignUp.text()
-
     def getBoardName(self):
         self.dashboardPage.getBoardName()
-
-    def getConfirmPassword(self):
-        return self.loginSignUpPage.signupWidget.confirmPasswordValue.text()
+    
+    def showUsernameAlreadyExists(self):
+        self.loginSignUpPage.signUpWidget.showUsernameAlreadyExists()
+        
+    def showAccountDoesNotExist(self):
+        pass
 
     def goToLoginSignUpPage(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -70,3 +100,7 @@ class BelloUI(QMainWindow):
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
+    
+
+        
+        
