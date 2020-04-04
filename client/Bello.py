@@ -1,8 +1,6 @@
 import websocket
-import asyncio
+import threading
 import json
-from PySide2.QtCore import *
-from threading import Thread
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
