@@ -27,7 +27,7 @@ class LoginSignUpPage(QWidget):
         self.loginSignUpLayout.addWidget(self.tabWidget)
         self.belloLabel.setFont(QFont("Moon", 24, QFont.Bold))
         self.setLayout(self.loginSignUpLayout)
-        self.belloIcon = QPixmap("images/iconBello.png")
+        self.belloIcon = QPixmap("C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\images\\iconBello.png")
         self.show()
 
     def paintEvent(self, e):
