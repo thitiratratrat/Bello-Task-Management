@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-
+import dialogBox import * 
 
 class SignUpWidget(QWidget):
     def __init__(self):
@@ -48,17 +48,13 @@ class SignUpWidget(QWidget):
         self.setLayout(self.gridSignUpLayout)
 
     def showUsernameAlreadyExists(self):
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Error")
-        layout = QVBoxLayout()
-        errMessage = QLabel(self)
-        errMessage.setText("This username already exists.")
-        close = QPushButton('Close')
-        close.clicked.connect(dialog.close)
-        layout.addWidget(errMessage)
-        layout.addWidget(close)
-        dialog.setLayout(layout)
-        dialog.show()
+        createDialogBox(self,"Error","ERROR: This username already exists.")
+
+    def showComfirmPasswordMismatch(self):
+        createDialogBox(self,"Error","ERROR: Your password doesn't match with comfirm password")
+    
+    def showInvalidPasswordLength(self):
+        createDialogBox(self,"Error","ERROR: Passwords must be at least 4 characters")
 
     def setColor(self):
         self.palette = QPalette()
