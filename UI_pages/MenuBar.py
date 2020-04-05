@@ -14,13 +14,15 @@ class MenuBar(QWidget):
         self.homeBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.homeBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+        '''
         self.boardBtn = QPushButton("Board")
         self.boardBtn.setIcon(QIcon('images/dashboard.png'))
         self.boardBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.boardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.firstChaOfUsername = QLabel("")
-        self.firstChaOfUsername.setFont(QFont("Moon", 10, QFont.Bold))
+        self.firstChaOfUsername.setFont(QFont("Moon", 10, QFont.Bold))'''
+        
         self.firstChaOfUsername.setStyleSheet("color:white")
         self.menuBarWidget = QHBoxLayout()
         self.menuBarWidget.addWidget(self.homeBtn)

@@ -7,7 +7,7 @@ from TabBar import *
 from TabWidget import *
 from MenuBar import *
 from DisplayBoardBox import *
-
+from dialogBox import *
 
 class DashboardPage(QWidget):
     def __init__(self, parent=None):
@@ -51,42 +51,30 @@ class DashboardPage(QWidget):
         self.createBoardDialog = QDialog(self)
         self.createBoardDialog.setWindowTitle("Create board")
         self.formLayout = QFormLayout()
-        self.boardNameLabel = QLabel("Board Name: ")
-        self.boardNameValue = QLineEdit(self)
+        self.boardTitleLabel = QLabel("Board Name: ")
+        self.boardTitleValue = QLineEdit(self)
         self.createBtn = QPushButton('Create')
-        self.formLayout.addRow(self.boardNameLabel, self.boardNameValue)
+        self.formLayout.addRow(self.boardTitleLabel, self.boardTitleValue)
         self.formLayout.addRow(self.createBtn)
         self.createBoardDialog.setLayout(self.formLayout)
-        self.boardNameLabel.setFont(QFont("Century Gothic", 10))
-        self.boardNameValue.setFont(QFont("Century Gothic", 10))
+        self.boardTitleLabel.setFont(QFont("Century Gothic", 10))
+        self.boardTitleValue.setFont(QFont("Century Gothic", 10))
         self.createBtn.setFont(QFont("Moon", 10))
         self.createBtn.clicked.connect(self.createBtnAddBoard)
         self.createBoardDialog.show()
 
-    def getBoardName(self):
-        return self.boardNameValue.text()
+    def getBoardTitle(self):
+        return self.boardTitleValue.text()
 
-    def addBoard(self, boardName):
-        self.board = QListWidgetItem(
-            QIcon(self.displayBoard.createBox()), boardName)
-        self.displayBoard.addToListWidget(self.board)
+    def addBoard(self, boardDict):
+        self.displayBoard.createBox(boardDict)
 
     def createBtnAddBoard(self):
-        if(self.boardNameValue.text() == ''):
-            dialog = QDialog(self)
-            dialog.setWindowTitle("Error")
-            layout = QVBoxLayout()
-            errMessage = QLabel(self)
-            errMessage.setText("Error")
-            close = QPushButton('Close')
-            close.clicked.connect(dialog.close)
-            layout.addWidget(errMessage)
-            layout.addWidget(close)
-            dialog.setLayout(layout)
-            dialog.show()
+        if(self.boardTitleValue.text() == ''):
+            createDialogBox(self,"Error","ERROR: Board title is required.")
         else:
-            boardName = self.getBoardName()
-            self.displayBoard.createBox(boardName)
+            boardTitle = self.getBoardTitle()
+            self.displayBoard.createBox(boardDict)
             self.closeDialog()
 
     def closeDialog(self):
@@ -99,3 +87,14 @@ class DashboardPage(QWidget):
         for item in self.select_board:
             self.displayBoard.listWidget.takeItem(
                 self.displayBoard.listWidget.row(item))
+
+
+def main():
+    app = QApplication(sys.argv)
+    w = DashboardPage()
+    w.resize(640, 480)
+    w.show()
+    return app.exec_()
+
+if __name__ == "__main__":
+    sys.exit(main())
