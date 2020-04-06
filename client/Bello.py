@@ -48,13 +48,16 @@ class Bello:
 
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-
+            
             self.__initUserBoards(boardTitlesAndIds)
+            self.__ui.initBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
+            boardDict = { boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
 
             self.__createBoard(boardTitleAndId)
+            self.__ui.addBoard(boardDict)
 
         else:
             return
