@@ -57,9 +57,11 @@ class DashboardPage(QWidget):
         self.formLayout.addRow(self.boardTitleLabel, self.boardTitleValue)
         self.formLayout.addRow(self.createBtn)
         self.createBoardDialog.setLayout(self.formLayout)
-        self.boardTitleLabel.setFont(QFont("Century Gothic", 10))
+        self.boardTitleLabel.setFont(QFont("Century Gothic", 10,QFont.Bold))
+        self.boardTitleLabel.setStyleSheet("color:rgb(49,68,111)")
         self.boardTitleValue.setFont(QFont("Century Gothic", 10))
-        self.createBtn.setFont(QFont("Moon", 10))
+        self.createBtn.setFont(QFont("Moon", 10,QFont.Bold))
+        self.createBtn.setStyleSheet("background-color:rgb(250,231,110);color:rgb(49,68,111)")
         self.createBtn.clicked.connect(self.createBtnAddBoard)
         self.createBoardDialog.show()
 
@@ -71,7 +73,7 @@ class DashboardPage(QWidget):
 
     def createBtnAddBoard(self):
         if(self.boardTitleValue.text() == ''):
-            createDialogBox(self,"Error","ERROR: Board title is required.")
+            createErrorDialogBox(self,"Error","ERROR: Board title is required.")
         else:
             boardTitle = self.getBoardTitle()
             self.displayBoard.createBox(boardDict)
