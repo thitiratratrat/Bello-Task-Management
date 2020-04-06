@@ -48,13 +48,13 @@ class SignUpWidget(QWidget):
         self.setLayout(self.gridSignUpLayout)
 
     def showUsernameAlreadyExists(self):
-        createDialogBox(self,"Error","ERROR: This username already exists.")
+        createErrorDialogBox(self,"Error","ERROR: This username already exists.")
 
     def showComfirmPasswordMismatch(self):
-        createDialogBox(self,"Error","ERROR: Your password doesn't match with comfirm password")
+        createErrorDialogBox(self,"Error","ERROR: Your password doesn't match with comfirm password")
     
     def showInvalidPasswordLength(self):
-        createDialogBox(self,"Error","ERROR: Passwords must be at least 4 characters")
+        createErrorDialogBox(self,"Error","ERROR: Passwords must be at least 4 characters")
 
     def setColor(self):
         self.palette = QPalette()

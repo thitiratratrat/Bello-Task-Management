@@ -3,7 +3,6 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
-
 class LoginWidget(QWidget):
     def __init__(self):
         QWidget.__init__(self, None)
@@ -39,7 +38,7 @@ class LoginWidget(QWidget):
         self.setLayout(self.gridLoginLayout)
     
     def showLoginError(self):
-        createDialogBox(self,"Error","Username or Password is invalid")
+        createErrorDialogBox(self,"Error","Username or Password is invalid")
 
     def setColor(self):
         self.palette = QPalette()
