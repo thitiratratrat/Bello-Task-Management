@@ -20,7 +20,7 @@ class User:
     def createBoard(self, boardTitle: str, boardId):
         board = Board(boardTitle, boardId)
         
-        self.__addBoard(board)
+        self.addBoard(board)
 
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)

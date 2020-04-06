@@ -14,6 +14,7 @@ class DashboardPage(QWidget):
         super(DashboardPage, self).__init__(parent)
         self.parent = parent
         self.menuBar = MenuBar()
+        self.createBtn = QPushButton('Create')
         self.menuBar.setFirstChaOfUsername("candy")
         self.menuBar.move(QPoint(0, 0))
         self.tabBarBoard = TabWidget()
@@ -53,17 +54,15 @@ class DashboardPage(QWidget):
         self.formLayout = QFormLayout()
         self.boardNameLabel = QLabel("Board Name: ")
         self.boardNameValue = QLineEdit(self)
-        self.createBtn = QPushButton('Create')
         self.formLayout.addRow(self.boardNameLabel, self.boardNameValue)
         self.formLayout.addRow(self.createBtn)
         self.createBoardDialog.setLayout(self.formLayout)
         self.boardNameLabel.setFont(QFont("Century Gothic", 10))
         self.boardNameValue.setFont(QFont("Century Gothic", 10))
         self.createBtn.setFont(QFont("Moon", 10))
-        self.createBtn.clicked.connect(self.createBtnAddBoard)
         self.createBoardDialog.show()
 
-    def getBoardName(self):
+    def getBoardTitle(self):
         return self.boardNameValue.text()
 
     def addBoard(self, boardName):
@@ -71,8 +70,8 @@ class DashboardPage(QWidget):
             QIcon(self.displayBoard.createBox()), boardName)
         self.displayBoard.addToListWidget(self.board)
 
-    def createBtnAddBoard(self):
-        if(self.boardNameValue.text() == ''):
+    def validateBoardTitle(self):
+        if self.boardNameValue.text() == '':
             dialog = QDialog(self)
             dialog.setWindowTitle("Error")
             layout = QVBoxLayout()
@@ -84,10 +83,14 @@ class DashboardPage(QWidget):
             layout.addWidget(close)
             dialog.setLayout(layout)
             dialog.show()
-        else:
-            boardName = self.getBoardName()
-            self.displayBoard.createBox(boardName)
-            self.closeDialog()
+            
+            return False
+        
+        return True
+        # else:
+        #     boardName = self.getBoardName()
+        #     self.displayBoard.createBox(boardName)
+        #     self.closeDialog()
 
     def closeDialog(self):
         self.createBoardDialog.reject()

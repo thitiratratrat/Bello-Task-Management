@@ -24,6 +24,7 @@ class BelloUI(QMainWindow):
             self.__loginAccount)
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
+        self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -73,6 +74,16 @@ class BelloUI(QMainWindow):
             return
 
         self.bello.signUp(username, password)
+        
+    def __createBoard(self):
+        if not self.dashboardPage.validateBoardTitle():
+            return
+        
+        boardTitle = self.dashboardPage.getBoardTitle()
+        self.bello.sendCreateBoardToServer(boardTitle)
+        
+        self.dashboardPage.closeDialog()
+        
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()

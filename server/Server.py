@@ -5,8 +5,8 @@ import json
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
-from Account import Account
 from Board import Board
+from Account import Account
 
 connect('bello')
 
@@ -50,11 +50,11 @@ class Server:
     async def __createBoard(self, data, websocket):
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
-        board = Board(title=boardTitle)
+        board = Board(title=boardTitle, members=[usernameInput])
 
         board.save()
 
-        boardId = board._id
+        boardId = Board.objects.get(title=boardTitle, members=usernameInput)._id
         account = Account.objects.get(username=usernameInput)
 
         account.board_ids.append(boardId)
@@ -63,7 +63,7 @@ class Server:
         await websocket.send(json.dumps({"response": "createdBoard",
                                          "data": {
                                              "boardTitle": boardTitle,
-                                             "boardId": boardId}
+                                             "boardId": str(boardId)}
                                          }))
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
@@ -71,7 +71,6 @@ class Server:
         boardIds = account.board_ids
 
         boardTitles = self.__getBoardTitlesFromBoardIds(boardIds)
-
         await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitles}))
 
     def __getBoardTitlesFromBoardIds(self, boardIds):
@@ -79,7 +78,7 @@ class Server:
 
         for boardId in boardIds:
             board = Board.objects.get(_id=boardId)
-            boardTitles[boardId] = board.title
+            boardTitles[str(boardId)] = board.title
 
         return boardTitles
 
