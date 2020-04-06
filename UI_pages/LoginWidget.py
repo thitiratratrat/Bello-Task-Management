@@ -37,6 +37,9 @@ class LoginWidget(QWidget):
         self.gridLoginLayout.addWidget(
             self.loginBtn, 1, 0, 1, 1, Qt.AlignCenter)
         self.setLayout(self.gridLoginLayout)
+    
+    def showLoginError(self):
+        createDialogBox(self,"Error","Username or Password is invalid")
 
     def setColor(self):
         self.palette = QPalette()
