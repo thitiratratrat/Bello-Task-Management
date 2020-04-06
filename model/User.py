@@ -12,6 +12,9 @@ class User:
     def getUsername(self):
         return self.__username
     
+    def getBoards(self):
+        return self.__boards
+    
     def addBoard(self, board):
         self.__boards[board.getId()] = board
         
