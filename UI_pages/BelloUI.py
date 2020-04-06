@@ -5,7 +5,7 @@ from PySide2.QtGui import *
 from LoginSignUpPage import *
 from DashboardPage import *
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 from Bello import *
 
 
@@ -76,10 +76,11 @@ class BelloUI(QMainWindow):
         self.bello.signUp(username, password)
         
     def __createBoard(self):
-        if not self.dashboardPage.validateBoardTitle():
+        boardTitle = self.dashboardPage.getBoardTitle()
+         
+        if not self.dashboardPage.validateBoardTitle() and self.bello.isExistedBoardTitle(boardTitle):
             return
         
-        boardTitle = self.dashboardPage.getBoardTitle()
         self.bello.sendCreateBoardToServer(boardTitle)
         
         self.dashboardPage.closeDialog()

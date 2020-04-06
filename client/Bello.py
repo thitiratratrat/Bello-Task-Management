@@ -3,13 +3,12 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
-    
-from Board import Board
-from User import User
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from BelloUI import *
+from User import User
+from Board import Board
 
 
 class Bello:
@@ -111,6 +110,11 @@ class Bello:
                                           "data": {
                                                     "boardId": boardId}
                                           }))
+        
+    def isExistedBoardTitle(self, boardTitle):
+        boards = self.__user.getBoards()
+        
+        return boardTitle in boards.values()          
 
     def addUI(self, ui):
         self.__ui = ui

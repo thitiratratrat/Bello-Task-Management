@@ -9,6 +9,7 @@ from MenuBar import *
 from DisplayBoardBox import *
 from dialogBox import *
 
+
 class DashboardPage(QWidget):
     def __init__(self, parent=None):
         super(DashboardPage, self).__init__(parent)
@@ -54,7 +55,6 @@ class DashboardPage(QWidget):
         self.formLayout = QFormLayout()
         self.boardTitleLabel = QLabel("Board Name: ")
         self.boardTitleValue = QLineEdit(self)
-        self.createBtn = QPushButton('Create')
         self.formLayout.addRow(self.boardTitleLabel, self.boardTitleValue)
         self.formLayout.addRow(self.createBtn)
         self.createBoardDialog.setLayout(self.formLayout)
@@ -70,7 +70,7 @@ class DashboardPage(QWidget):
         self.displayBoard.createBox(boardDict)
 
     def validateBoardTitle(self):
-        if self.boardNameValue.text() == '':
+        if self.boardTitleValue.text() == '':
             dialog = QDialog(self)
             dialog.setWindowTitle("Error")
             layout = QVBoxLayout()
@@ -82,22 +82,15 @@ class DashboardPage(QWidget):
             layout.addWidget(close)
             dialog.setLayout(layout)
             dialog.show()
-            
+
             return False
-        
+
         return True
-        # else:
-        #     boardName = self.getBoardName()
-        #     self.displayBoard.createBox(boardName)
-        #     self.closeDialog()
-        
-    def createBtnAddBoard(self):
-        if(self.boardTitleValue.text() == ''):
-            createDialogBox(self,"Error","ERROR: Board title is required.")
-        else:
-            boardTitle = self.getBoardTitle()
-            self.displayBoard.createBox(boardDict)
-            self.closeDialog()
+
+    def createBtnAddBoard(self, boardDict):
+        boardTitle = self.getBoardTitle()
+        self.displayBoard.createBox(boardDict)
+        self.closeDialog()
 
     def closeDialog(self):
         self.createBoardDialog.reject()
@@ -117,6 +110,7 @@ def main():
     w.resize(640, 480)
     w.show()
     return app.exec_()
+
 
 if __name__ == "__main__":
     sys.exit(main())
