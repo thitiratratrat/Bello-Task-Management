@@ -85,6 +85,8 @@ class BelloUI(QMainWindow):
         
         self.dashboardPage.closeDialog()
         
+    def addBoard(self, boardDict):
+        self.dashboardPage.addBoard(boardDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -109,8 +111,12 @@ class BelloUI(QMainWindow):
         self.dashboardPage.menuBar.setFirstChaOfUsername(username)
         self.stackedWidget.setCurrentIndex(1)
 
-    def addBoard(self, boardName):
-        self.dashboardPage.addBoard(boardName)
+    def addBoard(self, boardDict):
+        self.dashboardPage.addBoard(boardDict)
+        self.dashboardPage.closeDialog()
+        
+    def initBoard(self, boardDict):
+        self.dashboardPage.addBoard(boardDict)
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()

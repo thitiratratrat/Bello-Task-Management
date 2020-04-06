@@ -87,10 +87,8 @@ class DashboardPage(QWidget):
 
         return True
 
-    def createBtnAddBoard(self, boardDict):
-        boardTitle = self.getBoardTitle()
+    def addBoard(self, boardDict):
         self.displayBoard.createBox(boardDict)
-        self.closeDialog()
 
     def closeDialog(self):
         self.createBoardDialog.reject()
