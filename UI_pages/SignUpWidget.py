@@ -47,7 +47,7 @@ class SignUpWidget(QWidget):
             self.signUpBtn, 1, 0, 1, 1, Qt.AlignCenter)
         self.setLayout(self.gridSignUpLayout)
 
-    def showUsernameAlreadyExists(self):
+    def showUsernameAlreadyExistsSignUp(self):
         createErrorDialogBox(self,"Error","ERROR: This username already exists.")
 
     def showComfirmPasswordMismatch(self):

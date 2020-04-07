@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-
+from dialogBox import *
 class LoginWidget(QWidget):
     def __init__(self):
         QWidget.__init__(self, None)
@@ -38,7 +38,27 @@ class LoginWidget(QWidget):
         self.setLayout(self.gridLoginLayout)
     
     def showLoginError(self):
-        createErrorDialogBox(self,"Error","Username or Password is invalid")
+        #createErrorDialogBox(self,"Error","Username or Password is invalid")
+        version_box = QMessageBox(self)
+        version_box.setWindowTitle("New version available!")
+        version_box.setText("Error")
+        version_box.addButton("Download now", QMessageBox.AcceptRole)
+        ret = version_box.exec_()
+        '''self.dialog = QDialog(self)
+        self.dialog.setWindowTitle("Error")
+        self.layout = QVBoxLayout()
+        errMessage = QLabel(self)
+        errMessage.setFont(QFont("Century Gothic", 8,QFont.Bold))
+        errMessage.setStyleSheet("color:rgb(178,34,34)")
+        errMessage.setText("Username or Password is invalid.")
+        closeBtn = QPushButton('Close')
+        closeBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111);")
+        closeBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))
+        closeBtn.clicked.connect(dialog.close)
+        layout.addWidget(errMessage)
+        layout.addWidget(closeBtn)
+        self.dialog.setLayout(self.layout)
+        self.dialog.show()'''
 
     def setColor(self):
         self.palette = QPalette()
