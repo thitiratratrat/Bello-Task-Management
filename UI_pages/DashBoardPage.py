@@ -91,12 +91,3 @@ class DashboardPage(QWidget):
                 self.displayBoard.listWidget.row(item))
 
 
-def main():
-    app = QApplication(sys.argv)
-    w = DashboardPage()
-    w.resize(640, 480)
-    w.show()
-    return app.exec_()
-
-if __name__ == "__main__":
-    sys.exit(main())
