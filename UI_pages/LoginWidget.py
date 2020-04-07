@@ -12,6 +12,11 @@ class LoginWidget(QWidget):
             QFont("Century Gothic", 11, QFont.Bold))
         self.usernameValueLogin = QLineEdit()
         self.passwordLabelLogin = QLabel("Password: ")
+
+        self.errorMessage = QLabel()
+        self.errorMessage.setFont(QFont("Century Gothic",10,QFont.Bold))
+        self.errorMessage.setStyleSheet("color:#FAE76E")
+
         self.passwordLabelLogin.setFont(
             QFont("Century Gothic", 11, QFont.Bold))
         self.usernameLabelLogin.setStyleSheet("color: white")
@@ -32,33 +37,18 @@ class LoginWidget(QWidget):
         self.loginBtn.setFont(QFont("Moon", 10, QFont.Bold))
         self.loginBtn.setStyleSheet(
             "background-color:rgb(250,231,110);color:rgb(49,68,111)")
+        
         self.gridLoginLayout.addLayout(self.formLoginLayout, 0, 0)
         self.gridLoginLayout.addWidget(
             self.loginBtn, 1, 0, 1, 1, Qt.AlignCenter)
+        self.gridLoginLayout.addWidget(self.errorMessage,2,0)
         self.setLayout(self.gridLoginLayout)
     
     def showLoginError(self):
-        #createErrorDialogBox(self,"Error","Username or Password is invalid")
-        version_box = QMessageBox(self)
-        version_box.setWindowTitle("New version available!")
-        version_box.setText("Error")
-        version_box.addButton("Download now", QMessageBox.AcceptRole)
-        ret = version_box.exec_()
-        '''self.dialog = QDialog(self)
-        self.dialog.setWindowTitle("Error")
-        self.layout = QVBoxLayout()
-        errMessage = QLabel(self)
-        errMessage.setFont(QFont("Century Gothic", 8,QFont.Bold))
-        errMessage.setStyleSheet("color:rgb(178,34,34)")
-        errMessage.setText("Username or Password is invalid.")
-        closeBtn = QPushButton('Close')
-        closeBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111);")
-        closeBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))
-        closeBtn.clicked.connect(dialog.close)
-        layout.addWidget(errMessage)
-        layout.addWidget(closeBtn)
-        self.dialog.setLayout(self.layout)
-        self.dialog.show()'''
+        self.errorMessage.setText("ERROR: This username already exists.")
+
+    def clearTextErrorLogin(self):
+        self.errorMessage.setText()
 
     def setColor(self):
         self.palette = QPalette()

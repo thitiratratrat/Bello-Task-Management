@@ -19,6 +19,11 @@ class SignUpWidget(QWidget):
         self.confirmPasswordLabel = QLabel("Confirm Password: ")
         self.confirmPasswordLabel.setFont(
             QFont("Century Gothic", 11, QFont.Bold))
+
+        self.errorMessage = QLabel()
+        self.errorMessage.setFont(QFont("Century Gothic",10,QFont.Bold))
+        self.errorMessage.setStyleSheet("color:#FAE76E")
+
         self.usernameLabelSignUp.setStyleSheet("color: white")
         self.passwordLabelSignUp.setStyleSheet("color: white")
         self.confirmPasswordLabel.setStyleSheet("color:white")
@@ -45,16 +50,20 @@ class SignUpWidget(QWidget):
         self.gridSignUpLayout.addLayout(self.formSignUpLayout, 0, 0)
         self.gridSignUpLayout.addWidget(
             self.signUpBtn, 1, 0, 1, 1, Qt.AlignCenter)
+        self.gridSignUpLayout.addWidget(self.errorMessage,2,0)
         self.setLayout(self.gridSignUpLayout)
 
     def showUsernameAlreadyExistsSignUp(self):
-        createErrorDialogBox(self,"Error","ERROR: This username already exists.")
-
+        self.errorMessage.setText("ERROR: This username already exists.")
+        
     def showComfirmPasswordMismatch(self):
         createErrorDialogBox(self,"Error","ERROR: Your password doesn't match with comfirm password")
     
     def showInvalidPasswordLength(self):
         createErrorDialogBox(self,"Error","ERROR: Passwords must be at least 4 characters")
+
+    def clearTextErrorSignUp(self):
+        self.errorMessage.setText("")
 
     def setColor(self):
         self.palette = QPalette()
