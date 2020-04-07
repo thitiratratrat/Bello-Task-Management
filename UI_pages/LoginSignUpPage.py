@@ -4,7 +4,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginWidget import *
 from SignUpWidget import *
-
+from dialogBox import * 
 
 class LoginSignUpPage(QWidget):
     def __init__(self, parent):
@@ -27,7 +27,7 @@ class LoginSignUpPage(QWidget):
         self.loginSignUpLayout.addWidget(self.tabWidget)
         self.belloLabel.setFont(QFont("Moon", 24, QFont.Bold))
         self.setLayout(self.loginSignUpLayout)
-        self.belloIcon = QPixmap("images/iconBello.png")
+        self.belloIcon = QPixmap("C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\images\\iconBello.png")
         self.show()
 
     def paintEvent(self, e):
@@ -44,3 +44,4 @@ class LoginSignUpPage(QWidget):
             [QPoint(350, 430), QPoint(540, 300), QPoint(570, 390), ])
         paint.drawPixmap(QRect(245, 60, 40, 40), self.belloIcon)
         paint.end()
+ 
