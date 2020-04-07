@@ -6,10 +6,9 @@ sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
 sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
-    
-from Board import Board
-from User import User
 from BelloUI import *
+from User import User
+from Board import Board
 
 
 class Bello:
@@ -49,13 +48,16 @@ class Bello:
 
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-
+            
             self.__initUserBoards(boardTitlesAndIds)
+            self.__ui.initBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
+            boardDict = { boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
 
             self.__createBoard(boardTitleAndId)
+            self.__ui.addBoard(boardDict)
 
         else:
             return
@@ -111,6 +113,11 @@ class Bello:
                                           "data": {
                                                     "boardId": boardId}
                                           }))
+        
+    def isExistedBoardTitle(self, boardTitle):
+        boards = self.__user.getBoards()
+        
+        return boardTitle in boards.values()          
 
     def addUI(self, ui):
         self.__ui = ui
