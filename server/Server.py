@@ -66,6 +66,31 @@ class Server:
                                              'boardTitle': boardTitle,
                                              'boardId': str(boardId)
                                          }}))
+    
+    async def __createSection(self, data, websocket):
+        boardId = data["boardId"]
+        sectionTitle = data["sectionTitle"]
+        
+        #TODO: create section
+        board = Board.objects.get(_id=boardId)
+        
+        await websocket.send(json.dumps({"reponse": "createdSection",
+                                         "data": {
+                                             "boardId": boardId,
+                                             "sectionTitle": sectionTitle,
+                                             "sectionId": str(sectionId)
+                                         }})
+        #TODO: notify other members
+        
+    async def __editSectionTitle(self, data, websocket):
+        sectionId = data["sectionId"]
+        sectionTitle = data["sectionTitle"]
+        
+        section = Section.objects.get(_id=sectionId)
+        section.title = sectionTitle
+        section.save()
+        
+        #TODO: notify other members
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -103,6 +128,12 @@ class Server:
 
         elif action == 'requestBoardData':
             await self.__sendBoardData(message["data"], websocket)
+        
+        elif action == 'createSection':
+            await self.__createSection(message["data"], websocket)
+            
+        elif action == 'editSectionTitle':
+            await self.__editSectionTitle(message["data"], websocket)
 
         else:
             return

@@ -84,9 +84,20 @@ class BelloUI(QMainWindow):
         self.bello.sendCreateBoardToServer(boardTitle)
         
         self.dashboardPage.closeDialog()
+        
+    def __createSection(self):
+        #TODO: validate section title
+        
+        self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
+        
+    def __editSectionTitle(self):
+        self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
     
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
+        
+    def addSection(self):
+        pass
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
