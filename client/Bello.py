@@ -3,12 +3,13 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\Project\\Bello\\model')
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
-from Board import Board
-from User import User
 from BelloUI import *
+from User import User
+from Board import Board
+from dialogBox import * 
 
 
 class Bello:
@@ -48,13 +49,16 @@ class Bello:
 
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-
+            
             self.__initUserBoards(boardTitlesAndIds)
+            self.__ui.initBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
+            boardDict = { boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
 
             self.__createBoard(boardTitleAndId)
+            self.__ui.addBoard(boardDict)
 
         else:
             return
@@ -110,10 +114,14 @@ class Bello:
                                           "data": {
                                                     "boardId": boardId}
                                           }))
+        
+    def isExistedBoardTitle(self, boardTitle):
+        boards = self.__user.getBoards()
+        
+        return boardTitle in boards.values()          
 
     def addUI(self, ui):
-        self.__ui = ui
-
+        self.__ui = ui   
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)

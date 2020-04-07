@@ -12,6 +12,9 @@ class User:
     def getUsername(self):
         return self.__username
     
+    def getBoards(self):
+        return self.__boards
+    
     def addBoard(self, board):
         self.__boards[board.getId()] = board
         
@@ -20,7 +23,7 @@ class User:
     def createBoard(self, boardTitle: str, boardId):
         board = Board(boardTitle, boardId)
         
-        self.__addBoard(board)
+        self.addBoard(board)
 
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)
