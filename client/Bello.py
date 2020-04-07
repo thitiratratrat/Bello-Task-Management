@@ -7,9 +7,8 @@ sys.path.append(
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from BelloUI import *
-from User import User
 from Board import Board
-from dialogBox import * 
+from User import User
 
 
 class Bello:
@@ -49,16 +48,23 @@ class Bello:
 
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-            
+
             self.__initUserBoards(boardTitlesAndIds)
             self.__ui.initBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
-            boardDict = { boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
+            boardDict = {boardTitleAndId['boardId']
+                : boardTitleAndId['boardTitle']}
 
             self.__createBoard(boardTitleAndId)
             self.__ui.addBoard(boardDict)
+            
+        elif response == "createdSection":
+            sectionDetail = message["data"]
+            
+            self.__createSection(sectionDetail)
+            self.__ui.addSection(sectionDetail)
 
         else:
             return
@@ -88,15 +94,15 @@ class Bello:
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
                                           "data": {
-                                                    "username": username,
-                                                    "password": password}
+                                                "username": username,
+                                                "password": password}
                                           }))
 
     def login(self, username, password):
         self.__websocket.send(json.dumps({"action": "login",
                                           "data": {
-                                                    "username": username,
-                                                    "password": password}
+                                                "username": username,
+                                                "password": password}
                                           }))
 
     def validatePassword(self, password):
@@ -105,23 +111,39 @@ class Bello:
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",
                                           "data": {
-                                                    "boardTitle": boardTitle,
-                                                    "username": self.__user.getUsername()}
+                                                "boardTitle": boardTitle,
+                                                "username": self.__user.getUsername()}
                                           }))
+
+    def sendCreateSectionToServer(self, boardId, sectionTitle):
+        self.__websocket.send(json.dumps({"action": "createSection",
+                                          "data": {
+                                                "boardId": boardId,
+                                                "sectionTitle": sectionTitle
+                                          }}))
 
     def sendRequestBoardDataToServer(self, boardId):
         self.__websocket.send(json.dumps({"action": "requestBoardData",
                                           "data": {
-                                                    "boardId": boardId}
+                                                "boardId": boardId}
                                           }))
-        
+
+    def sendEditSectionTitleToServer(self, sectionId, sectionTitle):
+        self.__websocket.send(json.dumps({"action": "editSectionTitle",
+                                          "data": {
+                                                "sectionId": sectionId,
+                                                "sectionTitle": sectionTitle
+                                                
+                                          }}))
+
     def isExistedBoardTitle(self, boardTitle):
         boards = self.__user.getBoards()
-        
-        return boardTitle in boards.values()          
+
+        return boardTitle in boards.values()
 
     def addUI(self, ui):
-        self.__ui = ui   
+        self.__ui = ui
+
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)
