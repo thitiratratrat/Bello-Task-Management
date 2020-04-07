@@ -83,13 +83,19 @@ class Bello:
         boardId = boardTitleAndId["boardId"]
 
         self.__user.createBoard(boardTitle, boardId)
-
+        
+    def __createSection(self, sectionDetail):
+        pass
+        
     def __handleServer(self):
         while True:
             message = self.__websocket.recv()
             message = json.loads(message)
 
             self.__handleMessage(message)
+            
+    def editSectionTitle(self, sectionId, sectionTitle):
+        pass
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",

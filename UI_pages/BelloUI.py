@@ -91,6 +91,7 @@ class BelloUI(QMainWindow):
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
         
     def __editSectionTitle(self):
+        self.bello.editSectionTitle(sectionId, sectionTitle)
         self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
     
     def addBoard(self, boardDict):
