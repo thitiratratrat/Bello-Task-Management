@@ -9,6 +9,7 @@ sys.path.append(
 from BelloUI import *
 from User import User
 from Board import Board
+from dialogBox import * 
 
 
 class Bello:
@@ -120,8 +121,7 @@ class Bello:
         return boardTitle in boards.values()          
 
     def addUI(self, ui):
-        self.__ui = ui
-
+        self.__ui = ui   
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)
