@@ -89,5 +89,4 @@ class DashboardPage(QWidget):
         for item in self.select_board:
             self.displayBoard.listWidget.takeItem(
                 self.displayBoard.listWidget.row(item))
-
-
+                
