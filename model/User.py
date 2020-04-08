@@ -22,6 +22,21 @@ class User:
         board = Board(boardTitle, boardId)
 
         self.addBoard(board)
+        
+    def addSection(self, boardId, section):
+        board = self.__boards[boardId]
+        
+        board.addSection(section)
+        
+    def removeSection(self, boardId, sectionId):
+        board = self.__boards[boardId]
+        
+        board.removeSection(sectionId)
+        
+    def editSectionTitle(self, boardId, sectionId, sectionTitle):
+        board = self.__boards[boardId]
+        
+        board.editSectionTitle(sectionId, sectionTitle)
 
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)
