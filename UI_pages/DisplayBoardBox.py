@@ -17,9 +17,12 @@ class DisplayBoardBox(QWidget):
         self.listWidget.setIconSize(QSize(200, 80))
         self.listWidget.setFont(QFont("Moon", 10))
         self.setLayout(self.layout)
+        self.listWidget.itemSelectionChanged.connect(self.getSelectItem)
+        self.boardDict = None
         self.i = 1
 
     def createBox(self, dictBoard):
+        self.boardDict = dictBoard
         for boardID, boardTitle in dictBoard.items():
             self.boardID = boardID
             self.boardTitle = boardTitle
@@ -36,6 +39,15 @@ class DisplayBoardBox(QWidget):
             self.board1.setText(self.boardTitle)
             self.addToListWidget(self.board1)
 
+    def getKey(self,val):
+        for key, value in self.boardDict.items(): 
+         if val == value: 
+             return key 
+
+    def getSelectItemInBoardID(self):
+        boardID = self.getKey(self.listWidget.currentItem().text()
+        return boardID
+        
     def addToListWidget(self, board):
         self.i += 1
         self.listWidget.insertItem(self.i, board)
