@@ -45,7 +45,7 @@ class LoginWidget(QWidget):
         self.setLayout(self.gridLoginLayout)
     
     def showLoginError(self):
-        self.errorMessage.setText("ERROR: This username already exists.")
+        self.errorMessage.setText("ERROR: Account does not exist.")
 
     def clearTextErrorLogin(self):
         self.errorMessage.setText()
