@@ -85,8 +85,11 @@ class Bello:
         self.__user.createBoard(boardTitle, boardId)
         
     def __createSection(self, sectionDetail):
+        boardId = sectionDetail["boardId"]
+        sectionId = sectionDeatil["sectionId"]
+        sectionTitle = sectionDetail["sectionTitle"]
         
-        pass
+        self.__user.addSection(boardId, sectionId, sectionTitle)        
         
     def __handleServer(self):
         while True:
@@ -95,8 +98,8 @@ class Bello:
 
             self.__handleMessage(message)
             
-    def editSectionTitle(self, sectionId, sectionTitle):
-        pass
+    def editSectionTitle(self, boardId, sectionId, sectionTitle):
+        self.__user.editSectionTitle(self, boardId, sectionId, sectionTitle)
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",

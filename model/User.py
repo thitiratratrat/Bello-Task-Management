@@ -1,5 +1,6 @@
 from typing import List
 from Board import Board
+from Section import Section
 
 
 class User:
@@ -23,9 +24,10 @@ class User:
 
         self.addBoard(board)
         
-    def addSection(self, boardId, section):
+    def addSection(self, boardId, sectionId, sectionTitle):
         board = self.__boards[boardId]
-        
+        section = Section(sectionTitle, sectionId)
+    
         board.addSection(section)
         
     def removeSection(self, boardId, sectionId):
