@@ -1,4 +1,3 @@
-from typing import List
 from Board import Board
 from Section import Section
 
@@ -23,21 +22,27 @@ class User:
         board = Board(boardTitle, boardId)
 
         self.addBoard(board)
-        
-    def addSection(self, boardId, sectionId, sectionTitle):
+
+    def addBoardDetail(self, boardId, boardDetail):
+        for sectionId, sectionDetail in boardDetal.items():
+            sectionTitle = sectionDetail["title"]
+
+            self.addSection(boardId, sectionId, sectionTitle)
+
+    def addSection(self, boardId, sectionId, sectionTitle, tasks={}):
         board = self.__boards[boardId]
-        section = Section(sectionTitle, sectionId)
-    
+        section = Section(sectionTitle, sectionId, tasks)
+
         board.addSection(section)
-        
+
     def removeSection(self, boardId, sectionId):
         board = self.__boards[boardId]
-        
+
         board.removeSection(sectionId)
-        
+
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         board = self.__boards[boardId]
-        
+
         board.editSectionTitle(sectionId, sectionTitle)
 
     def deleteBoard(self, boardId):
