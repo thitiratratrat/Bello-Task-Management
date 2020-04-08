@@ -85,6 +85,7 @@ class Bello:
         self.__user.createBoard(boardTitle, boardId)
         
     def __createSection(self, sectionDetail):
+        
         pass
         
     def __handleServer(self):
