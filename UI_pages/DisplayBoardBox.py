@@ -17,7 +17,7 @@ class DisplayBoardBox(QWidget):
         self.listWidget.setIconSize(QSize(200, 80))
         self.listWidget.setFont(QFont("Moon", 10))
         self.setLayout(self.layout)
-        self.listWidget.itemSelectionChanged.connect(self.getSelectItem)
+        self.listWidget.itemSelectionChanged.connect(self.getSelectItemInBoardID)
         self.boardDict = None
         self.i = 1
 
@@ -45,7 +45,7 @@ class DisplayBoardBox(QWidget):
              return key 
 
     def getSelectItemInBoardID(self):
-        boardID = self.getKey(self.listWidget.currentItem().text()
+        boardID = self.getKey(self.listWidget.currentItem().text())
         return boardID
         
     def addToListWidget(self, board):
