@@ -7,10 +7,10 @@ class Board:
         self.__sections = sections
         self.__memberUsernames = memberUsernames
 
-    def getId(self) -> int:
+    def getId(self):
         return self.__id
 
-    def getTitle(self) -> str:
+    def getTitle(self):
         return self.__title
 
     def getMemberUsernames(self):
@@ -22,5 +22,13 @@ class Board:
     def getSections(self):
         return self.__sections
 
-    def removeSection(sectionName: str):
-        pass
+    def addSection(self, section):
+        self.__sections[section.getId()] = section
+
+    def removeSection(self, sectionId):
+        self.__sections.pop(sectionId, None)
+
+    def editSectionTitle(self, sectionId, newSectionTitle):
+        section = self.__sections[sectionId]
+
+        section.editTitle(newSectionTitle)
