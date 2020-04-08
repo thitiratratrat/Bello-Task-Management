@@ -65,7 +65,13 @@ class Bello:
             
             self.__createSection(sectionDetail)
             self.__ui.addSection(sectionDetail)
-
+        
+        elif response == "boardDetail":
+            boardDetail = message["data"]
+            
+            self.__addBoardDetail(boardDetail)
+            #TODO: display Ui from boardDetail
+            
         else:
             return
 
@@ -89,7 +95,13 @@ class Bello:
         sectionId = sectionDeatil["sectionId"]
         sectionTitle = sectionDetail["sectionTitle"]
         
-        self.__user.addSection(boardId, sectionId, sectionTitle)        
+        self.__user.addSection(boardId, sectionId, sectionTitle)    
+        
+    def __addBoardDetail(self, boardDetail):
+        boardId =  boardDetail["boardId"]
+        boardDetail = boardDetail["boardDetail"]
+        
+        self.__user.addBoardDetail(boardId, boardDetail)
         
     def __handleServer(self):
         while True:
@@ -142,8 +154,7 @@ class Bello:
         self.__websocket.send(json.dumps({"action": "editSectionTitle",
                                           "data": {
                                                 "sectionId": sectionId,
-                                                "sectionTitle": sectionTitle
-                                                
+                                                "sectionTitle": sectionTitle   
                                           }}))
 
     def isExistedBoardTitle(self, boardTitle):
