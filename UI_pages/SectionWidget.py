@@ -60,7 +60,7 @@ class SectionWidget(QWidget):
             self.editTitle(self.newSectionTitle)
             self.closeEditDialogBox()
 
-    def editTitle(self,sectionTitle):
+    def editTitle(self, sectionTitle):
         self.sectionTitle.setText(sectionTitle)
 
     def closeEditDialogBox(self):
