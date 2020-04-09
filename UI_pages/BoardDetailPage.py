@@ -56,7 +56,7 @@ class BoardDetailPage(QWidget):
 
     def createNewSection(self):
         self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
-        self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
+        #self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
         
     def createSection(self,sectionTitle):
         self.sectionWidget = SectionWidget()

@@ -31,7 +31,7 @@ class BelloUI(QMainWindow):
 
         #self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
         #self.boardDetailPage.sectionWidget.newTitleAndDialogBox[2].clicked.connect() # edit section title
-        #  
+         
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -110,7 +110,7 @@ class BelloUI(QMainWindow):
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
         
-    def addSection(self,sectionTitle):
+    def addSection(self,sectionTitle,sectionId):
         self.boardDetailPage.createSection(sectionTitle)
 
     def getUsernameLogin(self):
@@ -160,13 +160,13 @@ class BelloUI(QMainWindow):
     
     def createNewSection(self):
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
-        self.boardDetailPage.createNewSectionToBoard()
+        self.boardDetailPage.createNewSection()
 
     def validateEditSectionTitle(self):
         self.boardDetailPage.sectiotnWidget.validateEditSectionTitle()
 
-    def editSectionTitleUI(self):
-        self.boardDetailPage.sectionWidget.editTitle()
+    def editSectionTitleUI(self,sectionTitle):
+        self.boardDetailPage.sectionWidget.editTitle(sectionTitle)
 
     def closeDialogBoxInCreateSection(self):
         self.boardDetailPage.closeDialogBox()
