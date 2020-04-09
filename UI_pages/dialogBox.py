@@ -20,7 +20,7 @@ def createErrorDialogBox(parent, dialogBoxTitle, message):
     dialog.setLayout(layout)
     dialog.show()
 
-def createAddDialog(parent,windowTitle,txtLabel,txtBtn,funcConnect): #yung mai dai use na 
+def createAddDialog(parent,windowTitle,txtLabel,txtBtn): #yung mai dai use na 
     lstReturnValue = []
     createBoardDialog = QDialog(parent)
     createBoardDialog.setWindowTitle(windowTitle)
@@ -33,11 +33,11 @@ def createAddDialog(parent,windowTitle,txtLabel,txtBtn,funcConnect): #yung mai d
     createBoardDialog.setLayout(formLayout)
     lstReturnValue.append(titleValue)
     lstReturnValue.append(createBoardDialog)
+    lstReturnValue.append(createBtn)
     titleLabel.setFont(QFont("Century Gothic", 10,QFont.Bold))
     titleLabel.setStyleSheet("color:rgb(49,68,111)")
     titleValue.setFont(QFont("Century Gothic", 10))
     createBtn.setFont(QFont("Moon", 10,QFont.Bold))
     createBtn.setStyleSheet("background-color:rgb(250,231,110);color:rgb(49,68,111)")
-    createBtn.clicked.connect(funcConnect)
     createBoardDialog.show()
     return lstReturnValue
