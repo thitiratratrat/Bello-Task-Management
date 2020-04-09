@@ -10,6 +10,7 @@ class SectionWidget(QWidget):
     def __init__(self, parent=None):
         super(SectionWidget, self).__init__(None)
         self.section = Section() #QListWidget
+        self.sectionId = None
         self.colorLst = ['#9D9797','#52719F','#31446F']
         self.setColorSection = random.choice(self.colorLst)
         self.sectionTitleLayout = QHBoxLayout()
@@ -18,7 +19,7 @@ class SectionWidget(QWidget):
         self.editSectionTitleBtn = QToolButton()
         self.editSectionTitleBtn.setStyleSheet("background-color:rgb(250,231,110)")
         self.editSectionTitleBtn.setIcon(QIcon('images/edit.png'))
-        self.editSectionTitleBtn.clicked.connect(self.showCreateSection)
+        self.editSectionTitleBtn.clicked.connect(self.editSectionTitleDialog)
         self.index = None
         self.sectionTitle.setFont(QFont("Century Gothic",8,QFont.Bold))
         self.sectionTitleLayout.addWidget(self.sectionTitle)
@@ -30,17 +31,26 @@ class SectionWidget(QWidget):
         self.setColor(self.setColorSection)
         self.setLayout(self.mainSectionLayout)
 
-    def showErrorSectionTitleEmpty(self):
-        createErrorDialogBox(self,"Error","Section title can not be empty")
-
-    def showCreateSection(self):
-        self.newTitleAndDialogBox = createAddDialog(self,'Edit section title','Section name: ', 'Save',self.editTitleBtnFunc)
+    def editSectionTitleDialog(self):
+        self.newTitleAndDialogBox = createAddDialog(self,'Edit section title','Section name: ', 'Save')
 
     def getSectionTitle(self):
         return self.sectionTitle.text()
+    
+    def setSectionId(self, sectionId):
+        self.sectionId = sectionId
+    
+    def getSectionId(self):
+        return self.sectionId
 
     def setIndexSection(self,index):
         self.index = index
+
+    def validateEditSectionTitle(self):
+        if self.newTitleAndDialogBox[0].text() == '':
+            createErrorDialogBox(self,"Error","Section title can not be empty")
+            return False
+        return True
 
     def editTitleBtnFunc(self):
         self.newSectionTitle = self.newTitleAndDialogBox[0].text()

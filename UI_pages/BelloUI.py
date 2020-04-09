@@ -29,7 +29,9 @@ class BelloUI(QMainWindow):
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
 
-        self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) 
+        #self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
+        #self.boardDetailPage.sectionWidget.newTitleAndDialogBox[2].clicked.connect() # edit section title
+        #  
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -94,11 +96,14 @@ class BelloUI(QMainWindow):
     def __createSection(self):
         if(not self.boardDetailPage.validateSectionTitle()):
             return
-        boardId = self.boardDetailPage.getBoardID()
+        boardId = self.boardDetailPage.getBoardId()
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
         
-    def __editSectionTitle(self):#candy connect ปุ่ม editsection
+    def __editSectionTitle(self):
+        boardId = self.boardDetailPage.getBoardId()
+        sectionId = self.boardDetailPage.sectionWidget.getSectionId()
+        sectionTitle = self.boardDetailPage.sectionWidget.getSectionTitle()
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
         self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
     
@@ -116,6 +121,9 @@ class BelloUI(QMainWindow):
 
     def getSelectedBoard(self):
         self.dashboardPage.displayBoard.getSelectItemInBoardID() #return in boardID
+
+    def setSectionId(self, sectionId):
+        self.boardDetailPage.sectionWidget.setSectionId(sectionId)
 
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
@@ -154,17 +162,17 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.boardDetailPage.createNewSectionToBoard()
 
-    def showErrorSectionTitleEmpty(self):
-        self.boardDetailPage.sectionWidget.showErrorSectionTitleEmpty()
+    def validateEditSectionTitle(self):
+        self.boardDetailPage.sectiotnWidget.validateEditSectionTitle()
 
-    def editTitleBtnFunc(self):
-        self.boardDetailPage.sectionWidget.editTitleBtnFunc()
+    def editSectionTitleUI(self):
+        self.boardDetailPage.sectionWidget.editTitle()
 
-    def closeDialogBoxInCreateBox(self):
+    def closeDialogBoxInCreateSection(self):
         self.boardDetailPage.closeDialogBox()
 
     def closeDialogEditSection(self):
-        self.dashboardPage.closeEditDialogBox()
+        self.boardDetailPage.closeEditDialogBox()
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
