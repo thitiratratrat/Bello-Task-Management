@@ -14,7 +14,7 @@ class BoardDetailPage(QWidget):
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
         self.widget = QWidget()
-
+        self.newSectionWidget = []
         '''for i in range(5):
             self.sectionWidget = SectionWidget()
             self.sectionWidget.setIndexSection(i)
@@ -43,7 +43,6 @@ class BoardDetailPage(QWidget):
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea,0,0,4,1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn,0,1,1,1)
         self.sectionAndAddBtnLayout.addWidget(self.deleteSectionBtn,1,1,1,1)
-
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)
@@ -57,6 +56,7 @@ class BoardDetailPage(QWidget):
 
     def createNewSection(self):
         self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
+        self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
         
     def createSection(self,sectionTitle):
         self.sectionWidget = SectionWidget()
