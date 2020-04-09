@@ -14,8 +14,8 @@ class BoardDetailPage(QWidget):
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
         self.widget = QWidget()
-        '''
-        for i in range(5):
+
+        '''for i in range(5):
             self.sectionWidget = SectionWidget()
             self.sectionWidget.setIndexSection(i)
             self.sectionLayout.addWidget(self.sectionWidget)'''
@@ -24,7 +24,7 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.addSectionBtn.clicked.connect(self.crateNewSectionToBoard)
+        self.addSectionBtn.clicked.connect(self.createNewSection)
 
         self.deleteSectionBtn = QPushButton("Delete section")
         self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
@@ -55,19 +55,20 @@ class BoardDetailPage(QWidget):
     def getBoardId(self):
         return self.boardId
 
-    def crateNewSectionToBoard(self,boardID):
-        self.setBoardId(boardID)
-        self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create",self.addSectionToWidget)
-
-    def getSectionNameFromDialog(self):
-        self.sectionTitileFromDialog = self.newSectionWidget[0].text()
+    def createNewSection(self):
+        self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
         
-    def addSectionToWidget(self):
-        self.getSectionNameFromDialog()
+    def createSection(self,sectionTitle):
         self.sectionWidget = SectionWidget()
-        self.sectionWidget.editTitle(self.sectionTitileFromDialog)
+        self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
     
+    def validateSectionTitle(self):
+        if self.newSectionWidget[0].text() == '':
+            createErrorDialogBox(self,"Error","Board titile can not be empty")
+            return False
+        return True
+
     def deleteSectionFromBoard(self):
         self.selectedSectionToDelete = createAddDialog(self,"delete section","Section name:","Delete",self.deleteSection)
     
