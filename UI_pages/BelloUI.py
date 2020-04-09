@@ -7,7 +7,7 @@ from DashboardPage import *
 from BoardDetailPage import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\Project\\Bello\\client')
 from Bello import *
 
 class BelloUI(QMainWindow):
@@ -29,9 +29,9 @@ class BelloUI(QMainWindow):
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
 
-        #self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
-        #self.boardDetailPage.sectionWidget.newTitleAndDialogBox[2].clicked.connect() # edit section title
-        #  
+        self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
+        self.boardDetailPage.sectionWidget.newTitleAndDialogBox[2].clicked.connect() # edit section title
+         
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -94,16 +94,22 @@ class BelloUI(QMainWindow):
         self.dashboardPage.closeDialog()
         
     def __createSection(self):
-        if(not self.boardDetailPage.validateSectionTitle()):
+        if not self.boardDetailPage.validateSectionTitle():
             return
+        
         boardId = self.boardDetailPage.getBoardId()
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
+        
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
         
     def __editSectionTitle(self):
+        if not self.validateEditSectionTitle():
+            return
+        
         boardId = self.boardDetailPage.getBoardId()
         sectionId = self.boardDetailPage.sectionWidget.getSectionId()
         sectionTitle = self.boardDetailPage.sectionWidget.getSectionTitle()
+        
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
         self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
     
