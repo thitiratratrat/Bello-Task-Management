@@ -112,6 +112,7 @@ class Bello:
             
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(self, boardId, sectionId, sectionTitle)
+        #TODO: update other members section title change
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
