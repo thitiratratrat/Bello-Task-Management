@@ -94,17 +94,19 @@ class BelloUI(QMainWindow):
         self.dashboardPage.closeDialog()
         
     def __createSection(self):
-        print("kao ter na")
-        if(not self.boardDetailPage.validateSectionTitle()):
+        if not self.boardDetailPage.validateSectionTitle():
             return
+        
         boardId = self.boardDetailPage.getBoardId()
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
+        
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
         
     def __editSectionTitle(self):
         boardId = self.boardDetailPage.getBoardId()
         sectionId = self.boardDetailPage.sectionWidget.getSectionId()
         sectionTitle = self.boardDetailPage.sectionWidget.getSectionTitle()
+        
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
         self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
         self.boardDetailPage.sectionWidget.editTitle(sectionTitle)
@@ -112,7 +114,7 @@ class BelloUI(QMainWindow):
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
         
-    def addSection(self,sectionDict):
+    def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
     
     def getUsernameLogin(self):
