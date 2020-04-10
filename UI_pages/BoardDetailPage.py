@@ -14,14 +14,14 @@ class BoardDetailPage(QWidget):
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
         self.widget = QWidget()
-        self.newSectionWidget = []
-        self.sectionWidget = SectionWidget()
+        self.btn = QPushButton()
+        #self.sectionWidget = SectionWidget()
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.addSectionBtn.clicked.connect(self.createNewSection)
-
+       
         self.deleteSectionBtn = QPushButton("Delete section")
         self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
         self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
@@ -52,8 +52,10 @@ class BoardDetailPage(QWidget):
 
     def createNewSection(self):
         self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
-        self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
-        
+        print(self.newSectionWidget[2])
+        self.btn = self.newSectionWidget[2]
+        print(self.btn)
+
     def createSection(self,sectionDict):
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
@@ -76,7 +78,7 @@ class BoardDetailPage(QWidget):
     def initBoardDetail(self,boardDetailDict):
         self.setBoardId(boardDetailDict.get("boardId"))
         sectionDict = boardDetailDict.get("boardDetail")
-        for sectionId,sectionAndTaskTitle in sectionDict.items()
+        for sectionId,sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
             self.addSectionToWidget(sectionId,sectionTitle)

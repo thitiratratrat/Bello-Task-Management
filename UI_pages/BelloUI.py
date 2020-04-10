@@ -28,16 +28,16 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
-        self.dashboardPage.displayBoard.listWidget.itemSelectionChanged.connect(self.getSelectedBoard) #return the boardID of sekected board
+        self.dashboardPage.displayBoard.listWidget.itemSelectionChanged.connect(self.goToBoardDetailPage) #return the boardID of sekected board
+        
+        self.boardDetailPage.btn.clicked.connect(self.__createSection)  
 
-        #self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
-         
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         
         self.show()
-
+  
     def __loginAccount(self):
         username = self.getUsernameLogin()
         password = self.__getPasswordLogin()
@@ -94,6 +94,7 @@ class BelloUI(QMainWindow):
         self.dashboardPage.closeDialog()
         
     def __createSection(self):
+        print("kao ter na")
         if(not self.boardDetailPage.validateSectionTitle()):
             return
         boardId = self.boardDetailPage.getBoardId()
@@ -121,8 +122,8 @@ class BelloUI(QMainWindow):
         self.dashboardPage.getBoardName()
 
     def getSelectedBoard(self):
-        self.dashboardPage.displayBoard.getSelectItemInBoardID() #return in boardID
-
+        return self.dashboardPage.displayBoard.getSelectItemInBoardId() #return in boardID
+    
     def setSectionId(self, sectionId):
         self.boardDetailPage.sectionWidget.setSectionId(sectionId)
 
@@ -150,6 +151,8 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(1)
 
     def goToBoardDetailPage(self):
+        print(self.getSelectedBoard())
+        self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.stackedWidget.setCurrentIndex(2)
 
     def addBoard(self, boardDict):

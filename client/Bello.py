@@ -91,6 +91,7 @@ class Bello:
         self.__user.createBoard(boardTitle, boardId)
         
     def __createSection(self, sectionDetail):
+        print("section")
         boardId = sectionDetail["boardId"]
         sectionId = sectionDeatil["sectionId"]
         sectionTitle = sectionDetail["sectionTitle"]
