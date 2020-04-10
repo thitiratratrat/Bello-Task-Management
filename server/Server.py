@@ -96,6 +96,7 @@ class Server:
         board = Board.objects.get(_id=boardId)
 
         board.section_ids.append(sectionId)
+        board.save()
 
         await websocket.send(json.dumps({"response": "createdSection",
                                          "data": {
