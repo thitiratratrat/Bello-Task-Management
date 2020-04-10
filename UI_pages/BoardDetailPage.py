@@ -4,6 +4,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from MenuBar import *
 from dialogBox import *  
+from DialogCreate import DialogCreate
 from SectionWidget import * 
 
 class BoardDetailPage(QWidget):
@@ -14,13 +15,13 @@ class BoardDetailPage(QWidget):
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
         self.widget = QWidget()
-        self.btn = QPushButton()
+        self.dialogCreate = DialogCreate(self, "create new section","Section name:","Create")
         #self.sectionWidget = SectionWidget()
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.addSectionBtn.clicked.connect(self.createNewSection)
+        self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
        
         self.deleteSectionBtn = QPushButton("Delete section")
         self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
@@ -49,12 +50,15 @@ class BoardDetailPage(QWidget):
 
     def getBoardId(self):
         return self.boardId
+    
+    def getSectionNameFromDialog(self):
+        return self.dialogCreate.titleLineEdit.text()
 
-    def createNewSection(self):
-        self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
-        print(self.newSectionWidget[2])
-        self.btn = self.newSectionWidget[2]
-        print(self.btn)
+    def createNewSectionDialog(self):
+        self.dialogCreate.show()
+        
+    def closeCreateNewSectionDialog(self):
+        self.dialogCreate.close()
 
     def createSection(self,sectionDict):
         boardId = sectionDict.get("boardId")
@@ -63,14 +67,14 @@ class BoardDetailPage(QWidget):
         self.setBoardId(boardId)
         self.addSectionToWidget(sectionTitle, sectionId)
     
-    def addSectionToWidget(self,sectionTitle,sectionId):
+    def addSectionToWidget(self, sectionTitle, sectionId):
         self.sectionWidget = SectionWidget()
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
 
     def validateSectionTitle(self):
-        if self.newSectionWidget[0].text() == '':
+        if self.dialogCreate.titleLineEdit.text() == '':
             createErrorDialogBox(self,"Error","Board titile can not be empty")
             return False
         return True
