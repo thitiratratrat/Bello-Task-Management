@@ -3,9 +3,9 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from BelloUI import *
 from Board import Board
 from User import User
@@ -91,9 +91,8 @@ class Bello:
         self.__user.createBoard(boardTitle, boardId)
         
     def __createSection(self, sectionDetail):
-        print("section")
         boardId = sectionDetail["boardId"]
-        sectionId = sectionDeatil["sectionId"]
+        sectionId = sectionDetail["sectionId"]
         sectionTitle = sectionDetail["sectionTitle"]
         
         self.__user.addSection(boardId, sectionId, sectionTitle)    

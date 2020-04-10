@@ -7,7 +7,7 @@ from DashboardPage import *
 from BoardDetailPage import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 from Bello import *
 
 class BelloUI(QMainWindow):
@@ -30,7 +30,7 @@ class BelloUI(QMainWindow):
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
         self.dashboardPage.displayBoard.listWidget.itemSelectionChanged.connect(self.goToBoardDetailPage) #return the boardID of sekected board
         
-        self.boardDetailPage.btn.clicked.connect(self.__createSection)  
+        self.boardDetailPage.dialogCreate.createBtn.clicked.connect(self.__createSection)  
 
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
@@ -100,6 +100,8 @@ class BelloUI(QMainWindow):
         boardId = self.boardDetailPage.getBoardId()
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
         
+        self.boardDetailPage.closeCreateNewSectionDialog()
+        print(f"sectiontitle: {sectionTitle}")
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
         
     def __editSectionTitle(self):
