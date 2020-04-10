@@ -28,6 +28,7 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
+        self.dashboardPage.displayBoard.listWidget.itemSelectionChanged.connect(self.getSelectedBoard) #return the boardID of sekected board
 
         #self.boardDetailPage.newSectionWidget[2].clicked.connect(self.__createSection) #createSection in BoardDetail
          
