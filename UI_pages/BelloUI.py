@@ -112,7 +112,7 @@ class BelloUI(QMainWindow):
         
     def addSection(self,sectionDict):
         self.boardDetailPage.createSection(sectionDict)
-
+    
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
 
@@ -158,6 +158,9 @@ class BelloUI(QMainWindow):
     def initBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
     
+    def initBoardDetial(self,boardDetailDict):
+        self.dashboardPage.initBoardDetial(boardDetailDict)
+
     def createNewSection(self):
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.boardDetailPage.createNewSection()

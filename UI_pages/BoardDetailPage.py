@@ -15,11 +15,7 @@ class BoardDetailPage(QWidget):
         self.sectionLayout = QHBoxLayout()
         self.widget = QWidget()
         self.newSectionWidget = []
-        '''for i in range(5):
-            self.sectionWidget = SectionWidget()
-            self.sectionWidget.setIndexSection(i)
-            self.sectionLayout.addWidget(self.sectionWidget)'''
-
+        self.sectionWidget = SectionWidget()
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
@@ -63,16 +59,27 @@ class BoardDetailPage(QWidget):
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
         self.setBoardId(boardId)
+        self.addSectionToWidget(sectionTitle, sectionId)
+    
+    def addSectionToWidget(self,sectionTitle,sectionId):
         self.sectionWidget = SectionWidget()
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
-    
+
     def validateSectionTitle(self):
         if self.newSectionWidget[0].text() == '':
             createErrorDialogBox(self,"Error","Board titile can not be empty")
             return False
         return True
+    
+    def initBoardDetail(self,boardDetailDict):
+        self.setBoardId(boardDetailDict.get("boardId"))
+        sectionDict = boardDetailDict.get("boardDetail")
+        for sectionId,sectionAndTaskTitle in sectionDict.items()
+            sectionTitleDict = sectionAndTaskTitle
+            sectionTitle = sectionTitleDict.get("title")
+            self.addSectionToWidget(sectionId,sectionTitle)
 
     def closeDialogBox(self):
         self.newSectionWidget[1].reject()
