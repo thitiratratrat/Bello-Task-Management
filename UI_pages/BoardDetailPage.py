@@ -56,10 +56,15 @@ class BoardDetailPage(QWidget):
 
     def createNewSection(self):
         self.newSectionWidget = createAddDialog(self,"create new section","Section name:","Create")
-        #self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
+        self.newSectionWidget[2].clicked.connect(self.createSection("hello")) #delete later
         
-    def createSection(self,sectionTitle):
+    def createSection(self,sectionDict):
+        boardId = sectionDict.get("boardId")
+        sectionTitle = sectionDict.get("sectionTitle")
+        sectionId = sectionDict.get("sectionId")
+        self.setBoardId(boardId)
         self.sectionWidget = SectionWidget()
+        self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
     
@@ -68,6 +73,12 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Board titile can not be empty")
             return False
         return True
+
+    def closeDialogBox(self):
+        self.newSectionWidget[1].reject()
+
+    def closeDeleteSectionBox(self):
+        self.selectedSectionToDelete[1].reject()
 
     def deleteSectionFromBoard(self):
         self.selectedSectionToDelete = createAddDialog(self,"delete section","Section name:","Delete",self.deleteSection)
@@ -85,12 +96,7 @@ class BoardDetailPage(QWidget):
         if(not isDelete):
             createErrorDialogBox(self,"Error","This section title doesn't exist")
 
-    def closeDialogBox(self):
-        self.newSectionWidget[1].reject()
-
-    def closeDeleteSectionBox(self):
-        self.selectedSectionToDelete[1].reject()
-
+   
 def main():
     app = QApplication(sys.argv)
     w = BoardDetailPage()

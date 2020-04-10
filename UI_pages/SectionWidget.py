@@ -33,38 +33,34 @@ class SectionWidget(QWidget):
 
     def editSectionTitleDialog(self):
         self.newTitleAndDialogBox = createAddDialog(self,'Edit section title','Section name: ', 'Save')
+        self.newTitleAndDialogBox[2].clicked.connect(self.editTitleBtnFunc)
 
     def getSectionTitle(self):
         return self.sectionTitle.text()
-    
+
     def setSectionId(self, sectionId):
         self.sectionId = sectionId
     
     def getSectionId(self):
         return self.sectionId
 
-    def setIndexSection(self,index):
-        self.index = index
-
-    def validateEditSectionTitle(self):
-        if self.newTitleAndDialogBox[0].text() == '':
-            createErrorDialogBox(self,"Error","Section title can not be empty")
-            return False
-        return True
-
     def editTitleBtnFunc(self):
         self.newSectionTitle = self.newTitleAndDialogBox[0].text()
         if self.newSectionTitle == '':
-            self.showErrorSectionTitleEmpty()
+            createErrorDialogBox(self,"Error","Section title can not be empty")
+            return 
         else:
             self.editTitle(self.newSectionTitle)
             self.closeEditDialogBox()
 
-    def editTitle(self,sectionTitle):
+    def editTitle(self, sectionTitle):
         self.sectionTitle.setText(sectionTitle)
 
     def closeEditDialogBox(self):
         self.newTitleAndDialogBox[1].reject()
+
+    def setIndexSection(self,index): #for delete
+        self.index = index
 
     def setColor(self,colorName):
         self.palette = QPalette()
