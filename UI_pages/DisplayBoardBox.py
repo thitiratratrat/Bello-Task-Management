@@ -16,7 +16,6 @@ class DisplayBoardBox(QWidget):
         self.listWidget.setIconSize(QSize(200, 80))
         self.listWidget.setFont(QFont("Moon", 10))
         self.setLayout(self.layout)
-        #self.listWidget.itemSelectionChanged.connect(self.getSelectItemInBoardId)
         self.boardDict = None
         self.i = 1
 
