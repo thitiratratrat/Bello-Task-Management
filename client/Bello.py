@@ -68,7 +68,6 @@ class Bello:
         
         elif response == "boardDetail":
             boardDetail = message["data"]
-            
             self.__addBoardDetail(boardDetail)
             #TODO: display Ui from boardDetail
             #self.__ui.initBoardDetial(boardDetail)
