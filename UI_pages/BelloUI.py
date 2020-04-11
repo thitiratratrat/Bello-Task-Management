@@ -7,7 +7,7 @@ from DashboardPage import *
 from BoardDetailPage import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 from Bello import *
 
 class BelloUI(QMainWindow):
@@ -103,6 +103,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         print(f"sectiontitle: {sectionTitle}")
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
+        #self.closeDialogBoxInCreateSection()
         
     def __editSectionTitle(self):
         boardId = self.boardDetailPage.getBoardId()
@@ -117,8 +118,9 @@ class BelloUI(QMainWindow):
         self.dashboardPage.addBoard(boardDict)
         
     def addSection(self, sectionDict):
+        print("addSection")
         self.boardDetailPage.createSection(sectionDict)
-    
+
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
 
