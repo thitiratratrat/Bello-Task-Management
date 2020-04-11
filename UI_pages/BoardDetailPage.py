@@ -14,9 +14,9 @@ class BoardDetailPage(QWidget):
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
+        self.sectionWidget = SectionWidget()
         self.widget = QWidget()
         self.dialogCreate = DialogCreate(self, "create new section","Section name:","Create")
-        #self.sectionWidget = SectionWidget()
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
@@ -54,6 +54,10 @@ class BoardDetailPage(QWidget):
     def getSectionNameFromDialog(self):
         return self.dialogCreate.titleLineEdit.text()
 
+    def createSectionBtn(self):
+        self.createNewSectionDialog()
+        self.dialogCreate.createBtn.clicked.connect(self.addSectionToWidget("hihi","kkkk"))
+
     def createNewSectionDialog(self):
         self.dialogCreate.show()
         
@@ -61,17 +65,21 @@ class BoardDetailPage(QWidget):
         self.dialogCreate.close()
 
     def createSection(self,sectionDict):
+        print(sectionDict)
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
         self.setBoardId(boardId)
-        self.addSectionToWidget(sectionTitle, sectionId)
+        self.addSectionToWidget(boardId, sectionTitle)
+        
     
     def addSectionToWidget(self, sectionTitle, sectionId):
         self.sectionWidget = SectionWidget()
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
+        print("kk")
         self.sectionLayout.addWidget(self.sectionWidget)
+        print("finish")
 
     def validateSectionTitle(self):
         if self.dialogCreate.titleLineEdit.text() == '':
@@ -109,7 +117,7 @@ class BoardDetailPage(QWidget):
         if(not isDelete):
             createErrorDialogBox(self,"Error","This section title doesn't exist")
 
-   
+'''   
 def main():
     app = QApplication(sys.argv)
     w = BoardDetailPage()
@@ -119,3 +127,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+'''
