@@ -6,15 +6,21 @@ from Section import *
 from dialogBox import * 
 import random
 
+
+
+
 class SectionWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self,parent =None):
         super(SectionWidget, self).__init__(None)
-        self.section = Section() #QListWidget
+        self.section = QListWidget()
+        self.section.setFixedSize(200, 420)
+
+        self.boardId =None
         self.sectionId = None
         self.colorLst = ['#9D9797','#52719F','#31446F']
         self.setColorSection = random.choice(self.colorLst)
         self.sectionTitleLayout = QHBoxLayout()
-        self.sectionTitle = QLabel(" Sectioname")
+        self.sectionTitle = QLabel("Sectioname")
         self.sectionTitle.setStyleSheet("color:white")
         self.editSectionTitleBtn = QToolButton()
         self.editSectionTitleBtn.setStyleSheet("background-color:rgb(250,231,110)")
@@ -28,12 +34,15 @@ class SectionWidget(QWidget):
         self.mainSectionLayout = QVBoxLayout()
         self.mainSectionLayout.addLayout(self.sectionTitleLayout)
         self.mainSectionLayout.addWidget(self.section)
-        self.setColor(self.setColorSection)
+        self.setColor()
         self.setLayout(self.mainSectionLayout)
 
     def editSectionTitleDialog(self):
         self.newTitleAndDialogBox = createAddDialog(self,'Edit section title','Section name: ', 'Save')
         self.newTitleAndDialogBox[2].clicked.connect(self.editTitleBtnFunc)
+
+    def setBoardId(self,boardId):
+        self.boardId = boardId
 
     def getSectionTitle(self):
         return self.sectionTitle.text()
@@ -62,7 +71,7 @@ class SectionWidget(QWidget):
     def setIndexSection(self,index): #for delete
         self.index = index
 
-    def setColor(self,colorName):
+    def setColor(self):
         self.palette = QPalette()
         self.setAutoFillBackground(True)
         #self.palette.setColor(QPalette.Window, QColor(colorName))
