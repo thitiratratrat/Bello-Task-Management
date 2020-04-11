@@ -12,9 +12,9 @@ import random
 class SectionWidget(QWidget):
     def __init__(self,parent =None):
         super(SectionWidget, self).__init__(None)
+        self.parent = parent
         self.section = QListWidget()
         self.section.setFixedSize(200, 420)
-
         self.boardId =None
         self.sectionId = None
         self.colorLst = ['#9D9797','#52719F','#31446F']
@@ -36,7 +36,7 @@ class SectionWidget(QWidget):
         self.mainSectionLayout.addWidget(self.section)
         self.setColor()
         self.setLayout(self.mainSectionLayout)
-
+        
     def editSectionTitleDialog(self):
         self.newTitleAndDialogBox = createAddDialog(self,'Edit section title','Section name: ', 'Save')
         self.newTitleAndDialogBox[2].clicked.connect(self.editTitleBtnFunc)

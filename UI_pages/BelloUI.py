@@ -5,6 +5,7 @@ from PySide2.QtGui import *
 from LoginSignUpPage import *
 from DashboardPage import *
 from BoardDetailPage import *
+from SectionWidget import *
 
 sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
@@ -35,7 +36,6 @@ class BelloUI(QMainWindow):
         self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
-        
         self.show()
   
     def __loginAccount(self):
@@ -93,6 +93,7 @@ class BelloUI(QMainWindow):
         self.bello.sendCreateBoardToServer(boardTitle)
         self.dashboardPage.closeDialog()
         
+        
     def __createSection(self):
         if not self.boardDetailPage.validateSectionTitle():
             return
@@ -103,7 +104,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         print(f"sectiontitle: {sectionTitle}")
         self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
-        #self.closeDialogBoxInCreateSection()
+        self.boardDetailPage.addSection(sectionTitle)
         
     def __editSectionTitle(self):
         boardId = self.boardDetailPage.getBoardId()
@@ -116,9 +117,8 @@ class BelloUI(QMainWindow):
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
-        
+
     def addSection(self, sectionDict):
-        print("addSection")
         self.boardDetailPage.createSection(sectionDict)
 
     def getUsernameLogin(self):
