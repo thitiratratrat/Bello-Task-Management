@@ -89,6 +89,5 @@ class DashboardPage(QWidget):
             self.displayBoard.listWidget.takeItem(
                 self.displayBoard.listWidget.row(item))
         del self.displayBoard.boardDict[self.selectItemId]
-        #print(self.displayBoard.boardDict)
         return self.selectItemId
 

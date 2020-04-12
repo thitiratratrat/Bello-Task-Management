@@ -21,7 +21,7 @@ class DisplayBoardBox(QWidget):
 
     def createBox(self, dictBoard):
         self.boardDict.update(dictBoard)
-        for boardId, boardTitle in self.boardDict.items():
+        for boardId, boardTitle in dictBoard.items():
             self.boardId = boardId
             self.boardTitle = boardTitle
             self.ran_num1 = randint(0, 150)
