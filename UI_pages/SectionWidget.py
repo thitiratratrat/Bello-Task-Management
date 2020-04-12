@@ -10,11 +10,12 @@ import random
 class SectionWidget(QWidget):
     def __init__(self, parent=None):
         super(SectionWidget, self).__init__(None)
+        self.parent = parent
         self.section = QListWidget()
-        self.section.setFixedSize(200, 420)
-
         self.boardId = None
         self.sectionId = None
+        
+        self.section.setFixedSize(200, 420)
         self.colorLst = ['#9D9797', '#52719F', '#31446F']
         self.setColorSection = random.choice(self.colorLst)
         self.sectionTitleLayout = QHBoxLayout()
@@ -24,18 +25,24 @@ class SectionWidget(QWidget):
         self.editSectionTitleBtn.setStyleSheet(
             "background-color:rgb(250,231,110)")
         self.editSectionTitleBtn.setIcon(QIcon('images/edit.png'))
+
+        self.deleteSectionBtn = QToolButton()
+        self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
+        self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
+
         self.editSectionTitleBtn.clicked.connect(self.editSectionTitleDialog)
         self.index = None
         self.sectionTitle.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.sectionTitleLayout.addWidget(self.sectionTitle)
         self.sectionTitleLayout.addWidget(self.editSectionTitleBtn)
+        self.sectionTitleLayout.addWidget(self.deleteSectionBtn)
 
         self.mainSectionLayout = QVBoxLayout()
         self.mainSectionLayout.addLayout(self.sectionTitleLayout)
         self.mainSectionLayout.addWidget(self.section)
         self.setColor()
         self.setLayout(self.mainSectionLayout)
-
+        
     def editSectionTitleDialog(self):
         self.newTitleAndDialogBox = createAddDialog(
             self, 'Edit section title', 'Section name: ', 'Save')

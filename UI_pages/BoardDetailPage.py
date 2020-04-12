@@ -15,7 +15,7 @@ class BoardDetailPage(QWidget):
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
-        self.sectionWidget = SectionWidget()
+
         self.widget = QWidget()
         self.dialogCreate = DialogCreateDelete(
             self, "create new section", "Section name:", "Create")
@@ -24,14 +24,14 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
-        self.deleteSectionBtn = QPushButton("Delete section")
-        self.deleteSectionBtn.setStyleSheet(
-            "background-color:rgb(210,39,62); color:white")
-        self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
-        self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
+        #self.deleteSectionBtn = QPushButton("Delete section")
+        #self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
+        # self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
+        #self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+        # self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
 
         self.widget.setLayout(self.sectionLayout)
         self.scrollArea = QScrollArea()
@@ -43,8 +43,7 @@ class BoardDetailPage(QWidget):
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea, 0, 0, 4, 1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn, 0, 1, 1, 1)
-        self.sectionAndAddBtnLayout.addWidget(
-            self.deleteSectionBtn, 1, 1, 1, 1)
+        # self.sectionAndAddBtnLayout.addWidget(self.deleteSectionBtn,1,1,1,1)
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)
@@ -66,17 +65,16 @@ class BoardDetailPage(QWidget):
         self.dialogCreate.close()
 
     def createSection(self, sectionDict):
-        print(sectionDict)
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
-        
+
         self.setBoardId(boardId)
         self.addSectionToWidget(sectionTitle, sectionId)
 
     def addSectionToWidget(self, sectionTitle, sectionId):
         self.sectionWidget = SectionWidget()
-        
+
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
@@ -85,9 +83,9 @@ class BoardDetailPage(QWidget):
         if self.dialogCreate.titleLineEdit.text() == '':
             createErrorDialogBox(
                 self, "Error", "Board titile can not be empty")
-            
+
             return False
-        
+
         return True
 
     def initBoardDetail(self, boardDetailDict):
@@ -97,6 +95,8 @@ class BoardDetailPage(QWidget):
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
             self.addSectionToWidget(sectionId, sectionTitle)
+            self.setSectionId(sectionId)
+            self.addSectionToWidget(sectionTitle)
 
     def closeDeleteSectionBox(self):
         self.selectedSectionToDelete[1].reject()
@@ -107,6 +107,7 @@ class BoardDetailPage(QWidget):
 
     def deleteSection(self):
         isDelete = False
+        
         for i in range(self.sectionLayout.count()):
             if(self.sectionLayout.itemAt(i).widget().getSectionTitle() == self.selectedSectionToDelete[0].text()):
                 self.sectionLayout.takeAt(i)
@@ -115,6 +116,7 @@ class BoardDetailPage(QWidget):
                 return isDelete
             else:
                 continue
-        if(not isDelete):
+
+        if not isDelete:
             createErrorDialogBox(
                 self, "Error", "This section title doesn't exist")
