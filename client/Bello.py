@@ -50,7 +50,7 @@ class Bello:
             boardTitlesAndIds = message["data"]
 
             self.__initUserBoards(boardTitlesAndIds)
-            self.__ui.initBoard(boardTitlesAndIds)
+            self.__ui.addBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
             boardTitleAndId = message["data"]
@@ -69,7 +69,8 @@ class Bello:
             boardDetail = message["data"]
 
             self.__addBoardDetail(boardDetail)
-            self.__ui.initBoardDetial(boardDetail)
+            self.__ui.initBoardDetail(boardDetail)
+            self.__ui.goToBoardDetailPage()
 
         else:
             return
@@ -111,6 +112,7 @@ class Bello:
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(self, boardId, sectionId, sectionTitle)
+        self.sendEditSectionTitleToServer(sectionId, sectionTitle)
         # TODO: update other members section title change
 
     def signUp(self, username, password):
@@ -129,6 +131,11 @@ class Bello:
 
     def validatePassword(self, password):
         return True if len(password) >= 4 else False
+    
+    def deleteBoard(self, boardId):
+        #TODO: delete in model
+        #TODO: delete in db
+        pass
 
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",
@@ -144,8 +151,8 @@ class Bello:
                                               "sectionTitle": sectionTitle
                                           }}))
 
-    def sendRequestBoardDataToServer(self, boardId):
-        self.__websocket.send(json.dumps({"action": "requestBoardData",
+    def sendRequestBoardDetailoServer(self, boardId):
+        self.__websocket.send(json.dumps({"action": "requestBoardDetail",
                                           "data": {
                                               "boardId": boardId}
                                           }))

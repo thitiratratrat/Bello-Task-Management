@@ -24,7 +24,7 @@ class User:
         self.addBoard(board)
 
     def addBoardDetail(self, boardId, boardDetail):
-        for sectionId, sectionDetail in boardDetal.items():
+        for sectionId, sectionDetail in boardDetail.items():
             sectionTitle = sectionDetail["title"]
 
             self.addSection(boardId, sectionId, sectionTitle)
