@@ -3,9 +3,9 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from User import User
 from Board import Board
 from BelloUI import *
@@ -111,7 +111,7 @@ class Bello:
             self.__handleMessage(message)
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
-        self.__user.editSectionTitle(self, boardId, sectionId, sectionTitle)
+        self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
         self.sendEditSectionTitleToServer(sectionId, sectionTitle)
         # TODO: update other members section title change
 

@@ -4,20 +4,21 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from MenuBar import *
 from dialogBox import *
-from DialogCreateDelete import DialogCreateDelete
+from CustomDialog import CustomDialog
 from SectionWidget import *
 
 
 class BoardDetailPage(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent, signal):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
+        self.editSectionTitleSignal = signal
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
-        self.sectionWidget = SectionWidget()
+        self.sectionWidget = None
         self.widget = QWidget()
-        self.dialogCreate = DialogCreateDelete(
+        self.dialogCreate = CustomDialog(
             self, "create new section", "Section name:", "Create")
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
@@ -39,7 +40,7 @@ class BoardDetailPage(QWidget):
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.widget)
-        
+
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea, 0, 0, 4, 1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn, 0, 1, 1, 1)
@@ -56,7 +57,7 @@ class BoardDetailPage(QWidget):
         return self.boardId
 
     def getSectionNameFromDialog(self):
-        return self.dialogCreate.titleLineEdit.text()
+        return self.dialogCreate.lineEdit.text()
 
     def createNewSectionDialog(self):
         self.dialogCreate.show()
@@ -73,7 +74,7 @@ class BoardDetailPage(QWidget):
         self.addSectionToWidget(sectionTitle, sectionId)
 
     def addSectionToWidget(self, sectionTitle, sectionId):
-        self.sectionWidget = SectionWidget()
+        self.sectionWidget = SectionWidget(self, self.editSectionTitleSignal)
 
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
@@ -83,7 +84,7 @@ class BoardDetailPage(QWidget):
         print(self.sectionWidget.sectionTitle.text())
 
     def validateSectionTitle(self):
-        if self.dialogCreate.titleLineEdit.text() == '':
+        if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
                 self, "Error", "Board titile can not be empty")
 
@@ -94,14 +95,12 @@ class BoardDetailPage(QWidget):
     def initBoardDetail(self, boardDetailDict):
         self.setBoardId(boardDetailDict.get("boardId"))
         sectionDict = boardDetailDict.get("boardDetail")
-        
+
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
-            print("Section ID: ", sectionId)
-            print("section title: ",sectionTitle)
-            self.sectionWidget.setSectionId(sectionId)
-            self.addSectionToWidget(sectionTitle,sectionId)
+            
+            self.addSectionToWidget(sectionTitle, sectionId)
 
     def closeDeleteSectionBox(self):
         self.selectedSectionToDelete[1].reject()
@@ -112,7 +111,7 @@ class BoardDetailPage(QWidget):
 
     def deleteSection(self):
         isDelete = False
-        
+
         for i in range(self.sectionLayout.count()):
             if(self.sectionLayout.itemAt(i).widget().getSectionTitle() == self.selectedSectionToDelete[0].text()):
                 self.sectionLayout.takeAt(i)
