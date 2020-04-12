@@ -14,7 +14,7 @@ class BoardDetailPage(QWidget):
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
-
+        self.sectionWidget = SectionWidget()
         self.widget = QWidget()
         self.dialogCreate = DialogCreate(self, "create new section","Section name:","Create")
         self.addSectionBtn = QPushButton("Add section")
@@ -22,21 +22,20 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setStyleSheet("background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         
-        self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
-       
+        #self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
+        self.addSectionBtn.clicked.connect(self.createSectionBtn)
         #self.deleteSectionBtn = QPushButton("Delete section")
         #self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
         #self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
         #self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         #self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
-
         self.widget.setLayout(self.sectionLayout)        
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.widget)
-
+        
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea,0,0,4,1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn,0,1,1,1)
@@ -88,6 +87,9 @@ class BoardDetailPage(QWidget):
         self.sectionWidget = SectionWidget()
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
+
+    def deleteSection(self):
+        print(self.sectionWidget.sectionTitle.text())
 
     def validateSectionTitle(self):
         if self.dialogCreate.titleLineEdit.text() == '':

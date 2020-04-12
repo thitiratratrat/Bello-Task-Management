@@ -4,10 +4,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from Section import *
 from dialogBox import * 
-import random
-
-
-
 
 class SectionWidget(QWidget):
     def __init__(self,parent =None):
@@ -17,8 +13,6 @@ class SectionWidget(QWidget):
         self.section.setFixedSize(200, 420)
         self.boardId =None
         self.sectionId = None
-        self.colorLst = ['#9D9797','#52719F','#31446F']
-        self.setColorSection = random.choice(self.colorLst)
         self.sectionTitleLayout = QHBoxLayout()
         self.sectionTitle = QLabel("Sectioname")
         self.sectionTitle.setStyleSheet("color:white")
@@ -80,6 +74,5 @@ class SectionWidget(QWidget):
     def setColor(self):
         self.palette = QPalette()
         self.setAutoFillBackground(True)
-        #self.palette.setColor(QPalette.Window, QColor(colorName))
         self.palette.setColor(QPalette.Window, QColor('#52719F'))
         self.setPalette(self.palette) 
