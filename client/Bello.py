@@ -69,8 +69,8 @@ class Bello:
             boardDetail = message["data"]
 
             self.__addBoardDetail(boardDetail)
-            self.__ui.initBoardDetail(boardDetail)
             self.__ui.goToBoardDetailPage()
+            self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
 
         else:
             return

@@ -98,9 +98,10 @@ class BoardDetailPage(QWidget):
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
-            self.addSectionToWidget(sectionId, sectionTitle)
-            self.setSectionId(sectionId)
-            self.addSectionToWidget(sectionTitle)
+            print("Section ID: ", sectionId)
+            print("section title: ",sectionTitle)
+            self.sectionWidget.setSectionId(sectionId)
+            self.addSectionToWidget(sectionTitle,sectionId)
 
     def closeDeleteSectionBox(self):
         self.selectedSectionToDelete[1].reject()
