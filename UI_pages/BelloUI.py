@@ -29,11 +29,12 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
-        self.dashboardPage.displayBoard.listWidget.itemSelectionChanged.connect(self.goToBoardDetailPage) #return the boardID of sekected board
         
+        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.goToBoardDetailPage) #return the boardID of sekected board
+
         self.boardDetailPage.dialogCreate.createBtn.clicked.connect(self.__createSection)  
 
-        self.dashboardPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+        self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -158,6 +159,8 @@ class BelloUI(QMainWindow):
 
     def goToBoardDetailPage(self):
         print(self.getSelectedBoard())
+        if(self.getSelectedBoard() == None):
+            return
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.stackedWidget.setCurrentIndex(2)
 
@@ -169,7 +172,8 @@ class BelloUI(QMainWindow):
         self.dashboardPage.addBoard(boardDict)
     
     def initBoardDetial(self,boardDetailDict):
-        self.dashboardPage.initBoardDetial(boardDetailDict)
+        print("board",boardDetailDict)
+        #self.boardDetailPage.initBoardDetial(boardDetailDict)
 
     def createNewSection(self):
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
