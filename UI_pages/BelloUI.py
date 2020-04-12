@@ -23,10 +23,12 @@ class BelloUI(QMainWindow):
         self.dashboardPage = DashboardPage(self)
         self.boardDetailPage = BoardDetailPage(self)
         self.signalAddSection = CustomSignal()
+        self.signalInitBoardDetail =CustomSignal()
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
         
         self.signalAddSection.signalDict.connect(self.addSection)
+        self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
         self.signalShowUsernameAlreadyExists.signalDict.connect(self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(self.showAccountDoesNotExist)
         
@@ -43,7 +45,7 @@ class BelloUI(QMainWindow):
         self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.__requestBoardDetail) 
         self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
         self.boardDetailPage.dialogCreate.createBtn.clicked.connect(self.__createSection)  
-        self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+        #self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
         
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -139,8 +141,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.createSection(sectionDict)
         
     def initBoardDetail(self, boardDetailDict):
-        print("kao laew")
-        #self.boardDetailPage.initBoardDetail(boardDetailDict)
+        self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -172,7 +173,9 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(1)
 
     def goToBoardDetailPage(self):
-        print(self.getSelectedBoard())
+        #print(self.getSelectedBoard())
+        username = self.getUsernameLogin()
+        self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
         if self.getSelectedBoard() == None:
             return
 
