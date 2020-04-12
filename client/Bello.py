@@ -32,18 +32,19 @@ class Bello:
         response = message["response"]
 
         if response == "existedUsername":
-            self.__ui.showUsernameAlreadyExists()
+            self.__ui.signalShowUsernameAlreadyExists.signalDict.emit(None)
 
         elif response == "createdAccount":
             self.__ui.gotoLoginTab()
 
         elif response == "loginSuccessful":
             username = self.__ui.getUsernameLogin()
+            
             self.__ui.goToDashboardPage()
             self.__initUser(username)
 
         elif response == "loginFail":
-            self.__ui.showAccountDoesNotExist()
+            self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
 
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]

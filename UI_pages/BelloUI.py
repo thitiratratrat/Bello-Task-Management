@@ -21,12 +21,18 @@ class BelloUI(QMainWindow):
         self.dashboardPage = DashboardPage(self)
         self.boardDetailPage = BoardDetailPage(self)
         self.signalAddSection = CustomSignal()
+        self.signalShowUsernameAlreadyExists = CustomSignal()
+        self.signalShowAccountDoesNotExist = CustomSignal()
         
         self.signalAddSection.signalDict.connect(self.addSection)
+        self.signalShowUsernameAlreadyExists.signalDict.connect(self.showUsernameAlreadyExists)
+        self.signalShowAccountDoesNotExist.signalDict.connect(self.showAccountDoesNotExist)
+        
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
         self.stackedWidget.addWidget(self.boardDetailPage)
         self.stackedWidget.setCurrentIndex(0)
+        
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
             self.__loginAccount)
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
@@ -38,9 +44,9 @@ class BelloUI(QMainWindow):
             self.__createSection)
         self.dashboardPage.menuBar.homeBtn.clicked.connect(
             self.goToDashboardPage)
+        
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
-
         self.show()
 
     def __loginAccount(self):
@@ -141,12 +147,6 @@ class BelloUI(QMainWindow):
     def showAccountDoesNotExist(self):
         self.loginSignUpPage.loginWidget.showLoginError()
 
-    def clearErrorMessageLogin(self):
-        self.loginSignUpPage.loginWidget.clearTextErrorLogin()
-
-    def clearErrorMessageSignUp(self):
-        self.loginSignUpPage.signUpWidget.clearTextErrorSignUp()
-
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
 
@@ -172,13 +172,6 @@ class BelloUI(QMainWindow):
 
     def initBoardDetial(self, boardDetailDict):
         self.dashboardPage.initBoardDetial(boardDetailDict)
-
-    def createNewSection(self):
-        self.boardDetailPage.setBoardId(self.getSelectedBoard())
-        self.boardDetailPage.createNewSection()
-
-    def closeDialogBoxInCreateSection(self):
-        self.boardDetailPage.closeDialogBox()
 
     def deleteBoard(self):
         self.dashboardPage.deleteSelectBoard()
