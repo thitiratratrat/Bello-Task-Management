@@ -3,7 +3,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 
-class DialogCreate(QDialog):
+class DialogCreateDelete(QDialog):
     def __init__(self, parent, windowTitle, textLabel, textBtn):
         super().__init__(parent)
 
