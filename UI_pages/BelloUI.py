@@ -40,7 +40,7 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
-        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.__requestBoardDetail) #return the boardID of selected board
+        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.__requestBoardDetail) 
         self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
         self.boardDetailPage.dialogCreate.createBtn.clicked.connect(self.__createSection)  
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
@@ -139,7 +139,8 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.createSection(sectionDict)
         
     def initBoardDetail(self, boardDetailDict):
-        self.boardDetailPage.initBoardDetail(boardDetailDict)
+        print("kao laew")
+        #self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -171,9 +172,10 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(1)
 
     def goToBoardDetailPage(self):
+        print(self.getSelectedBoard())
         if self.getSelectedBoard() == None:
             return
-        
+
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.stackedWidget.setCurrentIndex(2)
 
