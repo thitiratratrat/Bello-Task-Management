@@ -110,7 +110,7 @@ class BelloUI(QMainWindow):
     def __createBoard(self):
         boardTitle = self.dashboardPage.getBoardTitle()
 
-        if not self.dashboardPage.validateBoardTitle() or self.bello.isExistedBoardTitle(boardTitle):
+        if not self.dashboardPage.validateBoardTitle() or not self.bello.isExistedBoardTitle(boardTitle):
             return
 
         self.bello.sendCreateBoardToServer(boardTitle)
