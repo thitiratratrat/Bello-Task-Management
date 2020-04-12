@@ -33,7 +33,6 @@ class DashboardPage(QWidget):
         self.deleteBoardBtn.setStyleSheet(
             "background-color:rgb(210,39,62);color:rgb(255,255,255)")
         self.deleteBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.deleteBoardBtn.clicked.connect(self.deleteSelectBoard)
         self.tabBarBoard.addTab(self.displayBoard, QIcon(
             "images/dashboard.png"), " Board")
         self.layout = QGridLayout()
