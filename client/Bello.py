@@ -112,7 +112,12 @@ class Bello:
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
-        self.sendEditSectionTitleToServer(sectionId, sectionTitle)
+        self.__websocket.send(json.dumps({"action": "editSectionTitle",
+                                          "data": {
+                                              "sectionId": sectionId,
+                                              "sectionTitle": sectionTitle
+                                          }}))
+
         # TODO: update other members section title change
 
     def signUp(self, username, password):
@@ -159,14 +164,7 @@ class Bello:
                                           "data": {
                                               "boardId": boardId}
                                           }))
-
-    def sendEditSectionTitleToServer(self, sectionId, sectionTitle):
-        self.__websocket.send(json.dumps({"action": "editSectionTitle",
-                                          "data": {
-                                              "sectionId": sectionId,
-                                              "sectionTitle": sectionTitle
-                                          }}))
-
+        
     def isExistedBoardTitle(self, boardTitle):
         boards = self.__user.getBoards()
 
