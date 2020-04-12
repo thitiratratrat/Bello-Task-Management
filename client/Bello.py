@@ -126,16 +126,19 @@ class Bello:
         self.__websocket.send(json.dumps({"action": "login",
                                           "data": {
                                               "username": username,
-                                              "password": password}
-                                          }))
+                                              "password": password
+                                        }}))
 
     def validatePassword(self, password):
         return True if len(password) >= 4 else False
     
     def deleteBoard(self, boardId):
-        #TODO: delete in model
-        #TODO: delete in db
-        pass
+        self.__user.deleteBoard(boardId)
+        
+        self.__websocket.send(json.dumps({"action": "deleteBoard",
+                                          "data": {
+                                              "boardId": boardId
+                                          }}))
 
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",
