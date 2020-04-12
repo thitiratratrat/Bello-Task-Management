@@ -72,10 +72,11 @@ class BoardDetailPage(QWidget):
         sectionId = sectionDict.get("sectionId")
         
         self.setBoardId(boardId)
-        self.addSectionToWidget(boardId, sectionTitle)
+        self.addSectionToWidget(sectionTitle, sectionId)
 
     def addSectionToWidget(self, sectionTitle, sectionId):
         self.sectionWidget = SectionWidget()
+        
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
