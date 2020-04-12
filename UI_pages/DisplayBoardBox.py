@@ -3,7 +3,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from random import randint
 
-
 class DisplayBoardBox(QWidget):
     def __init__(self):
         QWidget.__init__(self, None)
@@ -17,11 +16,13 @@ class DisplayBoardBox(QWidget):
         self.listWidget.setIconSize(QSize(200, 80))
         self.listWidget.setFont(QFont("Moon", 10))
         self.setLayout(self.layout)
+        self.boardDict = {}
         self.i = 1
 
-    def createBox(self, dictBoard):
-        for boardID, boardTitle in dictBoard.items():
-            self.boardID = boardID
+    def createBox(self, boardDict):
+        self.boardDict.update(boardDict)
+        for boardId, boardTitle in boardDict.items():
+            self.boardId = boardId
             self.boardTitle = boardTitle
             self.ran_num1 = randint(0, 150)
             self.ran_num2 = randint(0, 199)
@@ -35,7 +36,17 @@ class DisplayBoardBox(QWidget):
             self.board1.setTextAlignment(Qt.AlignLeft)
             self.board1.setText(self.boardTitle)
             self.addToListWidget(self.board1)
+            
 
+    def getKey(self,val):
+        for key, value in self.boardDict.items(): 
+         if val == value: 
+             return key 
+
+    def getSelectItemInBoardId(self):
+        boardId = self.getKey(self.listWidget.currentItem().text())
+        return boardId
+        
     def addToListWidget(self, board):
         self.i += 1
         self.listWidget.insertItem(self.i, board)

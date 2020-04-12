@@ -3,9 +3,14 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashBoardPage import *
+from DashboardPage import *
+from BoardDetailPage import *
+from CustomSignal import *
+from SectionWidget import *
+
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+
 from Bello import *
 
 class BelloUI(QMainWindow):
@@ -14,19 +19,46 @@ class BelloUI(QMainWindow):
         self.bello = bello
         self.parent = parent
         self.stackedWidget = QStackedWidget()
+
+        self.signalAddSection = CustomSignal()
+        self.signalInitBoardDetail = CustomSignal()
+        self.signalShowUsernameAlreadyExists = CustomSignal()
+        self.signalShowAccountDoesNotExist = CustomSignal()
+        self.signalEditSectionTitle = CustomSignal()
+
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
+        self.boardDetailPage = BoardDetailPage(
+            self, self.signalEditSectionTitle)
+
+        self.signalAddSection.signalDict.connect(self.addSection)
+        self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
+        self.signalShowUsernameAlreadyExists.signalDict.connect(
+            self.showUsernameAlreadyExists)
+        self.signalShowAccountDoesNotExist.signalDict.connect(
+            self.showAccountDoesNotExist)
+        self.signalEditSectionTitle.signalDict.connect(self.__editSectionTitle)
+
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
+        self.stackedWidget.addWidget(self.boardDetailPage)
         self.stackedWidget.setCurrentIndex(0)
+
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
             self.__loginAccount)
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
+        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(
+            self.__requestBoardDetail)
+        self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
+        self.boardDetailPage.dialogCreate.button.clicked.connect(
+            self.__createSection)
+
+        # self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
-        
         self.show()
 
     def __loginAccount(self):
@@ -34,7 +66,7 @@ class BelloUI(QMainWindow):
         password = self.__getPasswordLogin()
 
         self.bello.login(username, password)
-    
+
     def __validateSignUpPassword(self, password):
         confirmPassword = self.__getConfirmPassword()
 
@@ -74,19 +106,51 @@ class BelloUI(QMainWindow):
             return
 
         self.bello.signUp(username, password)
-        
+
     def __createBoard(self):
         boardTitle = self.dashboardPage.getBoardTitle()
-         
-        if not self.dashboardPage.validateBoardTitle() or self.bello.isExistedBoardTitle(boardTitle):
+
+        if not self.dashboardPage.validateBoardTitle() or not self.bello.isExistedBoardTitle(boardTitle):
             return
-        
+
         self.bello.sendCreateBoardToServer(boardTitle)
-        
         self.dashboardPage.closeDialog()
-    
+
+    def __createSection(self):
+        if not self.boardDetailPage.validateSectionTitle():
+            return
+
+        boardId = self.boardDetailPage.getBoardId()
+        sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
+
+        self.boardDetailPage.closeCreateNewSectionDialog()
+        self.bello.sendCreateSectionToServer(boardId, sectionTitle)
+
+    def __editSectionTitle(self, sectionTitleDetail):
+        boardId = self.boardDetailPage.getBoardId()
+        sectionId = sectionTitleDetail.get("sectionId")
+        sectionTitle = sectionTitleDetail.get("sectionTitle")
+
+        self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
+
+    def __requestBoardDetail(self):
+        boardId = self.getSelectedBoard()
+
+        self.bello.sendRequestBoardDetailoServer(boardId)
+
+    def __deleteBoard(self):
+        boardId = self.dashboardPage.deleteSelectBoard()
+
+        self.bello.deleteBoard(boardId)
+
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
+
+    def addSection(self, sectionDict):
+        self.boardDetailPage.createSection(sectionDict)
+
+    def initBoardDetail(self, boardDetailDict):
+        self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -94,17 +158,17 @@ class BelloUI(QMainWindow):
     def getBoardName(self):
         self.dashboardPage.getBoardName()
 
+    def getSelectedBoard(self):
+        return self.dashboardPage.displayBoard.getSelectItemInBoardId()  # return in boardID
+
+    def setSectionId(self, sectionId):
+        self.boardDetailPage.sectionWidget.setSectionId(sectionId)
+
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
-    
+
     def showAccountDoesNotExist(self):
         self.loginSignUpPage.loginWidget.showLoginError()
-    
-    def clearErrorMessageLogin(self):
-        self.loginSignUpPage.loginWidget.clearTextErrorLogin()
-
-    def clearErrorMessageSignUp(self):
-        self.loginSignUpPage.signUpWidget.clearTextErrorSignUp()
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
@@ -117,13 +181,11 @@ class BelloUI(QMainWindow):
         self.dashboardPage.menuBar.setFirstChaOfUsername(username)
         self.stackedWidget.setCurrentIndex(1)
 
-    def addBoard(self, boardDict):
-        self.dashboardPage.addBoard(boardDict)
-        self.dashboardPage.closeDialog()
-        
-    def initBoard(self, boardDict):
-        self.dashboardPage.addBoard(boardDict)
+    def goToBoardDetailPage(self):
+        username = self.getUsernameLogin()
+        self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
+        if self.getSelectedBoard() == None:
+            return
 
-    def deleteBoard(self):
-        self.dashboardPage.deleteSelectBoard()
-
+        self.boardDetailPage.setBoardId(self.getSelectedBoard())
+        self.stackedWidget.setCurrentIndex(2)

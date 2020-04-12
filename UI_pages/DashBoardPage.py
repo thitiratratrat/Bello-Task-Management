@@ -33,7 +33,6 @@ class DashboardPage(QWidget):
         self.deleteBoardBtn.setStyleSheet(
             "background-color:rgb(210,39,62);color:rgb(255,255,255)")
         self.deleteBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.deleteBoardBtn.clicked.connect(self.deleteSelectBoard)
         self.tabBarBoard.addTab(self.displayBoard, QIcon(
             "images/dashboard.png"), " Board")
         self.layout = QGridLayout()
@@ -73,33 +72,21 @@ class DashboardPage(QWidget):
 
     def validateBoardTitle(self):
         if self.boardTitleValue.text() == '':
-            dialog = QDialog(self)
-            dialog.setWindowTitle("Error")
-            layout = QVBoxLayout()
-            errMessage = QLabel(self)
-            errMessage.setText("Error")
-            close = QPushButton('Close')
-            close.clicked.connect(dialog.close)
-            layout.addWidget(errMessage)
-            layout.addWidget(close)
-            dialog.setLayout(layout)
-            dialog.show()
-
+            createErrorDialogBox(self,"Error","Board titile can not be empty")
             return False
-
         return True
-
-    def addBoard(self, boardDict):
-        self.displayBoard.createBox(boardDict)
 
     def closeDialog(self):
         self.createBoardDialog.reject()
 
     def deleteSelectBoard(self):
         self.select_board = self.displayBoard.listWidget.selectedItems()
+        self.selectItemId = self.displayBoard.getSelectItemInBoardId()
         if not self.select_board:
             return
         for item in self.select_board:
             self.displayBoard.listWidget.takeItem(
                 self.displayBoard.listWidget.row(item))
+        del self.displayBoard.boardDict[self.selectItemId]
+        return self.selectItemId
 
