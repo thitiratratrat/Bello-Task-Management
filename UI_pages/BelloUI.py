@@ -182,6 +182,6 @@ class BelloUI(QMainWindow):
     def closeDialogBoxInCreateSection(self):
         self.boardDetailPage.closeDialogBox()
 
-    def deleteBoard(self):
-        self.dashboardPage.deleteSelectBoard()
+    def deleteBoard(self): #return BoardId 
+        return self.dashboardPage.deleteSelectBoard()
 

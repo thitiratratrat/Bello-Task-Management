@@ -24,11 +24,11 @@ class BoardDetailPage(QWidget):
         
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
        
-        self.deleteSectionBtn = QPushButton("Delete section")
-        self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
-        self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
-        self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
+        #self.deleteSectionBtn = QPushButton("Delete section")
+        #self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
+        #self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
+        #self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+        #self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
 
         self.widget.setLayout(self.sectionLayout)        
         self.scrollArea = QScrollArea()
@@ -40,7 +40,7 @@ class BoardDetailPage(QWidget):
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea,0,0,4,1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn,0,1,1,1)
-        self.sectionAndAddBtnLayout.addWidget(self.deleteSectionBtn,1,1,1,1)
+        #self.sectionAndAddBtnLayout.addWidget(self.deleteSectionBtn,1,1,1,1)
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)

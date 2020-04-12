@@ -25,11 +25,17 @@ class SectionWidget(QWidget):
         self.editSectionTitleBtn = QToolButton()
         self.editSectionTitleBtn.setStyleSheet("background-color:rgb(250,231,110)")
         self.editSectionTitleBtn.setIcon(QIcon('images/edit.png'))
+
+        self.deleteSectionBtn = QToolButton()
+        self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
+        self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
+
         self.editSectionTitleBtn.clicked.connect(self.editSectionTitleDialog)
         self.index = None
         self.sectionTitle.setFont(QFont("Century Gothic",8,QFont.Bold))
         self.sectionTitleLayout.addWidget(self.sectionTitle)
         self.sectionTitleLayout.addWidget(self.editSectionTitleBtn)
+        self.sectionTitleLayout.addWidget(self.deleteSectionBtn)
 
         self.mainSectionLayout = QVBoxLayout()
         self.mainSectionLayout.addLayout(self.sectionTitleLayout)
