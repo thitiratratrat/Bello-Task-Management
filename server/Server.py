@@ -55,7 +55,7 @@ class Server:
             title = section.title
             sectionDetail["title"] = title
 
-            detail[sectionId] = sectionDetail
+            detail[str(sectionId)] = sectionDetail
 
         # TODO: get tasks
         await websocket.send(json.dumps({"response": "boardDetail",
@@ -150,8 +150,8 @@ class Server:
         elif action == 'createBoard':
             await self.__createBoard(message["data"], websocket)
 
-        elif action == 'requestBoardData':
-            await self.__sendBoardData(message["data"], websocket)
+        elif action == 'requestBoardDetail':
+            await self.__sendBoardDetail(message["data"], websocket)
 
         elif action == 'createSection':
             await self.__createSection(message["data"], websocket)

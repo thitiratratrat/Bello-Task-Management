@@ -22,9 +22,12 @@ class User:
         board = Board(boardTitle, boardId)
 
         self.addBoard(board)
+        
+    def deleteBoard(self, boardId):
+        self.__boards.pop(boardId, None)
 
     def addBoardDetail(self, boardId, boardDetail):
-        for sectionId, sectionDetail in boardDetal.items():
+        for sectionId, sectionDetail in boardDetail.items():
             sectionTitle = sectionDetail["title"]
 
             self.addSection(boardId, sectionId, sectionTitle)
