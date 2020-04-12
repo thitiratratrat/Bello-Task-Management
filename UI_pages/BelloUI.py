@@ -3,13 +3,15 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashboardPage import *
+from DashBoardPage import *
 from BoardDetailPage import *
+from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 from Bello import *
+
 
 class BelloUI(QMainWindow):
     def __init__(self, parent=None, bello=None):
@@ -20,10 +22,19 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
         self.boardDetailPage = BoardDetailPage(self)
+        self.signalAddSection = CustomSignal()
+        self.signalShowUsernameAlreadyExists = CustomSignal()
+        self.signalShowAccountDoesNotExist = CustomSignal()
+        
+        self.signalAddSection.signalDict.connect(self.addSection)
+        self.signalShowUsernameAlreadyExists.signalDict.connect(self.showUsernameAlreadyExists)
+        self.signalShowAccountDoesNotExist.signalDict.connect(self.showAccountDoesNotExist)
+        
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
         self.stackedWidget.addWidget(self.boardDetailPage)
         self.stackedWidget.setCurrentIndex(0)
+        
         self.loginSignUpPage.loginWidget.loginBtn.clicked.connect(
             self.__loginAccount)
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
@@ -38,13 +49,13 @@ class BelloUI(QMainWindow):
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
-  
+
     def __loginAccount(self):
         username = self.getUsernameLogin()
         password = self.__getPasswordLogin()
 
         self.bello.login(username, password)
-    
+
     def __validateSignUpPassword(self, password):
         confirmPassword = self.__getConfirmPassword()
 
@@ -84,34 +95,31 @@ class BelloUI(QMainWindow):
             return
 
         self.bello.signUp(username, password)
-        
+
     def __createBoard(self):
         boardTitle = self.dashboardPage.getBoardTitle()
-         
+
         if not self.dashboardPage.validateBoardTitle() or self.bello.isExistedBoardTitle(boardTitle):
             return
-        
+
         self.bello.sendCreateBoardToServer(boardTitle)
         self.dashboardPage.closeDialog()
-        
         
     def __createSection(self):
         if not self.boardDetailPage.validateSectionTitle():
             return
-        
+
         boardId = self.boardDetailPage.getBoardId()
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
-        
+
         self.boardDetailPage.closeCreateNewSectionDialog()
-        print(f"sectiontitle: {sectionTitle}")
-        self.bello.sendCreateSectionToServer(boardId, sectionTitle) 
-        self.boardDetailPage.addSection(sectionTitle)
-        
+        self.bello.sendCreateSectionToServer(boardId, sectionTitle)
+
     def __editSectionTitle(self):
         boardId = self.boardDetailPage.getBoardId()
         sectionId = self.boardDetailPage.sectionWidget.getSectionId()
         sectionTitle = self.boardDetailPage.sectionWidget.getSectionTitle()
-        
+
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
         self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
         self.boardDetailPage.sectionWidget.editTitle(sectionTitle)
@@ -129,22 +137,16 @@ class BelloUI(QMainWindow):
         self.dashboardPage.getBoardName()
 
     def getSelectedBoard(self):
-        return self.dashboardPage.displayBoard.getSelectItemInBoardId() #return in boardID
-    
+        return self.dashboardPage.displayBoard.getSelectItemInBoardId()  # return in boardID
+
     def setSectionId(self, sectionId):
         self.boardDetailPage.sectionWidget.setSectionId(sectionId)
 
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
-    
+
     def showAccountDoesNotExist(self):
         self.loginSignUpPage.loginWidget.showLoginError()
-    
-    def clearErrorMessageLogin(self):
-        self.loginSignUpPage.loginWidget.clearTextErrorLogin()
-
-    def clearErrorMessageSignUp(self):
-        self.loginSignUpPage.signUpWidget.clearTextErrorSignUp()
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
@@ -158,29 +160,21 @@ class BelloUI(QMainWindow):
         self.stackedWidget.setCurrentIndex(1)
 
     def goToBoardDetailPage(self):
-        print(self.getSelectedBoard())
-        if(self.getSelectedBoard() == None):
+        if self.getSelectedBoard() == None:
             return
+        
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.stackedWidget.setCurrentIndex(2)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
         self.dashboardPage.closeDialog()
-        
+
     def initBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
-    
-    def initBoardDetial(self,boardDetailDict):
-        print("board",boardDetailDict)
-        #self.boardDetailPage.initBoardDetial(boardDetailDict)
 
-    def createNewSection(self):
-        self.boardDetailPage.setBoardId(self.getSelectedBoard())
-        self.boardDetailPage.createNewSection()
-
-    def closeDialogBoxInCreateSection(self):
-        self.boardDetailPage.closeDialogBox()
+    def initBoardDetial(self, boardDetailDict):
+        self.dashboardPage.initBoardDetial(boardDetailDict)
 
     def deleteBoard(self): #return BoardId 
         return self.dashboardPage.deleteSelectBoard()
