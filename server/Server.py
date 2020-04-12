@@ -1,12 +1,15 @@
 import websockets
 import asyncio
+import pymongo
 from mongoengine import *
+from bson.objectid import ObjectId
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\Project\\Bello\\database_model')
-from Account import Account
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
+from Section import Section
 from Board import Board
+from Account import Account
 
 connect('bello')
 
@@ -40,22 +43,36 @@ class Server:
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
 
-    async def __sendBoardData(self, data, websocket):
+    async def __sendBoardDetail(self, data, websocket):
         boardId = data["boardId"]
         board = Board.objects.get(_id=boardId)
+        sectionIds = board.section_ids
+        detail = {}
 
-        # TODO: get section and tasks
-        pass
+        for sectionId in sectionIds:
+            sectionDetail = {}
+            section = Section.objects.get(_id=sectionId)
+            title = section.title
+            sectionDetail["title"] = title
+
+            detail[str(sectionId)] = sectionDetail
+
+        # TODO: get tasks
+        await websocket.send(json.dumps({"response": "boardDetail",
+                                         "data": {
+                                             "boardId": boardId,
+                                             "boardDetail": detail
+                                         }}))
 
     async def __createBoard(self, data, websocket):
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
-        board = Board(title=boardTitle, members=[usernameInput])
+
+        boardId = ObjectId()
+        board = Board(_id=boardId, title=boardTitle, members=[usernameInput])
 
         board.save()
 
-        boardId = Board.objects.get(
-            title=boardTitle, members=usernameInput)._id
         account = Account.objects.get(username=usernameInput)
 
         account.board_ids.append(boardId)
@@ -66,6 +83,38 @@ class Server:
                                              'boardTitle': boardTitle,
                                              'boardId': str(boardId)
                                          }}))
+
+    async def __createSection(self, data, websocket):
+        boardId = data["boardId"]
+        sectionTitle = data["sectionTitle"]
+
+        sectionId = ObjectId()
+        section = Section(_id=sectionId, title=sectionTitle)
+
+        section.save()
+
+        board = Board.objects.get(_id=boardId)
+
+        board.section_ids.append(sectionId)
+        board.save()
+
+        await websocket.send(json.dumps({"response": "createdSection",
+                                         "data": {
+                                             "boardId": boardId,
+                                             "sectionTitle": sectionTitle,
+                                             "sectionId": str(sectionId)
+                                         }}))
+        # TODO: notify other members
+
+    async def __editSectionTitle(self, data, websocket):
+        sectionId = data["sectionId"]
+        sectionTitle = data["sectionTitle"]
+
+        section = Section.objects.get(_id=sectionId)
+        section.title = sectionTitle
+        section.save()
+
+        # TODO: notify other members
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -101,8 +150,14 @@ class Server:
         elif action == 'createBoard':
             await self.__createBoard(message["data"], websocket)
 
-        elif action == 'requestBoardData':
-            await self.__sendBoardData(message["data"], websocket)
+        elif action == 'requestBoardDetail':
+            await self.__sendBoardDetail(message["data"], websocket)
+
+        elif action == 'createSection':
+            await self.__createSection(message["data"], websocket)
+
+        elif action == 'editSectionTitle':
+            await self.__editSectionTitle(message["data"], websocket)
 
         else:
             return

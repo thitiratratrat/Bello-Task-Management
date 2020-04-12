@@ -13,10 +13,6 @@ class LoginWidget(QWidget):
         self.usernameValueLogin = QLineEdit()
         self.passwordLabelLogin = QLabel("Password: ")
 
-        self.errorMessage = QLabel()
-        self.errorMessage.setFont(QFont("Century Gothic",10,QFont.Bold))
-        self.errorMessage.setStyleSheet("color:#FAE76E")
-
         self.passwordLabelLogin.setFont(
             QFont("Century Gothic", 11, QFont.Bold))
         self.usernameLabelLogin.setStyleSheet("color: white")
@@ -41,14 +37,10 @@ class LoginWidget(QWidget):
         self.gridLoginLayout.addLayout(self.formLoginLayout, 0, 0)
         self.gridLoginLayout.addWidget(
             self.loginBtn, 1, 0, 1, 1, Qt.AlignCenter)
-        self.gridLoginLayout.addWidget(self.errorMessage,2,0)
         self.setLayout(self.gridLoginLayout)
     
     def showLoginError(self):
-        self.errorMessage.setText("ERROR: Account does not exist.")
-
-    def clearTextErrorLogin(self):
-        self.errorMessage.setText()
+        createErrorDialogBox(self, "Error", "ERROR: Account does not exist.")
 
     def setColor(self):
         self.palette = QPalette()
