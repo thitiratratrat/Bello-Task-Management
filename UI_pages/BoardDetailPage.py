@@ -94,6 +94,7 @@ class BoardDetailPage(QWidget):
     def initBoardDetail(self, boardDetailDict):
         self.setBoardId(boardDetailDict.get("boardId"))
         sectionDict = boardDetailDict.get("boardDetail")
+        
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")

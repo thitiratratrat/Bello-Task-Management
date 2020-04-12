@@ -40,12 +40,11 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.signUpWidget.signUpBtn.clicked.connect(
             self.__signUpAccount)
         self.dashboardPage.createBtn.clicked.connect(self.__createBoard)
-        
-        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.goToBoardDetailPage) #return the boardID of sekected board
-
+        self.dashboardPage.displayBoard.listWidget.itemDoubleClicked.connect(self.__requestBoardDetail) #return the boardID of selected board
+        self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
         self.boardDetailPage.dialogCreate.createBtn.clicked.connect(self.__createSection)  
-
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+        
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -121,14 +120,26 @@ class BelloUI(QMainWindow):
         sectionTitle = self.boardDetailPage.sectionWidget.getSectionTitle()
 
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
-        self.bello.sendEditSectionTitleToServer(sectionId, sectionTitle)
         self.boardDetailPage.sectionWidget.editTitle(sectionTitle)
+        
+    def __requestBoardDetail(self):
+        boardId = self.getSelectedBoard()
+        
+        self.bello.sendRequestBoardDetailoServer(boardId)
+        
+    def __deleteBoard(self):
+        boardId = self.dashboardPage.deleteSelectBoard()
+        
+        self.bello.deleteBoard(boardId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
 
     def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
+        
+    def initBoardDetail(self, boardDetailDict):
+        self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
@@ -166,16 +177,4 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.setBoardId(self.getSelectedBoard())
         self.stackedWidget.setCurrentIndex(2)
 
-    def addBoard(self, boardDict):
-        self.dashboardPage.addBoard(boardDict)
-        self.dashboardPage.closeDialog()
-
-    def initBoard(self, boardDict):
-        self.dashboardPage.addBoard(boardDict)
-
-    def initBoardDetial(self, boardDetailDict):
-        self.dashboardPage.initBoardDetial(boardDetailDict)
-
-    def deleteBoard(self): #return BoardId 
-        return self.dashboardPage.deleteSelectBoard()
-
+   
