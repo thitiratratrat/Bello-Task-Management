@@ -101,7 +101,8 @@ class BoardDetailPage(QWidget):
         for sectionId,sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
-            self.addSectionToWidget(sectionId,sectionTitle)
+            self.setSectionId(sectionId)
+            self.addSectionToWidget(sectionTitle)
 
     def closeDialogBox(self):
         self.newSectionWidget[1].reject()

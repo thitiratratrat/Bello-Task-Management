@@ -16,12 +16,12 @@ class DisplayBoardBox(QWidget):
         self.listWidget.setIconSize(QSize(200, 80))
         self.listWidget.setFont(QFont("Moon", 10))
         self.setLayout(self.layout)
-        self.boardDict = None
+        self.boardDict = {}
         self.i = 1
 
     def createBox(self, dictBoard):
-        self.boardDict = dictBoard
-        for boardId, boardTitle in dictBoard.items():
+        self.boardDict.update(dictBoard)
+        for boardId, boardTitle in self.boardDict.items():
             self.boardId = boardId
             self.boardTitle = boardTitle
             self.ran_num1 = randint(0, 150)
@@ -36,6 +36,7 @@ class DisplayBoardBox(QWidget):
             self.board1.setTextAlignment(Qt.AlignLeft)
             self.board1.setText(self.boardTitle)
             self.addToListWidget(self.board1)
+            
 
     def getKey(self,val):
         for key, value in self.boardDict.items(): 
