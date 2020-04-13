@@ -24,12 +24,10 @@ class BelloUI(QMainWindow):
         self.signalInitBoardDetail = CustomSignal()
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
-        self.signalEditSectionTitle = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
-        self.boardDetailPage = BoardDetailPage(
-            self, self.signalEditSectionTitle)
+        self.boardDetailPage = BoardDetailPage(self)
 
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
@@ -37,7 +35,6 @@ class BelloUI(QMainWindow):
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
-        self.signalEditSectionTitle.signalDict.connect(self.__editSectionTitle)
 
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
@@ -55,7 +52,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
 
-        # self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+        self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
 
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -110,7 +107,7 @@ class BelloUI(QMainWindow):
     def __createBoard(self):
         boardTitle = self.dashboardPage.getBoardTitle()
 
-        if not self.dashboardPage.validateBoardTitle() or not self.bello.isExistedBoardTitle(boardTitle):
+        if (not self.dashboardPage.validateBoardTitle()) or self.bello.isExistedBoardTitle(boardTitle):
             return
 
         self.bello.sendCreateBoardToServer(boardTitle)
@@ -126,13 +123,6 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
 
-    def __editSectionTitle(self, sectionTitleDetail):
-        boardId = self.boardDetailPage.getBoardId()
-        sectionId = sectionTitleDetail.get("sectionId")
-        sectionTitle = sectionTitleDetail.get("sectionTitle")
-
-        self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
-
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
 
@@ -142,12 +132,24 @@ class BelloUI(QMainWindow):
         boardId = self.dashboardPage.deleteSelectBoard()
 
         self.bello.deleteBoard(boardId)
+    
+    def __homeBtnFunc(self):
+        self.boardDetailPage.clearAllSection()
+        self.goToDashboardPage()
+        
+    def deleteSection(self, boardId, sectionId):
+        self.bello.deleteSection(boardId, sectionId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
 
     def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
+    
+    def editSectionTitle(self, sectionId, sectionTitle):
+        boardId = self.boardDetailPage.getBoardId()
+
+        self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
@@ -159,7 +161,7 @@ class BelloUI(QMainWindow):
         self.dashboardPage.getBoardName()
 
     def getSelectedBoard(self):
-        return self.dashboardPage.displayBoard.getSelectItemInBoardId()  # return in boardID
+        return self.dashboardPage.displayBoard.getSelectItemInBoardId()
 
     def setSectionId(self, sectionId):
         self.boardDetailPage.sectionWidget.setSectionId(sectionId)
