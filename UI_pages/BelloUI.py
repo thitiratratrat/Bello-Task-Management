@@ -3,13 +3,13 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashboardPage import *
+from DashBoardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -55,7 +55,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
 
-        # self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.goToDashboardPage)
+        #self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
 
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -142,6 +142,9 @@ class BelloUI(QMainWindow):
         boardId = self.dashboardPage.deleteSelectBoard()
 
         self.bello.deleteBoard(boardId)
+    
+    def __homeBtnFunc(self):
+        self.goToDashboardPage()
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
