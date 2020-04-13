@@ -3,19 +3,20 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from Section import *
+from dialogBox import * 
 from CustomDialog import *
 
 
 class SectionWidget(QWidget):
     def __init__(self, parent, signal):
         super(SectionWidget, self).__init__(parent)
+        self.parent =parent
         self.signal = signal
         self.section = QListWidget()
         self.boardId = None
         self.sectionId = None
-
+        self.sectionIndex = 0
         self.section.setFixedSize(200, 420)
-
         self.sectionTitleLayout = QHBoxLayout()
         self.sectionTitle = QLabel("Sectioname")
         self.sectionTitle.setStyleSheet("color:white")
@@ -29,6 +30,8 @@ class SectionWidget(QWidget):
             "background-color:rgb(210,39,62); color:white")
         self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
 
+        self.deleteSectionBtn.clicked.connect(self.deleteSection)
+
         self.editSectionTitleDialog = CustomDialog(
             self, 'Edit section title', 'Section name: ', 'Save')
 
@@ -36,7 +39,6 @@ class SectionWidget(QWidget):
             self.showEditSectionTitleDialog)
         self.editSectionTitleDialog.button.clicked.connect(
             self.handleEditSectionTitleBtn)
-        self.index = None
         self.sectionTitle.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.sectionTitleLayout.addWidget(self.sectionTitle)
         self.sectionTitleLayout.addWidget(self.editSectionTitleBtn)
@@ -53,12 +55,15 @@ class SectionWidget(QWidget):
 
     def setBoardId(self, boardId):
         self.boardId = boardId
+    
+    def setSectionId(self, sectionId):
+        self.sectionId = sectionId
+    
+    def setSectionIndex(self,sectionIndex):
+        self.sectionIndex = sectionIndex
 
     def getSectionTitle(self):
         return self.sectionTitle.text()
-
-    def setSectionId(self, sectionId):
-        self.sectionId = sectionId
 
     def getSectionId(self):
         return self.sectionId
@@ -66,6 +71,9 @@ class SectionWidget(QWidget):
     def getNewSectionTitle(self):
         return self.editSectionTitleDialog.lineEdit.text()
 
+    def getSectionIndex(self):
+        return self.sectionIndex
+    
     def handleEditSectionTitleBtn(self):
         if not self.validateNewSectionTitle():
             return
@@ -80,8 +88,11 @@ class SectionWidget(QWidget):
 
     def validateNewSectionTitle(self):
         newSectionTitle = self.getNewSectionTitle()
-
-        return True if len(newSectionTitle) != 0 else False
+        if (len(newSectionTitle)!= 0 ):
+            return True
+        else:
+            createErrorDialogBox(self,"Error","Section title can't be null")
+            return False
 
     def editTitle(self, newSectionTitle):
         self.sectionTitle.setText(newSectionTitle)
@@ -91,6 +102,10 @@ class SectionWidget(QWidget):
 
     def setIndexSection(self, index):  # for delete
         self.index = index
+
+    def deleteSection(self):
+        index = self.getSectionIndex()
+        sectionId = self.parent.deleteSectionTest(index)
 
     def setColor(self):
         self.palette = QPalette()
