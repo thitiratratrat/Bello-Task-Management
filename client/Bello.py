@@ -144,6 +144,15 @@ class Bello:
                                           "data": {
                                               "boardId": boardId
                                           }}))
+        
+    def deleteSection(self, boardId, sectionId):
+        self.__user.deleteSection(boardId, sectionId)
+        
+        self.__websocket.send(json.dumps({"action": "deleteSection",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId
+                                          }}))
 
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",

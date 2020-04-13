@@ -38,7 +38,7 @@ class User:
 
         board.addSection(section)
 
-    def removeSection(self, boardId, sectionId):
+    def deleteSection(self, boardId, sectionId):
         board = self.__boards[boardId]
 
         board.removeSection(sectionId)
@@ -47,6 +47,3 @@ class User:
         board = self.__boards[boardId]
 
         board.editSectionTitle(sectionId, sectionTitle)
-
-    def deleteBoard(self, boardId):
-        self.__boards.pop(boardId, None)

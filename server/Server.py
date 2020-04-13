@@ -115,6 +115,33 @@ class Server:
         section.save()
 
         # TODO: notify other members
+        
+    async def __deleteBoard(self, data, websocket):
+        boardId = data["boardId"]
+        board = Board.objects.get(_id=boardId)
+        sectionIds = board.section_ids
+        memberUsernames = board.members
+        
+        for sectionId in sectionIds:
+            section = Section.objects.get(_id=sectionId)
+            section.delete()
+        
+        for memberUsername in memberUsernames:
+            account = Account.objects.get(username=memberUsername)
+            account.update(pull__board_ids=boardId)
+            
+        board.delete()
+        #TODO: delete tasks
+        
+    async def __deleteSection(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        board = Board.objects.get(_id=boardId)
+        section = Section.objects.get(_id=sectionId)
+        
+        #TODO: delete tasks
+        board.update(pull__section_ids=sectionId)
+        section.delete()
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -158,6 +185,12 @@ class Server:
 
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
+        
+        elif action == 'deleteBoard':
+            await self.__deleteBoard(message["data"], websocket)
+            
+        elif action == 'deleteSection':
+            await self.__deleteSection(message["data"], websocket)
 
         else:
             return
