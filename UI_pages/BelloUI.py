@@ -52,7 +52,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
 
-        #self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
+        self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
 
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
@@ -134,6 +134,7 @@ class BelloUI(QMainWindow):
         self.bello.deleteBoard(boardId)
     
     def __homeBtnFunc(self):
+        self.boardDetailPage.clearAllSection()
         self.goToDashboardPage()
         
     def deleteSection(self, boardId, sectionId):

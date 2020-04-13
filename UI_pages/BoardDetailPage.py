@@ -101,6 +101,5 @@ class BoardDetailPage(QWidget):
         self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
     
     def clearAllSection(self):
-        for i in self.sectionLayout.count():
-            widget = self.sectionLayout.takeAt(i).widget()
-            widget.setParent(None)
+        for i in reversed(range(self.sectionLayout.count())): 
+            self.sectionLayout.itemAt(i).widget().deleteLater()
