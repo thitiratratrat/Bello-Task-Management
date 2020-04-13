@@ -8,10 +8,9 @@ from CustomDialog import CustomDialog
 from SectionWidget import *
 
 class BoardDetailPage(QWidget):
-    def __init__(self, parent, signal):
+    def __init__(self, parent):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
-        self.editSectionTitleSignal = signal
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
@@ -66,7 +65,7 @@ class BoardDetailPage(QWidget):
         self.addSectionToWidget(sectionTitle, sectionId,index)
 
     def addSectionToWidget(self, sectionTitle, sectionId,index):
-        self.sectionWidget = SectionWidget(self, self.editSectionTitleSignal)
+        self.sectionWidget = SectionWidget(self)
         self.sectionWidget.setSectionIndex(index)
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
@@ -91,14 +90,15 @@ class BoardDetailPage(QWidget):
             self.addSectionToWidget(sectionTitle, sectionId,index)
             index += 1
 
-    def deleteSectionTest(self,index):
+    def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
         self.newWidget.setParent(None)
         newIndex = self.sectionLayout.count()
         for index in range(newIndex):
             self.item = self.sectionLayout.itemAt(index).widget()
             self.item.setSectionIndex(index)
-        return self.newWidget.getSectionId()
+            
+        self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
     
     def clearAllSection(self):
         for i in self.sectionLayout.count():
