@@ -7,10 +7,9 @@ from CustomDialog import *
 
 
 class SectionWidget(QWidget):
-    def __init__(self, parent, signal):
+    def __init__(self, parent):
         super(SectionWidget, self).__init__(parent)
         self.parent =parent
-        self.signal = signal
         self.section = QListWidget()
         self.boardId = None
         self.sectionId = None
@@ -82,8 +81,7 @@ class SectionWidget(QWidget):
         self.editTitle(newSectionTitle)
         self.closeEditDialogBox()
         
-        self.signal.signalDict.emit(
-            {"sectionId": self.getSectionId(), "sectionTitle": self.getSectionTitle()})
+        self.parent.parent.editSectionTitle(self.getSectionId(), self.getSectionTitle())
 
     def validateNewSectionTitle(self):
         newSectionTitle = self.getNewSectionTitle()
@@ -104,7 +102,7 @@ class SectionWidget(QWidget):
 
     def deleteSection(self):
         index = self.getSectionIndex()
-        sectionId = self.parent.deleteSectionTest(index)
+        sectionId = self.parent.deleteSection(index)
 
     def setColor(self):
         self.palette = QPalette()
