@@ -72,8 +72,9 @@ class DashboardPage(QWidget):
 
     def validateBoardTitle(self):
         if self.boardTitleValue.text() == '':
-            createErrorDialogBox(self,"Error","Board titile can not be empty")
+            createErrorDialogBox(self,"Error","Board title can not be empty")
             return False
+        
         return True
 
     def closeDialog(self):

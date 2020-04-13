@@ -13,15 +13,11 @@ class User:
     def getBoards(self):
         return self.__boards
 
-    def addBoard(self, board):
+    def addBoard(self, boardId, boardTitle):
+        board = Board(boardTitle, boardId)
         self.__boards[board.getId()] = board
 
         board.addMemberUsername(self.__username)
-
-    def createBoard(self, boardTitle: str, boardId):
-        board = Board(boardTitle, boardId)
-
-        self.addBoard(board)
         
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)

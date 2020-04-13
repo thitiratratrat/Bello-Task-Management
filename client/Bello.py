@@ -3,9 +3,9 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from User import User
 from Board import Board
 from BelloUI import *
@@ -80,15 +80,13 @@ class Bello:
 
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
-            board = Board(boardTitle, boardId)
-
-            self.__user.addBoard(board)
+            self.__user.addBoard(boardId, boardTitle)
 
     def __createBoard(self, boardTitleAndId):
         boardTitle = boardTitleAndId["boardTitle"]
         boardId = boardTitleAndId["boardId"]
 
-        self.__user.createBoard(boardTitle, boardId)
+        self.__user.addBoard(boardId, boardTitle)
 
     def __createSection(self, sectionDetail):
         boardId = sectionDetail["boardId"]
@@ -176,8 +174,9 @@ class Bello:
         
     def isExistedBoardTitle(self, boardTitle):
         boards = self.__user.getBoards()
-
-        return boardTitle in boards.values()
+        boardTitles = map(lambda board: board.getTitle(), boards.values())
+        
+        return boardTitle in boardTitles
 
     def addUI(self, ui):
         self.__ui = ui

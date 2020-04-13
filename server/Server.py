@@ -2,11 +2,10 @@ import websockets
 import asyncio
 import pymongo
 from mongoengine import *
-from bson.objectid import ObjectId
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\database_model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
 from Section import Section
 from Board import Board
 from Account import Account
@@ -45,13 +44,13 @@ class Server:
 
     async def __sendBoardDetail(self, data, websocket):
         boardId = data["boardId"]
-        board = Board.objects.get(_id=boardId)
+        board = Board.objects.get(id=boardId)
         sectionIds = board.section_ids
         detail = {}
 
         for sectionId in sectionIds:
             sectionDetail = {}
-            section = Section.objects.get(_id=sectionId)
+            section = Section.objects.get(id=sectionId)
             title = section.title
             sectionDetail["title"] = title
 
@@ -68,11 +67,11 @@ class Server:
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
 
-        boardId = ObjectId()
-        board = Board(_id=boardId, title=boardTitle, members=[usernameInput])
+        board = Board(title=boardTitle, members=[usernameInput])
 
         board.save()
-
+        
+        boardId = board.id
         account = Account.objects.get(username=usernameInput)
 
         account.board_ids.append(boardId)
@@ -88,12 +87,12 @@ class Server:
         boardId = data["boardId"]
         sectionTitle = data["sectionTitle"]
 
-        sectionId = ObjectId()
-        section = Section(_id=sectionId, title=sectionTitle)
+        section = Section(title=sectionTitle)
 
         section.save()
 
-        board = Board.objects.get(_id=boardId)
+        sectionId = section.id
+        board = Board.objects.get(id=boardId)
 
         board.section_ids.append(sectionId)
         board.save()
@@ -110,7 +109,7 @@ class Server:
         sectionId = data["sectionId"]
         sectionTitle = data["sectionTitle"]
 
-        section = Section.objects.get(_id=sectionId)
+        section = Section.objects.get(id=sectionId)
         section.title = sectionTitle
         section.save()
 
@@ -118,12 +117,12 @@ class Server:
         
     async def __deleteBoard(self, data, websocket):
         boardId = data["boardId"]
-        board = Board.objects.get(_id=boardId)
+        board = Board.objects.get(id=boardId)
         sectionIds = board.section_ids
         memberUsernames = board.members
         
         for sectionId in sectionIds:
-            section = Section.objects.get(_id=sectionId)
+            section = Section.objects.get(id=sectionId)
             section.delete()
         
         for memberUsername in memberUsernames:
@@ -136,8 +135,8 @@ class Server:
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
         sectionId = data["sectionId"]
-        board = Board.objects.get(_id=boardId)
-        section = Section.objects.get(_id=sectionId)
+        board = Board.objects.get(id=boardId)
+        section = Section.objects.get(id=sectionId)
         
         #TODO: delete tasks
         board.update(pull__section_ids=sectionId)
@@ -154,7 +153,7 @@ class Server:
         boardTitles = {}
 
         for boardId in boardIds:
-            board = Board.objects.get(_id=boardId)
+            board = Board.objects.get(id=boardId)
             boardTitles[str(boardId)] = board.title
 
         return boardTitles

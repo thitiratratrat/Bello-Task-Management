@@ -3,7 +3,6 @@ from datetime import datetime
 
 
 class Task(Document):
-    _id = ObjectIdField()
     title = StringField(required=True)
     responsible_members = ListField(StringField(), default=list)
     due_date = DateTimeField()
