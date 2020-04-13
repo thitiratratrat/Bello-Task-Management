@@ -2,7 +2,6 @@ import websockets
 import asyncio
 import pymongo
 from mongoengine import *
-from bson.objectid import ObjectId
 import json
 import sys
 sys.path.append(
@@ -45,13 +44,13 @@ class Server:
 
     async def __sendBoardDetail(self, data, websocket):
         boardId = data["boardId"]
-        board = Board.objects.get(_id=boardId)
+        board = Board.objects.get(id=boardId)
         sectionIds = board.section_ids
         detail = {}
 
         for sectionId in sectionIds:
             sectionDetail = {}
-            section = Section.objects.get(_id=sectionId)
+            section = Section.objects.get(id=sectionId)
             title = section.title
             sectionDetail["title"] = title
 
@@ -68,11 +67,11 @@ class Server:
         boardTitle = data["boardTitle"]
         usernameInput = data["username"]
 
-        boardId = ObjectId()
-        board = Board(_id=boardId, title=boardTitle, members=[usernameInput])
+        board = Board(title=boardTitle, members=[usernameInput])
 
         board.save()
-
+        
+        boardId = board.id
         account = Account.objects.get(username=usernameInput)
 
         account.board_ids.append(boardId)
@@ -88,12 +87,12 @@ class Server:
         boardId = data["boardId"]
         sectionTitle = data["sectionTitle"]
 
-        sectionId = ObjectId()
-        section = Section(_id=sectionId, title=sectionTitle)
+        section = Section(title=sectionTitle)
 
         section.save()
 
-        board = Board.objects.get(_id=boardId)
+        sectionId = section.id
+        board = Board.objects.get(id=boardId)
 
         board.section_ids.append(sectionId)
         board.save()
@@ -110,11 +109,38 @@ class Server:
         sectionId = data["sectionId"]
         sectionTitle = data["sectionTitle"]
 
-        section = Section.objects.get(_id=sectionId)
+        section = Section.objects.get(id=sectionId)
         section.title = sectionTitle
         section.save()
 
         # TODO: notify other members
+        
+    async def __deleteBoard(self, data, websocket):
+        boardId = data["boardId"]
+        board = Board.objects.get(id=boardId)
+        sectionIds = board.section_ids
+        memberUsernames = board.members
+        
+        for sectionId in sectionIds:
+            section = Section.objects.get(id=sectionId)
+            section.delete()
+        
+        for memberUsername in memberUsernames:
+            account = Account.objects.get(username=memberUsername)
+            account.update(pull__board_ids=boardId)
+            
+        board.delete()
+        #TODO: delete tasks
+        
+    async def __deleteSection(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        board = Board.objects.get(id=boardId)
+        section = Section.objects.get(id=sectionId)
+        
+        #TODO: delete tasks
+        board.update(pull__section_ids=sectionId)
+        section.delete()
 
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -127,7 +153,7 @@ class Server:
         boardTitles = {}
 
         for boardId in boardIds:
-            board = Board.objects.get(_id=boardId)
+            board = Board.objects.get(id=boardId)
             boardTitles[str(boardId)] = board.title
 
         return boardTitles
@@ -158,6 +184,12 @@ class Server:
 
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
+        
+        elif action == 'deleteBoard':
+            await self.__deleteBoard(message["data"], websocket)
+            
+        elif action == 'deleteSection':
+            await self.__deleteSection(message["data"], websocket)
 
         else:
             return

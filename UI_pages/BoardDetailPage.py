@@ -7,12 +7,10 @@ from dialogBox import *
 from CustomDialog import CustomDialog
 from SectionWidget import *
 
-
 class BoardDetailPage(QWidget):
-    def __init__(self, parent, signal):
+    def __init__(self, parent):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
-        self.editSectionTitleSignal = signal
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
@@ -25,14 +23,7 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
-
-        #self.deleteSectionBtn = QPushButton("Delete section")
-        #self.deleteSectionBtn.setStyleSheet("background-color:rgb(210,39,62); color:white")
-        # self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
-        #self.deleteSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        # self.deleteSectionBtn.clicked.connect(self.deleteSectionFromBoard)
 
         self.widget.setLayout(self.sectionLayout)
         self.scrollArea = QScrollArea()
@@ -44,7 +35,7 @@ class BoardDetailPage(QWidget):
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea, 0, 0, 4, 1)
         self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn, 0, 1, 1, 1)
-        # self.sectionAndAddBtnLayout.addWidget(self.deleteSectionBtn,1,1,1,1)
+
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)
@@ -69,19 +60,16 @@ class BoardDetailPage(QWidget):
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
-
         self.setBoardId(boardId)
-        self.addSectionToWidget(sectionTitle, sectionId)
+        index = self.sectionLayout.count()
+        self.addSectionToWidget(sectionTitle, sectionId,index)
 
-    def addSectionToWidget(self, sectionTitle, sectionId):
-        self.sectionWidget = SectionWidget(self, self.editSectionTitleSignal)
-
+    def addSectionToWidget(self, sectionTitle, sectionId,index):
+        self.sectionWidget = SectionWidget(self)
+        self.sectionWidget.setSectionIndex(index)
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
-
-    def deleteSection(self):
-        print(self.sectionWidget.sectionTitle.text())
 
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
@@ -95,32 +83,23 @@ class BoardDetailPage(QWidget):
     def initBoardDetail(self, boardDetailDict):
         self.setBoardId(boardDetailDict.get("boardId"))
         sectionDict = boardDetailDict.get("boardDetail")
-
+        index = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
+            self.addSectionToWidget(sectionTitle, sectionId,index)
+            index += 1
+
+    def deleteSection(self,index):
+        self.newWidget =  self.sectionLayout.takeAt(index).widget()
+        self.newWidget.setParent(None)
+        newIndex = self.sectionLayout.count()
+        for index in range(newIndex):
+            self.item = self.sectionLayout.itemAt(index).widget()
+            self.item.setSectionIndex(index)
             
-            self.addSectionToWidget(sectionTitle, sectionId)
-
-    def closeDeleteSectionBox(self):
-        self.selectedSectionToDelete[1].reject()
-
-    def deleteSectionFromBoard(self):
-        self.selectedSectionToDelete = createAddDialog(
-            self, "delete section", "Section name:", "Delete", self.deleteSection)
-
-    def deleteSection(self):
-        isDelete = False
-
-        for i in range(self.sectionLayout.count()):
-            if(self.sectionLayout.itemAt(i).widget().getSectionTitle() == self.selectedSectionToDelete[0].text()):
-                self.sectionLayout.takeAt(i)
-                isDelete = True
-                self.closeDeleteSectionBox()
-                return isDelete
-            else:
-                continue
-
-        if not isDelete:
-            createErrorDialogBox(
-                self, "Error", "This section title doesn't exist")
+        self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
+    
+    def clearAllSection(self):
+        for i in reversed(range(self.sectionLayout.count())): 
+            self.sectionLayout.itemAt(i).widget().deleteLater()

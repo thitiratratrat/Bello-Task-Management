@@ -80,15 +80,13 @@ class Bello:
 
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
-            board = Board(boardTitle, boardId)
-
-            self.__user.addBoard(board)
+            self.__user.addBoard(boardId, boardTitle)
 
     def __createBoard(self, boardTitleAndId):
         boardTitle = boardTitleAndId["boardTitle"]
         boardId = boardTitleAndId["boardId"]
 
-        self.__user.createBoard(boardTitle, boardId)
+        self.__user.addBoard(boardId, boardTitle)
 
     def __createSection(self, sectionDetail):
         boardId = sectionDetail["boardId"]
@@ -144,6 +142,15 @@ class Bello:
                                           "data": {
                                               "boardId": boardId
                                           }}))
+        
+    def deleteSection(self, boardId, sectionId):
+        self.__user.deleteSection(boardId, sectionId)
+        
+        self.__websocket.send(json.dumps({"action": "deleteSection",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId
+                                          }}))
 
     def sendCreateBoardToServer(self, boardTitle):
         self.__websocket.send(json.dumps({"action": "createBoard",
@@ -167,8 +174,9 @@ class Bello:
         
     def isExistedBoardTitle(self, boardTitle):
         boards = self.__user.getBoards()
-
-        return boardTitle in boards.values()
+        boardTitles = map(lambda board: board.getTitle(), boards.values())
+        
+        return boardTitle in boardTitles
 
     def addUI(self, ui):
         self.__ui = ui
