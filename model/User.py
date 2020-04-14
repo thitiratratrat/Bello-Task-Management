@@ -20,8 +20,41 @@ class User:
 
         board.addMemberUsername(self.__username)
 
+    def createSection(self, boardId, sectionId, sectionTitle, tasks={}):
+        board = self.__boards[boardId]
+        section = Section(sectionTitle, sectionId, tasks)
+
+        board.addSection(section)
+        
+    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
+        board = self.__boards[boardId]
+        task = Task(taskTitle, taskId, taskTitle, dueDate,
+                    responsibleMemberUsernmames, comments, tags)
+
+        board.addTask(sectionId, task)
+
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)
+
+    def deleteSection(self, boardId, sectionId):
+        board = self.__boards[boardId]
+
+        board.removeSection(sectionId)
+        
+    def deleteTask(self, boardId, sectionid, taskId):
+        board = self.__boards[boardId]
+
+        board.removeTask(sectionId, taskId)
+        
+    def editSectionTitle(self, boardId, sectionId, sectionTitle):
+        board = self.__boards[boardId]
+
+        board.editSectionTitle(sectionId, sectionTitle)
+        
+    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
+        board = self.__boards[boardId]
+        
+        board.editTaskTitle(sectionId, taskId, taskTitle)
 
     def addBoardDetail(self, boardId, boardDetail):
         for sectionId, sectionDetail in boardDetail.items():
@@ -40,35 +73,3 @@ class User:
                 self.createTask(boardId, sectionId, taskId, taskTitle,
                                 dueDate, responsibleMemberUsernames, comments, tags)
 
-    def createSection(self, boardId, sectionId, sectionTitle, tasks={}):
-        board = self.__boards[boardId]
-        section = Section(sectionTitle, sectionId, tasks)
-
-        board.addSection(section)
-
-    def deleteSection(self, boardId, sectionId):
-        board = self.__boards[boardId]
-
-        board.removeSection(sectionId)
-
-    def editSectionTitle(self, boardId, sectionId, sectionTitle):
-        board = self.__boards[boardId]
-
-        board.editSectionTitle(sectionId, sectionTitle)
-        
-    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
-        board = self.__boards[boardId]
-        
-        board.editTaskTitle(sectionId, taskId, taskTitle)
-
-    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
-        board = self.__boards[boardId]
-        task = Task(taskTitle, taskId, taskTitle, dueDate,
-                    responsibleMemberUsernmames, comments, tags)
-
-        board.addTask(sectionId, task)
-
-    def deleteTask(self, boardId, sectionid, taskId):
-        board = self.__boards[boardId]
-
-        board.removeTask(sectionId, taskId)
