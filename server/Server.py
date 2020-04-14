@@ -149,7 +149,17 @@ class Server:
 
         section = Section.objects.get(id=sectionId)
         section.title = sectionTitle
+        
         section.save()
+        
+    async def __editTaskTitle(self, data, websocket):
+        taskId = data["taskId"]
+        taskTitle = data["taskTitle"]
+        
+        task = Task.objects.get(id=taskId)
+        task.title = taskTitle
+        
+        task.save()
         
     async def __deleteBoard(self, data, websocket):
         boardId = data["boardId"]
@@ -242,6 +252,9 @@ class Server:
 
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
+            
+        elif action == 'editTaskTitle':
+            await self.__editTaskTitle(message["data"], websocket)
             
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)
