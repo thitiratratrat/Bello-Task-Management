@@ -37,3 +37,8 @@ class Board:
         section = self.__sections[sectionId]
         
         section.addTask(task)
+        
+    def removeTask(self, sectionId, taskId):
+        section = self.__sections[sectionId]
+        
+        section.removeTask(taskId)

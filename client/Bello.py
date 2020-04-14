@@ -86,20 +86,20 @@ class Bello:
 
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
-            self.__user.addBoard(boardId, boardTitle)
+            self.__user.createBoard(boardId, boardTitle)
 
     def __createBoard(self, boardDetail):
         boardTitle = boardDetail["boardTitle"]
         boardId = boardDetail["boardId"]
 
-        self.__user.addBoard(boardId, boardTitle)
+        self.__user.createBoard(boardId, boardTitle)
 
     def __createSection(self, sectionDetail):
         boardId = sectionDetail["boardId"]
         sectionId = sectionDetail["sectionId"]
         sectionTitle = sectionDetail["sectionTitle"]
 
-        self.__user.addSection(boardId, sectionId, sectionTitle)
+        self.__user.createSection(boardId, sectionId, sectionTitle)
         
     def __createTask(self, taskDetail):
         boardId = taskDetail["boardId"]
@@ -107,7 +107,7 @@ class Bello:
         taskId = taskDetail["taskId"]
         taskTitle = taskDetail["taskTitle"]
         
-        self.__user.addTask(boardId, sectionId, taskId, taskTitle)
+        self.__user.createTask(boardId, sectionId, taskId, taskTitle)
 
     def __addBoardDetail(self, boardDetail):
         boardId = boardDetail["boardId"]
@@ -129,8 +129,6 @@ class Bello:
                                               "sectionId": sectionId,
                                               "sectionTitle": sectionTitle
                                           }}))
-
-        # TODO: update other members section title change
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
@@ -164,6 +162,16 @@ class Bello:
                                           "data": {
                                               "boardId": boardId,
                                               "sectionId": sectionId
+                                          }}))
+        
+    def deleteTask(self, boardId, sectionId, taskId):
+        self.__user.deleteTask(boardId, sectionId, taskId)
+
+        self.__websocket.send(json.dumps({"action": "deleteTask",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId,
+                                              "taskId": taskId
                                           }}))
 
     def sendCreateBoardToServer(self, boardTitle):
