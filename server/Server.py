@@ -104,7 +104,6 @@ class Server:
                                              "sectionTitle": sectionTitle,
                                              "sectionId": str(sectionId)
                                          }}))
-        # TODO: notify other members
         
     async def __createTask(self, data, websocket):
         boardId = data["boardId"]
@@ -135,8 +134,6 @@ class Server:
         section = Section.objects.get(id=sectionId)
         section.title = sectionTitle
         section.save()
-
-        # TODO: notify other members
         
     async def __deleteBoard(self, data, websocket):
         boardId = data["boardId"]
@@ -146,6 +143,12 @@ class Server:
         
         for sectionId in sectionIds:
             section = Section.objects.get(id=sectionId)
+            taskIds = section.task_ids
+            
+            for taskId in taskIds:
+                task = Task.objects.get(id=taskId)
+                task.delete()
+                
             section.delete()
         
         for memberUsername in memberUsernames:
@@ -153,18 +156,31 @@ class Server:
             account.update(pull__board_ids=boardId)
             
         board.delete()
-        #TODO: delete tasks
         
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         board = Board.objects.get(id=boardId)
         section = Section.objects.get(id=sectionId)
+        taskIds = section.task_ids
         
-        #TODO: delete tasks
+        for taskId in taskIds:
+            task = Task.objects.get(id=taskId)
+            task.delete()
+        
         board.update(pull__section_ids=sectionId)
         section.delete()
-
+        
+    async def __deleteTask(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        taskId = data["taskId"]
+        section = Section.objects.get(id=sectionId)
+        task = Task.objects.get(id=taskId)
+        
+        section.update(pull__task_ids=taskId)
+        task.delete()
+        
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
         boardIds = account.board_ids
@@ -199,23 +215,26 @@ class Server:
         elif action == 'createBoard':
             await self.__createBoard(message["data"], websocket)
 
-        elif action == 'requestBoardDetail':
-            await self.__sendBoardDetail(message["data"], websocket)
-
         elif action == 'createSection':
             await self.__createSection(message["data"], websocket)
-
-        elif action == 'editSectionTitle':
-            await self.__editSectionTitle(message["data"], websocket)
             
         elif action == 'createTask':
             await self.__createTask(message["data"], websocket)
         
+        elif action == 'requestBoardDetail':
+            await self.__sendBoardDetail(message["data"], websocket)
+
+        elif action == 'editSectionTitle':
+            await self.__editSectionTitle(message["data"], websocket)
+            
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)
             
         elif action == 'deleteSection':
             await self.__deleteSection(message["data"], websocket)
+            
+        elif action == 'deleteTask':
+            await self.__deleteTask(message["data"], websocket)
 
         else:
             return

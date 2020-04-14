@@ -14,7 +14,7 @@ class User:
     def getBoards(self):
         return self.__boards
 
-    def addBoard(self, boardId, boardTitle):
+    def createBoard(self, boardId, boardTitle):
         board = Board(boardTitle, boardId)
         self.__boards[board.getId()] = board
 
@@ -29,7 +29,7 @@ class User:
 
             self.addSection(boardId, sectionId, sectionTitle)
 
-    def addSection(self, boardId, sectionId, sectionTitle, tasks={}):
+    def createSection(self, boardId, sectionId, sectionTitle, tasks={}):
         board = self.__boards[boardId]
         section = Section(sectionTitle, sectionId, tasks)
 
@@ -45,8 +45,13 @@ class User:
 
         board.editSectionTitle(sectionId, sectionTitle)
         
-    def addTask(self, boardId, sectionId, taskId, taskTitle):
+    def createTask(self, boardId, sectionId, taskId, taskTitle):
         board = self.__boards[boardId]
         task = Task(taskTitle, taskId)
         
         board.addTask(sectionId, task)
+        
+    def deleteTask(self, boardId, sectionid, taskId):
+        board = self.__boards[boardId]
+        
+        board.removeTask(sectionId, taskId)
