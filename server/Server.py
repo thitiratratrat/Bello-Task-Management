@@ -9,6 +9,7 @@ sys.path.append(
 from Section import Section
 from Board import Board
 from Account import Account
+from Task import Task
 
 connect('bello')
 
@@ -104,6 +105,28 @@ class Server:
                                              "sectionId": str(sectionId)
                                          }}))
         # TODO: notify other members
+        
+    async def __createTask(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        taskTitle = data["taskTitle"]
+        
+        task = Task(title=taskTitle)
+        task.save()
+        
+        taskId = task.id
+        section = Section.objects.get(id=sectionId)
+        
+        section.task_ids.append(taskId)
+        section.save()
+        
+        await websocket.send(json.dumps({"response": "createdTask",
+                                         "data": {
+                                             "boardId": boardId,
+                                             "sectionId": sectionId,
+                                             "taskId": str(taskId),
+                                             "taskTitle": taskTitle
+                                         }}))
 
     async def __editSectionTitle(self, data, websocket):
         sectionId = data["sectionId"]
@@ -184,6 +207,9 @@ class Server:
 
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
+            
+        elif action == 'createTask':
+            await self.__createTask(message["data"], websocket)
         
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)

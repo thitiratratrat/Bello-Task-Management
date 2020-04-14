@@ -1,5 +1,6 @@
 from Board import Board
 from Section import Section
+from Task import Task
 
 
 class User:
@@ -43,3 +44,9 @@ class User:
         board = self.__boards[boardId]
 
         board.editSectionTitle(sectionId, sectionTitle)
+        
+    def addTask(self, boardId, sectionId, taskId, taskTitle):
+        board = self.__boards[boardId]
+        task = Task(taskTitle, taskId)
+        
+        board.addTask(sectionId, task)
