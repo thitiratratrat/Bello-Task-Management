@@ -124,12 +124,22 @@ class Bello:
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
+        
         self.__websocket.send(json.dumps({"action": "editSectionTitle",
                                           "data": {
                                               "sectionId": sectionId,
                                               "sectionTitle": sectionTitle
                                           }}))
-
+        
+    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
+        self.__user.editTaskTitle(boardId, sectionId, taskId, taskTitle)
+        
+        self.__websocket.send(json.dumps({"action": "editTaskTitle",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskTitle": taskTitle
+                                          }}))
+        
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
                                           "data": {

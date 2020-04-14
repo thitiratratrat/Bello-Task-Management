@@ -28,5 +28,5 @@ class Section:
     def editTaskTitle(self, taskId, newTitle):
         task = self.__tasks[taskId]
 
-        task.editTaskTitle(newTitle)
+        task.editTitle(newTitle)
 
