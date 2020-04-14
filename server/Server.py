@@ -68,7 +68,7 @@ class Server:
                 taskDetail["comments"] = task.comments
                 taskDetail["tags"] = task.tags
                 
-                task[taskId] = taskDetail
+                task[str(taskId)] = taskDetail
             
             sectionDetail["task"] = task
 
@@ -158,14 +158,7 @@ class Server:
         memberUsernames = board.members
         
         for sectionId in sectionIds:
-            section = Section.objects.get(id=sectionId)
-            taskIds = section.task_ids
-            
-            for taskId in taskIds:
-                task = Task.objects.get(id=taskId)
-                task.delete()
-                
-            section.delete()
+            self.__deleteSectionById(sectionId)
         
         for memberUsername in memberUsernames:
             account = Account.objects.get(username=memberUsername)
@@ -177,25 +170,18 @@ class Server:
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         board = Board.objects.get(id=boardId)
-        section = Section.objects.get(id=sectionId)
-        taskIds = section.task_ids
         
-        for taskId in taskIds:
-            task = Task.objects.get(id=taskId)
-            task.delete()
-        
+        self.__deleteSectionById(sectionId)
         board.update(pull__section_ids=sectionId)
-        section.delete()
         
     async def __deleteTask(self, data, websocket):
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         taskId = data["taskId"]
         section = Section.objects.get(id=sectionId)
-        task = Task.objects.get(id=taskId)
         
+        self.__deleteTaskById(taskId)
         section.update(pull__task_ids=taskId)
-        task.delete()
         
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -212,6 +198,20 @@ class Server:
             boardTitles[str(boardId)] = board.title
 
         return boardTitles
+    
+    def __deleteTaskById(self, taskId):
+        task = Task.objects.get(id=taskId)
+        
+        task.delete()
+        
+    def __deleteSectionById(self, sectionId):
+        section = Section.objects.get(id=sectionId)
+        taskIds = section.task_ids
+        
+        for taskId in taskIds:
+            self.__deleteTaskById(taskId)
+            
+        section.delete()
 
     def __isValidAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
