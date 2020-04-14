@@ -53,10 +53,10 @@ class Bello:
             self.__ui.addBoard(boardTitlesAndIds)
 
         elif response == "createdBoard":
-            boardTitleAndId = message["data"]
-            boardDict = {boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
+            boardDetail = message["data"]
+            boardDict = {boardDetail['boardId']: boardDetail['boardTitle']}
 
-            self.__createBoard(boardTitleAndId)
+            self.__createBoard(boardDetail)
             self.__ui.addBoard(boardDict)
 
         elif response == "createdSection":
@@ -64,6 +64,12 @@ class Bello:
 
             self.__createSection(sectionDetail)
             self.__ui.signalAddSection.signalDict.emit(sectionDetail)
+            
+        elif response == "createdTask":
+            taskDetail = message["data"]
+            
+            self.__createTask(taskDetail)
+            #TODO: create task UI
 
         elif response == "boardDetail":
             boardDetail = message["data"]
@@ -82,9 +88,9 @@ class Bello:
         for boardId, boardTitle in boardTitlesAndIds.items():
             self.__user.addBoard(boardId, boardTitle)
 
-    def __createBoard(self, boardTitleAndId):
-        boardTitle = boardTitleAndId["boardTitle"]
-        boardId = boardTitleAndId["boardId"]
+    def __createBoard(self, boardDetail):
+        boardTitle = boardDetail["boardTitle"]
+        boardId = boardDetail["boardId"]
 
         self.__user.addBoard(boardId, boardTitle)
 
@@ -94,6 +100,14 @@ class Bello:
         sectionTitle = sectionDetail["sectionTitle"]
 
         self.__user.addSection(boardId, sectionId, sectionTitle)
+        
+    def __createTask(self, taskDetail):
+        boardId = taskDetail["boardId"]
+        sectionId = taskDetail["sectionId"]
+        taskId = taskDetail["taskId"]
+        taskTitle = taskDetail["taskTitle"]
+        
+        self.__user.addTask(boardId, sectionId, taskId, taskTitle)
 
     def __addBoardDetail(self, boardDetail):
         boardId = boardDetail["boardId"]
@@ -164,6 +178,14 @@ class Bello:
                                           "data": {
                                               "boardId": boardId,
                                               "sectionTitle": sectionTitle
+                                          }}))
+        
+    def sendCreateTaskToServer(self, boardId, sectionId, taskTitle):
+        self.__websocket.send(json.dumps({"action": "createTask",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId,
+                                              "taskTitle": taskTitle
                                           }}))
 
     def sendRequestBoardDetailoServer(self, boardId):

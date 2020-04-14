@@ -32,3 +32,8 @@ class Board:
         section = self.__sections[sectionId]
 
         section.editTitle(newSectionTitle)
+
+    def addTask(self, sectionId, task):
+        section = self.__sections[sectionId]
+        
+        section.addTask(task)

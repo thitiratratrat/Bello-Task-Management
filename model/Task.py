@@ -2,13 +2,17 @@ from typing import List
 
 
 class Task:
-    def __init__(self, title: str):
+    def __init__(self, title: str, id):
+        self.__id = id
         self.__title = title
         self.__dueDate = None
         self.__image = None
         self.__responsibleMemberUsernames = []
         self.__comments = []
         self.__tags = []
+
+    def getId(self):
+        return self.__id
 
     def getTitle(self) -> str:
         return self.__title
