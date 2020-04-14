@@ -46,3 +46,6 @@ class Task:
 
     def removeDueDate(self):
         self.__dueDate = None
+
+    def editTitle(self, newTitle):
+        self.__title = newTitle

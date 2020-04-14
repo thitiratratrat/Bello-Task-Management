@@ -55,6 +55,11 @@ class User:
         board = self.__boards[boardId]
 
         board.editSectionTitle(sectionId, sectionTitle)
+        
+    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
+        board = self.__boards[boardId]
+        
+        board.editTaskTitle(sectionId, taskId, taskTitle)
 
     def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
         board = self.__boards[boardId]
