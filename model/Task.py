@@ -2,14 +2,14 @@ from typing import List
 
 
 class Task:
-    def __init__(self, title: str, id):
+    def __init__(self, title, id, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
         self.__id = id
         self.__title = title
-        self.__dueDate = None
+        self.__dueDate = dueDate
         self.__image = None
-        self.__responsibleMemberUsernames = []
-        self.__comments = []
-        self.__tags = []
+        self.__responsibleMemberUsernames = reponsibleMemberUsernames
+        self.__comments = comments
+        self.__tags = tags
 
     def getId(self):
         return self.__id
@@ -39,7 +39,7 @@ class Task:
         self.__comments.append(comment)
 
     def addResponsibleMemberUsername(self, username: str):
-        self.__responsibleMemberUsernames.append(username)
+        self.__responsibleMemberUsernames.add(username)
 
     def addDueDate(self, date: str):
         self.__dueDate = date

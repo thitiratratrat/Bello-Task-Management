@@ -52,12 +52,28 @@ class Server:
         for sectionId in sectionIds:
             sectionDetail = {}
             section = Section.objects.get(id=sectionId)
-            title = section.title
-            sectionDetail["title"] = title
+            sectionTitle = section.title
+            sectionDetail["title"] = sectionTitle
+            
+            task = {}
+            taskIds = section.task_ids
+            
+            for taskId in taskIds:
+                taskDetail = {}
+                task = Task.objects.get(id=taskId)
+                taskTitle = task.title
+                taskDetail["title"] = taskTitle
+                taskDetail["responsibleMembers"] = task.responsible_members
+                taskDetail["dueDate"] = task.due_date
+                taskDetail["comments"] = task.comments
+                taskDetail["tags"] = task.tags
+                
+                task[taskId] = taskDetail
+            
+            sectionDetail["task"] = task
 
             detail[str(sectionId)] = sectionDetail
 
-        # TODO: get tasks
         await websocket.send(json.dumps({"response": "boardDetail",
                                          "data": {
                                              "boardId": boardId,
