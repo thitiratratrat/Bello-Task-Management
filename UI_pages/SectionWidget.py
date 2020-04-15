@@ -8,10 +8,10 @@ from Section import *
 from TaskWidget import *
 
 class SectionWidget(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super(SectionWidget, self).__init__(parent)
         self.parent =parent
-
+        self.taskWidget =TaskWidget()
         self.boardId = None
         self.sectionId = None
         self.sectionIndex = 0
@@ -43,7 +43,6 @@ class SectionWidget(QWidget):
         
         self.createTaskTitleDialog = CustomDialog(
             self, 'Create new task', 'Task name: ', 'Create')
-        self.createTaskTitleDialog.button.clicked.connect(self.createTask)
 
         self.addTaskBtn =  QPushButton("Add task")
         self.addTaskBtn.setIcon(QIcon('images/add1.png'))
@@ -51,7 +50,7 @@ class SectionWidget(QWidget):
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addTaskBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.addTaskBtn.clicked.connect(self.createTaskDialog)
-
+        self.createTaskTitleDialog.button.clicked.connect(self.validateTaskTitle)
         self.sectionTitle.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.sectionTitleLayout.addWidget(self.sectionTitle)
         self.sectionTitleLayout.addWidget(self.editSectionTitleBtn)
@@ -126,27 +125,40 @@ class SectionWidget(QWidget):
         self.palette.setColor(QPalette.Window, QColor('#52719F'))
         self.setPalette(self.palette)
 
+    def getCreateTaskTitle(self):
+        return self.createTaskTitleDialog.lineEdit.text()
+
     def createTaskDialog(self):
         self.createTaskTitleDialog.show()
 
-    def createTask(self):
-        if(not self.validateTaskTitle()):
-            return
-        self.createTaskTitleDialog.reject()
-        title = self.createTaskTitleDialog.lineEdit.text()
-        self.addTask(title)
+    def createNewTask(self,taskDict):
+        boardId = taskDict.get("boardId")
+        sectionId = taskDict.get("sectionId")
+        taskId = taskDict.get("taskId")
+        taskTitle = taskDict.get("taskTitle")
         
-    
+        index = self.section.count()
+        self.addTask(taskTitle, boardId, sectionId, taskId, index)
+        
     def validateTaskTitle(self):
-        if self.createTaskTitleDialog.lineEdit.text() == '':
+        taskTitle = self.getCreateTaskTitle()
+        if taskTitle== "":
             createErrorDialogBox(
                 self, "Error", "Task titile can not be empty")
-            return False
-        return True
+            return 
+        boardId = self.parent.getBoardId()
+        sectionId = self.getSectionId()
+        self.createTaskTitleDialog.close()
 
-    def addTask(self,taskTitle):
+        self.parent.parent.createTask(boardId, sectionId, taskTitle)
+
+    def addTask(self, taskTitle, boardId, sectionId, taskId, index):
         self.taskWidget = TaskWidget(self)
+        self.taskWidget.setTaskId(taskId)
+        self.taskWidget.setTaskSectionId(sectionId)
+        self.taskWidget.setTaskBoardId(boardId)
         self.taskWidget.setTaskTitle(taskTitle)
+        self.taskWidget.setTaskIndex(index)
         self.taskItem = QListWidgetItem(self.section)
         self.taskItem.setSizeHint(self.taskWidget.sizeHint())
         self.section.addItem(self.taskItem)

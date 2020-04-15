@@ -10,6 +10,11 @@ class TaskWidget(QWidget):
         super(TaskWidget,self).__init__(parent)
         self.parent = parent
         self.taskTitle = QLabel("name")
+
+        self.taskSectionId = None
+        self.taskBoardId = None
+        self.taskId =None
+
         self.taskIndex = 0
         self.editTaskBtn = QToolButton() 
         self.editTaskBtn.setIcon(QIcon("images/editBtn.png"))
@@ -40,9 +45,18 @@ class TaskWidget(QWidget):
     def setTaskTitle(self,newTaskTitle):
         self.taskTitle.setText(newTaskTitle)
     
-    def setSectionIndex(self,taskIndex):
+    def setTaskIndex(self,taskIndex):
         self.taskIndex = taskIndex
     
+    def setTaskId(self,taskId):
+        self.taskId = taskId
+
+    def setTaskSectionId(self,taskSectionId):
+        self.taskSectionId = taskSectionId
+
+    def setTaskBoardId(self,taskBoardId):
+        self.taskBoardId = taskBoardId
+
     def getTaskTitle(self):
         return self.taskTitle.text()
     
