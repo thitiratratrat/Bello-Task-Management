@@ -26,11 +26,11 @@ class User:
 
         board.addSection(section)
         
-    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
+    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, responsibleMemberUsernames=set(), comments=[], tags=[]):
         board = self.__boards[boardId]
-        task = Task(taskTitle, taskId, taskTitle, dueDate,
-                    responsibleMemberUsernmames, comments, tags)
-
+        task = Task(taskTitle, taskId, dueDate,
+                    responsibleMemberUsernames, comments, tags)
+      
         board.addTask(sectionId, task)
 
     def deleteBoard(self, boardId):
