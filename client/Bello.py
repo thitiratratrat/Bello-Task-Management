@@ -17,7 +17,6 @@ class Bello:
         self.__uri = "ws://localhost:8765"
         self.__user = None
         self.__ui = None
-
         self.__connect()
 
         self.receiveThread = threading.Thread(
@@ -199,7 +198,6 @@ class Bello:
                                           }}))
         
     def sendCreateTaskToServer(self, boardId, sectionId, taskTitle):
-        print("hihihihi")
         self.__websocket.send(json.dumps({"action": "createTask",
                                           "data": {
                                               "boardId": boardId,
