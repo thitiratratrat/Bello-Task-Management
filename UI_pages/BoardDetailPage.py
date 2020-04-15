@@ -15,6 +15,7 @@ class BoardDetailPage(QWidget):
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
         self.sectionWidget = None
+        self.taskWidget = None
         self.widget = QWidget()
         self.dialogCreate = CustomDialog(
             self, "create new section", "Section name:", "Create")
@@ -23,6 +24,7 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
         self.widget.setLayout(self.sectionLayout)
@@ -71,13 +73,16 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
 
+        #self.sectionWidget.section.setAcceptDrops(True)
+        #self.sectionWidget.section.setDragEnabled(True)
+        #self.sectionWidget.section.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        #self.sectionWidget.section.setDropIndicatorShown(True)
+    
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
                 self, "Error", "Board titile can not be empty")
-
             return False
-
         return True
 
     def initBoardDetail(self, boardDetailDict):

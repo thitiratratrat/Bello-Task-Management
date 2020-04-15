@@ -3,13 +3,13 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashboardPage import *
+from DashBoardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -146,6 +146,8 @@ class BelloUI(QMainWindow):
     def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
     
+    
+
     def editSectionTitle(self, sectionId, sectionTitle):
         boardId = self.boardDetailPage.getBoardId()
 
