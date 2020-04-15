@@ -5,7 +5,6 @@ from PySide2.QtGui import *
 from dialogBox import * 
 from CustomDialog import *
 
-
 class SectionWidget(QWidget):
     def __init__(self, parent):
         super(SectionWidget, self).__init__(parent)
