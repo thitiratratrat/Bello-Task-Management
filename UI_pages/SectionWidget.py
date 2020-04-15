@@ -130,15 +130,6 @@ class SectionWidget(QWidget):
 
     def createTaskDialog(self):
         self.createTaskTitleDialog.show()
-
-    def createNewTask(self,taskDict):
-        boardId = taskDict.get("boardId")
-        sectionId = taskDict.get("sectionId")
-        taskId = taskDict.get("taskId")
-        taskTitle = taskDict.get("taskTitle")
-        
-        index = self.section.count()
-        self.addTask(taskTitle, boardId, sectionId, taskId, index)
         
     def validateTaskTitle(self):
         taskTitle = self.getCreateTaskTitle()
@@ -163,3 +154,5 @@ class SectionWidget(QWidget):
         self.taskItem.setSizeHint(self.taskWidget.sizeHint())
         self.section.addItem(self.taskItem)
         self.section.setItemWidget(self.taskItem,self.taskWidget)
+
+    

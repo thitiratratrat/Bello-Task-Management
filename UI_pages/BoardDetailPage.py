@@ -14,7 +14,6 @@ class BoardDetailPage(QWidget):
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
-        self.sectionWidget = None
         self.taskWidget = None
         self.widget = QWidget()
         self.dialogCreate = CustomDialog(
@@ -72,12 +71,11 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
-
         #self.sectionWidget.section.setAcceptDrops(True)
         #self.sectionWidget.section.setDragEnabled(True)
         #self.sectionWidget.section.setSelectionMode(QAbstractItemView.ExtendedSelection)
         #self.sectionWidget.section.setDropIndicatorShown(True)
-    
+
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
@@ -86,14 +84,30 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        self.setBoardId(boardDetailDict.get("boardId"))
+        #print(boardDetailDict)
+        boardId = boardDetailDict.get("boardId")
+        self.setBoardId(boardId)
         sectionDict = boardDetailDict.get("boardDetail")
-        index = 0 
+        indexSection = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
-            self.addSectionToWidget(sectionTitle, sectionId,index)
-            index += 1
+            taskDict = sectionTitleDict.get("task")
+            self.addSectionToWidget(sectionTitle, sectionId,indexSection)
+            indexSection += 1
+            for taskId, taskInfo in taskDict.items():
+                taskInfoDict = taskInfo
+                taskTitle = taskInfoDict.get("title")
+                taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
+                taskDuedate = taskInfoDict.get("duedate")
+                taskComments = taskInfoDict.get("comments")
+                taskTags = taskInfoDict.get("tags")
+
+                #TODO setTaskComment, setTaskRespon, setTaskDuedate, setTaskComment
+                for i in range (self.sectionLayout.count()):
+                    if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
+                        indexTask = self.sectionLayout.itemAt(i).widget().section.count()
+                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -108,3 +122,16 @@ class BoardDetailPage(QWidget):
     def clearAllSection(self):
         for i in reversed(range(self.sectionLayout.count())): 
             self.sectionLayout.itemAt(i).widget().deleteLater()
+    
+    def createNewTask(self,taskDict):
+        boardId = taskDict.get("boardId")
+        sectionId = taskDict.get("sectionId")
+        taskId = taskDict.get("taskId")
+        taskTitle = taskDict.get("taskTitle")
+        
+        for i in range (self.sectionLayout.count()):
+            if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
+                index = self.sectionLayout.itemAt(i).widget().section.count()
+                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index)
+    
+    

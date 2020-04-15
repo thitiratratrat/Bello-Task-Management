@@ -9,13 +9,16 @@ class TaskWidget(QWidget):
     def __init__(self,parent =None):
         super(TaskWidget,self).__init__(parent)
         self.parent = parent
-        self.taskTitle = QLabel("name")
 
         self.taskSectionId = None
         self.taskBoardId = None
         self.taskId =None
-
         self.taskIndex = 0
+
+        self.taskTitle = QLabel("name")
+        self.taskTitle.setFont(QFont("Century Gothic",10,QFont.Bold))
+        self.taskTitle.setStyleSheet("color: #31446F")
+        
         self.editTaskBtn = QToolButton() 
         self.editTaskBtn.setIcon(QIcon("images/editBtn.png"))
         self.editTaskBtn.clicked.connect(self.editTask)
@@ -26,8 +29,10 @@ class TaskWidget(QWidget):
         self.deleteTaskBtn = QToolButton()
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
 
-        #self.tagColor = "tagColor"
-        self.member = QLabel("C") 
+        self.dueDateBtn = QPushButton("12-05-2020")
+        self.tagColor = QPushButton("tag")
+
+        self.member = QLabel("c") 
         #self.member.setStyleSheet("border-radius:100;background-color:red")
         
         self.taskTitleAndEditLayout = QHBoxLayout()
@@ -36,9 +41,15 @@ class TaskWidget(QWidget):
         self.taskTitleAndEditLayout.addWidget(self.editTaskBtn)
         self.taskTitleAndEditLayout.addWidget(self.deleteTaskBtn)    
 
+        self.taskDueDateTagLayout = QHBoxLayout()
+        self.taskDueDateTagLayout.addWidget(self.tagColor)
+        self.taskDueDateTagLayout.addWidget(self.dueDateBtn)
+        self.taskDueDateTagLayout.addStretch(1)
+        self.taskDueDateTagLayout.addWidget(self.member)
+
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
-        self.taskLayout.addWidget(self.member)
+        self.taskLayout.addLayout(self.taskDueDateTagLayout)
 
         self.setLayout(self.taskLayout)
 
@@ -87,3 +98,10 @@ class TaskWidget(QWidget):
 
     def closeEditDialogBox(self):
         self.editTaskTitleDialog.close()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    w = TaskWidget()
+    w.resize(640, 480)
+    w.show()
+    sys.exit(app.exec_())
