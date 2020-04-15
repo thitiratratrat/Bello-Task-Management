@@ -22,6 +22,8 @@ class BelloUI(QMainWindow):
 
         self.signalAddSection = CustomSignal()
         self.signalInitBoardDetail = CustomSignal()
+        self.signalAddTask = CustomSignal()
+
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
 
@@ -31,6 +33,8 @@ class BelloUI(QMainWindow):
 
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
+        self.signalAddTask.signalDict.connect(self.addTask)
+
         self.signalShowUsernameAlreadyExists.signalDict.connect(
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
@@ -51,9 +55,8 @@ class BelloUI(QMainWindow):
         self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
-
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
-
+        
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -123,6 +126,12 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
 
+    def createTask(self,boardId, sectionId, taskTitle):
+        print("boardId",boardId)
+        print("sectionId ",sectionId)
+        print("taskTitle: ", taskTitle)
+        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle)
+
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
 
@@ -146,7 +155,9 @@ class BelloUI(QMainWindow):
     def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
     
-    
+    def addTask(self,taskDict):
+        print("addTask")
+        self.boardDetailPage.section.createNewTask(taskDict)
 
     def editSectionTitle(self, sectionId, sectionTitle):
         boardId = self.boardDetailPage.getBoardId()
