@@ -168,14 +168,16 @@ class SectionWidget(QWidget):
 
     def deleteTask(self):
         self.selectTask = self.section.selectedItems()
+        
         if not self.selectTask:
             return
+        
         for item in self.selectTask:
             self.deleteTaskWidget = self.section.itemWidget(item)
             #print(self.deleteTaskWidget.getTaskId())
             self.section.takeItem(self.section.row(item))
-            return self.deleteTaskWidget.getTaskId()
-
+            
+        self.parent.parent.deleteTask(self.boardId, self.sectionId, self.deleteTaskWidget.getTaskId())
 
     def dragtest(self):
         print(self.section.currentItem())

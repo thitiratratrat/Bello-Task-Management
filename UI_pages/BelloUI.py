@@ -3,13 +3,13 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashBoardPage import *
+from DashboardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 
 from Bello import *
 
@@ -132,7 +132,7 @@ class BelloUI(QMainWindow):
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
 
-        self.bello.sendRequestBoardDetailoServer(boardId)
+        self.bello.sendRequestBoardDetailToServer(boardId)
 
     def __deleteBoard(self):
         boardId = self.dashboardPage.deleteSelectBoard()
@@ -145,6 +145,9 @@ class BelloUI(QMainWindow):
         
     def deleteSection(self, boardId, sectionId):
         self.bello.deleteSection(boardId, sectionId)
+        
+    def deleteTask(self, boardId, sectionId, taskId):
+        self.bello.deleteTask(boardId, sectionId, taskId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
@@ -159,6 +162,11 @@ class BelloUI(QMainWindow):
         boardId = self.boardDetailPage.getBoardId()
 
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
+        
+    def editTaskTitle(self, sectionId, taskId, taskTitle):
+        boardId = self.boardDetailPage.getBoardId()
+        
+        self.bello.editTaskTitle(boardId, sectionId, taskId, taskTitle)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
