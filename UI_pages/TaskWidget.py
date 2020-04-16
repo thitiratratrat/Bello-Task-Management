@@ -28,6 +28,7 @@ class TaskWidget(QWidget):
 
         self.deleteTaskBtn = QToolButton()
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
+        self.deleteTaskBtn.clicked.connect(self.parent.deleteTask)
 
         self.dueDateBtn = QPushButton("12-05-2020")
         self.tagColor = QPushButton("tag")
@@ -71,11 +72,17 @@ class TaskWidget(QWidget):
     def getTaskTitle(self):
         return self.taskTitle.text()
     
+    def getTaskId(self):
+        return self.taskId 
+
     def getNewTaskTitle(self):
         return self.editTaskTitleDialog.lineEdit.text()
 
     def getTaskIndex(self):
         return self.taskIndex
+
+    def getTaskSectionId(self):
+        return self.taskSectionId
 
     def editTask(self):
         self.editTaskTitleDialog.show()
@@ -95,13 +102,21 @@ class TaskWidget(QWidget):
         else:
             createErrorDialogBox(self,"Error","Task title can't be null")
             return False
-
+        
     def closeEditDialogBox(self):
         self.editTaskTitleDialog.close()
 
+    '''
+    def mouseMoveEvent(self, event):
+        mimeData = QMimeData()
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        dropAction = drag.start(Qt.MoveAction)'''
+
+'''
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = TaskWidget()
     w.resize(640, 480)
     w.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec_())'''

@@ -71,10 +71,6 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
-        #self.sectionWidget.section.setAcceptDrops(True)
-        #self.sectionWidget.section.setDragEnabled(True)
-        #self.sectionWidget.section.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        #self.sectionWidget.section.setDropIndicatorShown(True)
 
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
@@ -84,7 +80,6 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        #print(boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         sectionDict = boardDetailDict.get("boardDetail")
@@ -119,6 +114,15 @@ class BoardDetailPage(QWidget):
             
         self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
     
+    def deleteTask(self,task):
+        print("start Delete")
+        print("task: ",task)
+        '''for i in range(self.sectionLayout.count()):
+            if(self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
+                deleteTaskId = self.sectionLayout.itemAt(i).widget().deleteTask() 
+                print("delete finish: ",deleteTaskId)'''
+
+
     def clearAllSection(self):
         for i in reversed(range(self.sectionLayout.count())): 
             self.sectionLayout.itemAt(i).widget().deleteLater()

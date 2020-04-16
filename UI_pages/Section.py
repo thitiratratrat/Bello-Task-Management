@@ -3,27 +3,30 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
-class Section(QWidget):
-    def __init__(self,parent=None):
-        super(Section, self).__init__(parent)
+class Section(QListWidget):
+    def __init__(self,type, parent=None):
+        super(Section).__init__(parent)
         self.parent =parent
-        self.taskWidget = TaskWidget(self)
-        self.setFixedSize(200,420)
-
+       
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setAcceptDrops(True)
         self.viewport().setAcceptDrops(True)
         self.setDropIndicatorShown(True)
 
-    def addTask(self):
-        self.taskWidget = TaskWidget(self)
-        #self.taskWidget.setTaskTitle(taskTitle)
-        self.taskItem = QListWidgetItem(self.section)
-        self.taskItem.setSizeHint(self.taskWidget.sizeHint())
-        self.addItem(self.taskItem)
-        self.setItemWidget(self.taskItem,self.taskWidget)
 
+    def dragEnterEvent(self,event):
+        print(event)
+        if(event.mimeData().hasText()):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self,event):
+        self.addItem(event.mimeData().item())
+        #self.setItemWidget(self.taskItem,self.taskWidget)
+
+    '''
     def startDrag(self, supportedActions):
         drag =  QDrag(self)
         t = [i for i in self.selectedItems()]
@@ -58,4 +61,4 @@ class Section(QWidget):
     def dropMimeData(self, index, mimedata, action):
         super(Section, self).dropMimeData(index, mimedata, action)
         return True
-        
+    '''

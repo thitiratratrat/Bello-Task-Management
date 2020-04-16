@@ -11,14 +11,20 @@ class SectionWidget(QWidget):
     def __init__(self, parent=None):
         super(SectionWidget, self).__init__(parent)
         self.parent =parent
-        self.taskWidget =TaskWidget()
+        self.taskWidget =None
         self.boardId = None
         self.sectionId = None
         self.sectionIndex = 0
+        
         self.section = QListWidget(self)
 
-        self.section.setFixedSize(200, 420)
+        #self.section = Section(self)
+        
+        #self.section.dropMimeData(self.section.count(), )
 
+        self.section.setFixedSize(200, 420)
+        #self.section.itemPressed.connect(self.dragtest)
+        
         self.sectionTitleLayout = QHBoxLayout()
         self.sectionTitle = QLabel("Sectioname")
         self.sectionTitle.setStyleSheet("color:white")
@@ -61,6 +67,11 @@ class SectionWidget(QWidget):
         self.mainSectionLayout.addWidget(self.section)
         self.mainSectionLayout.addWidget(self.addTaskBtn)
         self.setColor()
+        
+        self.section.setDragDropMode(QAbstractItemView.DragDrop)
+        self.section.setAcceptDrops(True)
+        self.section.setDragEnabled(True)
+
         self.setLayout(self.mainSectionLayout)
 
     def showEditSectionTitleDialog(self):
@@ -155,4 +166,26 @@ class SectionWidget(QWidget):
         self.section.addItem(self.taskItem)
         self.section.setItemWidget(self.taskItem,self.taskWidget)
 
+    def deleteTask(self):
+        self.selectTask = self.section.selectedItems()
+        if not self.selectTask:
+            return
+        for item in self.selectTask:
+            self.deleteTaskWidget = self.section.itemWidget(item)
+            #print(self.deleteTaskWidget.getTaskId())
+            self.section.takeItem(self.section.row(item))
+            return self.deleteTaskWidget.getTaskId()
+
+
+    def dragtest(self):
+        print(self.section.currentItem())
     
+    def dragEnterEvent(self,event):
+        print(event)
+        if(event.mimeData().hasText()):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self,event):
+        self.section.addItem(event.mimeData().item())
