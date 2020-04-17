@@ -4,26 +4,33 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from dialogBox import * 
 from CustomDialog import *
-from Section import *
+from SectionWithTask import *
 from TaskWidget import *
 
 class SectionWidget(QWidget):
     def __init__(self, parent=None):
         super(SectionWidget, self).__init__(parent)
         self.parent =parent
-        self.taskWidget =None
+        self.taskWidget = None
         self.boardId = None
         self.sectionId = None
         self.sectionIndex = 0
-        
-        self.section = QListWidget(self)
+        self.setFixedSize(230,380)
 
-        #self.section = Section(self)
-        
-        #self.section.dropMimeData(self.section.count(), )
+        self.section = SectionWithTask(self)
+        self.scrollAreaTask = QScrollArea()
 
-        self.section.setFixedSize(200, 420)
-        #self.section.itemPressed.connect(self.dragtest)
+        self.sectionTaskLayout = QVBoxLayout()
+        self.sectionTaskLayout.setAlignment(Qt.AlignTop)
+        self.sectionTaskLayout.setContentsMargins(QMargins(5,10,5,10))
+    
+        self.section.setLayout(self.sectionTaskLayout)
+        
+        self.scrollAreaTask.setWidgetResizable(True)
+        self.scrollAreaTask.setWidget(self.section)
+        
+        self.scrollAreaTask.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scrollAreaTask.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         
         self.sectionTitleLayout = QHBoxLayout()
         self.sectionTitle = QLabel("Sectioname")
@@ -64,14 +71,9 @@ class SectionWidget(QWidget):
 
         self.mainSectionLayout = QVBoxLayout()
         self.mainSectionLayout.addLayout(self.sectionTitleLayout)
-        self.mainSectionLayout.addWidget(self.section)
+        self.mainSectionLayout.addWidget(self.scrollAreaTask)
         self.mainSectionLayout.addWidget(self.addTaskBtn)
         self.setColor()
-        
-        self.section.setDragDropMode(QAbstractItemView.DragDrop)
-        self.section.setAcceptDrops(True)
-        self.section.setDragEnabled(True)
-
         self.setLayout(self.mainSectionLayout)
 
     def showEditSectionTitleDialog(self):
@@ -161,31 +163,16 @@ class SectionWidget(QWidget):
         self.taskWidget.setTaskBoardId(boardId)
         self.taskWidget.setTaskTitle(taskTitle)
         self.taskWidget.setTaskIndex(index)
-        self.taskItem = QListWidgetItem(self.section)
-        self.taskItem.setSizeHint(self.taskWidget.sizeHint())
-        self.section.addItem(self.taskItem)
-        self.section.setItemWidget(self.taskItem,self.taskWidget)
+        self.sectionTaskLayout.addWidget(self.taskWidget)
 
-    def deleteTask(self):
-        self.selectTask = self.section.selectedItems()
-        if not self.selectTask:
-            return
-        for item in self.selectTask:
-            self.deleteTaskWidget = self.section.itemWidget(item)
-            #print(self.deleteTaskWidget.getTaskId())
-            self.section.takeItem(self.section.row(item))
-            return self.deleteTaskWidget.getTaskId()
+    def deleteTask(self,index):
+        self.selectTask = self.sectionTaskLayout.takeAt(index).widget()
+        self.selectTask.setParent(None)
+        newIndex = self.sectionTaskLayout.count()
 
+        for index in range(newIndex):
+            self.item = self.sectionTaskLayout.itemAt(index).widget()
+            self.item.setTaskIndex(index)
+            print("index: ",index)
+            print("Title: ", self.item.getTaskTitle())
 
-    def dragtest(self):
-        print(self.section.currentItem())
-    
-    def dragEnterEvent(self,event):
-        print(event)
-        if(event.mimeData().hasText()):
-            event.accept()
-        else:
-            event.ignore()
-
-    def dropEvent(self,event):
-        self.section.addItem(event.mimeData().item())

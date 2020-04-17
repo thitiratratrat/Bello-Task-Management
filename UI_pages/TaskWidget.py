@@ -9,12 +9,12 @@ class TaskWidget(QWidget):
     def __init__(self,parent =None):
         super(TaskWidget,self).__init__(parent)
         self.parent = parent
-
+        self.setColor()
         self.taskSectionId = None
         self.taskBoardId = None
         self.taskId =None
         self.taskIndex = 0
-
+        self.setFixedSize(180,100)
         self.taskTitle = QLabel("name")
         self.taskTitle.setFont(QFont("Century Gothic",10,QFont.Bold))
         self.taskTitle.setStyleSheet("color: #31446F")
@@ -28,7 +28,7 @@ class TaskWidget(QWidget):
 
         self.deleteTaskBtn = QToolButton()
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
-        self.deleteTaskBtn.clicked.connect(self.parent.deleteTask)
+        self.deleteTaskBtn.clicked.connect(self.deleteTask)
 
         self.dueDateBtn = QPushButton("12-05-2020")
         self.tagColor = QPushButton("tag")
@@ -51,7 +51,7 @@ class TaskWidget(QWidget):
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
         self.taskLayout.addLayout(self.taskDueDateTagLayout)
-
+        #self.taskLayout.setAlignment(Qt.AlignTop)
         self.setLayout(self.taskLayout)
 
     def setTaskTitle(self,newTaskTitle):
@@ -84,6 +84,10 @@ class TaskWidget(QWidget):
     def getTaskSectionId(self):
         return self.taskSectionId
 
+    def deleteTask(self):
+        index = self.getTaskIndex()
+        taskId = self.parent.deleteTask(index)
+
     def editTask(self):
         self.editTaskTitleDialog.show()
     
@@ -106,12 +110,19 @@ class TaskWidget(QWidget):
     def closeEditDialogBox(self):
         self.editTaskTitleDialog.close()
 
-    '''
+    def setColor(self):
+        self.palette = QPalette()
+        self.setAutoFillBackground(True)
+        self.palette.setColor(QPalette.Window, QColor('#FAE76E'))
+        self.setPalette(self.palette)
+    
     def mouseMoveEvent(self, event):
-        mimeData = QMimeData()
         drag = QDrag(self)
+        mimeData = QMimeData()
+        print(mimeData)
         drag.setMimeData(mimeData)
-        dropAction = drag.start(Qt.MoveAction)'''
+        dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
+        #dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction)'''
 
 '''
 if __name__ == "__main__":

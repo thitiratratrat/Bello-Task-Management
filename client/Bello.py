@@ -9,6 +9,7 @@ sys.path.append(
 from User import User
 from Board import Board
 from BelloUI import *
+
 class Bello:
     def __init__(self):
         self.__websocket = websocket.WebSocket()
@@ -19,31 +20,39 @@ class Bello:
         self.receiveThread = threading.Thread(
             target=self.__handleServer, args=[])
         self.receiveThread.start()
+
     def __connect(self):
         self.__websocket.connect(self.__uri)
         self.__websocket.send(json.dumps({"action": "connected"}))
+
     def __handleMessage(self, message):
         response = message["response"]
         if response == "existedUsername":
             self.__ui.signalShowUsernameAlreadyExists.signalDict.emit(None)
+
         elif response == "createdAccount":
             self.__ui.gotoLoginTab()
+
         elif response == "loginSuccessful":
             username = self.__ui.getUsernameLogin()
             
             self.__ui.goToDashboardPage()
             self.__initUser(username)
+
         elif response == "loginFail":
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
+
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
             self.__initUserBoards(boardTitlesAndIds)
             self.__ui.addBoard(boardTitlesAndIds)
+
         elif response == "createdBoard":
             boardDetail = message["data"]
             boardDict = {boardDetail['boardId']: boardDetail['boardTitle']}
             self.__createBoard(boardDetail)
             self.__ui.addBoard(boardDict)
+
         elif response == "createdSection":
             sectionDetail = message["data"]
             self.__createSection(sectionDetail)
@@ -53,22 +62,27 @@ class Bello:
             taskDetail = message["data"]
             self.__createTask(taskDetail)
             self.__ui.signalAddTask.signalDict.emit(taskDetail)
+
         elif response == "boardDetail":
             boardDetail = message["data"]
             self.__addBoardDetail(boardDetail)
             self.__ui.goToBoardDetailPage()
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
+
         else:
             return
     def __initUser(self, username):
         self.__user = User(username)
+
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
             self.__user.createBoard(boardId, boardTitle)
+
     def __createBoard(self, boardDetail):
         boardTitle = boardDetail["boardTitle"]
         boardId = boardDetail["boardId"]
         self.__user.createBoard(boardId, boardTitle)
+
     def __createSection(self, sectionDetail):
         boardId = sectionDetail["boardId"]
         sectionId = sectionDetail["sectionId"]
@@ -82,15 +96,18 @@ class Bello:
         taskTitle = taskDetail["taskTitle"]
         
         self.__user.createTask(boardId, sectionId, taskId, taskTitle)
+
     def __addBoardDetail(self, boardDetail):
         boardId = boardDetail["boardId"]
         boardDetail = boardDetail["boardDetail"]
         self.__user.addBoardDetail(boardId, boardDetail)
+
     def __handleServer(self):
         while True:
             message = self.__websocket.recv()
             message = json.loads(message)
             self.__handleMessage(message)
+
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
         
@@ -180,8 +197,10 @@ class Bello:
         boardTitles = map(lambda board: board.getTitle(), boards.values())
         
         return boardTitle in boardTitles
+        
     def addUI(self, ui):
         self.__ui = ui
+
 if __name__ == '__main__':
     application = QApplication(sys.argv)
     bello = Bello()

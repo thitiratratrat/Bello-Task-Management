@@ -27,6 +27,7 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
         self.widget.setLayout(self.sectionLayout)
+        
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -71,7 +72,7 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
         self.sectionLayout.addWidget(self.sectionWidget)
-
+    
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
@@ -101,7 +102,7 @@ class BoardDetailPage(QWidget):
                 #TODO setTaskComment, setTaskRespon, setTaskDuedate, setTaskComment
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
-                        indexTask = self.sectionLayout.itemAt(i).widget().section.count()
+                        indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                         self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask)
 
     def deleteSection(self,index):
@@ -113,15 +114,6 @@ class BoardDetailPage(QWidget):
             self.item.setSectionIndex(index)
             
         self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
-    
-    def deleteTask(self,task):
-        print("start Delete")
-        print("task: ",task)
-        '''for i in range(self.sectionLayout.count()):
-            if(self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
-                deleteTaskId = self.sectionLayout.itemAt(i).widget().deleteTask() 
-                print("delete finish: ",deleteTaskId)'''
-
 
     def clearAllSection(self):
         for i in reversed(range(self.sectionLayout.count())): 
@@ -135,7 +127,7 @@ class BoardDetailPage(QWidget):
         
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
-                index = self.sectionLayout.itemAt(i).widget().section.count()
+                index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                 self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index)
     
     
