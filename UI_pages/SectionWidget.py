@@ -170,6 +170,7 @@ class SectionWidget(QWidget):
         self.selectTask = self.section.selectedItems()
         
         if not self.selectTask:
+            print("pass")
             return
         
         for item in self.selectTask:

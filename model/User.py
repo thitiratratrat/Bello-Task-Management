@@ -26,9 +26,9 @@ class User:
 
         board.addSection(section)
         
-    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, responsibleMemberUsernames=set(), comments=[], tags=[]):
+    def createTask(self, boardId, sectionId, taskId, taskTitle, taskOrder, dueDate=None, responsibleMemberUsernames=set(), comments=[], tags=[]):
         board = self.__boards[boardId]
-        task = Task(taskTitle, taskId, dueDate,
+        task = Task(taskTitle, taskId, taskOrder, dueDate,
                     responsibleMemberUsernames, comments, tags)
       
         board.addTask(sectionId, task)

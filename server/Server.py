@@ -125,14 +125,17 @@ class Server:
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         taskTitle = data["taskTitle"]
+        taskOrder = data["taskOrder"]
         
         task = Task(title=taskTitle)
+        
         task.save()
         
         taskId = task.id
         section = Section.objects.get(id=sectionId)
+        pushKey = "push__task_ids__{}".format(taskOrder)
         
-        section.task_ids.append(taskId)
+        section.update(**{pushKey: [taskId]})
         section.save()
         
         await websocket.send(json.dumps({"response": "createdTask",
@@ -140,7 +143,8 @@ class Server:
                                              "boardId": boardId,
                                              "sectionId": sectionId,
                                              "taskId": str(taskId),
-                                             "taskTitle": taskTitle
+                                             "taskTitle": taskTitle,
+                                             "taskOrder": taskOrder
                                          }}))
 
     async def __editSectionTitle(self, data, websocket):

@@ -6,7 +6,7 @@ class Section:
         self.__id = id
         self.__title = title
         self.__tasks = tasks
-
+    
     def getId(self):
         return self.__id
 
@@ -29,4 +29,5 @@ class Section:
         task = self.__tasks[taskId]
 
         task.editTitle(newTitle)
+    
 
