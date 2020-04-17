@@ -122,7 +122,7 @@ class TaskWidget(QWidget):
         print(mimeData)
         drag.setMimeData(mimeData)
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
-        #dropAction = drag.exec(Qt.CopyAction | Qt.MoveAction)'''
+        self.parent.setNewTaskWidgetOrder()
 
 '''
 if __name__ == "__main__":
