@@ -167,6 +167,12 @@ class BelloUI(QMainWindow):
         boardId = self.boardDetailPage.getBoardId()
         
         self.bello.editTaskTitle(boardId, sectionId, taskId, taskTitle)
+        
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        self.bello.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        self.bello.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)

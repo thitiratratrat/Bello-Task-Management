@@ -14,7 +14,7 @@ class Bello:
     def __init__(self):
         self.__websocket = websocket.WebSocket()
         self.__uri = "ws://localhost:8765"
-        self.__user = None
+        self.__user = Nones
         self.__ui = None
         
         self.__connect()
@@ -180,6 +180,27 @@ class Bello:
                                               "boardId": boardId,
                                               "sectionId": sectionId,
                                               "taskId": taskId
+                                          }}))
+        
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        self.__user.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        
+        self.__websocket.send(json.dumps({"action": "reorderTaskInSameSection",
+                                          "data": {
+                                              "sectionId": sectionId,
+                                              "taskId": taskId,
+                                              "taskOrder": taskOrder
+                                          }}))
+
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        self.__user.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
+        
+        self.__websocket.send(json.dumps({"action": "reorderTaskInDifferentSection",
+                                          "data": {
+                                              "sectionId": sectionId,
+                                              "newSectionId": newSectionId,
+                                              "taskId": taskId,
+                                              "taskOrder": taskOrder
                                           }}))
 
     def sendCreateBoardToServer(self, boardTitle):
