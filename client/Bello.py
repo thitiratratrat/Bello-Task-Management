@@ -103,8 +103,9 @@ class Bello:
         sectionId = taskDetail["sectionId"]
         taskId = taskDetail["taskId"]
         taskTitle = taskDetail["taskTitle"]
+        taskOrder = taskDetail["taskOrder"]
 
-        self.__user.createTask(boardId, sectionId, taskId, taskTitle)
+        self.__user.createTask(boardId, sectionId, taskId, taskTitle, taskOrder)
 
     def __addBoardDetail(self, boardDetail):
         boardId = boardDetail["boardId"]
@@ -195,12 +196,13 @@ class Bello:
                                               "sectionTitle": sectionTitle
                                           }}))
 
-    def sendCreateTaskToServer(self, boardId, sectionId, taskTitle):
+    def sendCreateTaskToServer(self, boardId, sectionId, taskTitle, taskOrder):
         self.__websocket.send(json.dumps({"action": "createTask",
                                           "data": {
                                               "boardId": boardId,
                                               "sectionId": sectionId,
-                                              "taskTitle": taskTitle
+                                              "taskTitle": taskTitle,
+                                              "taskOrder": taskOrder
                                           }}))
 
     def sendRequestBoardDetailToServer(self, boardId):

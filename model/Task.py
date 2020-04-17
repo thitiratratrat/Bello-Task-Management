@@ -2,9 +2,10 @@ from typing import List
 
 
 class Task:
-    def __init__(self, title, id, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
+    def __init__(self, title, id, order, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
         self.__id = id
         self.__title = title
+        self.__order = order
         self.__dueDate = dueDate
         self.__image = None
         self.__responsibleMemberUsernames = reponsibleMemberUsernames
@@ -14,8 +15,11 @@ class Task:
     def getId(self):
         return self.__id
 
-    def getTitle(self) -> str:
+    def getTitle(self):
         return self.__title
+    
+    def getOrder(self):
+        return self.__order
 
     def getResponsibleMemberUsernames(self) -> List[str]:
         return self.__responsibleMemberUsernames
