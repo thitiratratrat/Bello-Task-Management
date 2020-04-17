@@ -12,8 +12,6 @@ class SectionWithTask(QWidget):
         self.parent =parent
         self.setColor()
         self.setAcceptDrops(True)
-        #self.setFixedSize(200,420)
-     
 
     def setColor(self):
         self.palette = QPalette()
@@ -27,7 +25,12 @@ class SectionWithTask(QWidget):
         
     def dropEvent(self, event):
         cardSource=event.source()
+        #print(self.parent.getSectionId())
+        newSectionId =  self.parent.getSectionId()
+        cardSource.setTaskSectionId(newSectionId)
         self.parent.sectionTaskLayout.addWidget(cardSource)
+
+        #get the new taskWidget order after move the taskWidget to another section
+        self.parent.setNewTaskWidgetOrder()
         event.setDropAction(Qt.MoveAction)
         event.accept()
-
