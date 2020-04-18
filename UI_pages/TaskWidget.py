@@ -83,6 +83,9 @@ class TaskWidget(QWidget):
 
     def getTaskSectionId(self):
         return self.taskSectionId
+    
+    def getTaskBoardId(self):
+        return self.taskBoardId
 
     def deleteTask(self):
         index = self.getTaskIndex()

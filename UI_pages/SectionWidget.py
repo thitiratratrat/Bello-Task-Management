@@ -178,6 +178,12 @@ class SectionWidget(QWidget):
             self.item.setTaskIndex(index)
             print("index: ",index)
             print("Title: ", self.item.getTaskTitle())
+        
+        boardId = self.selectTask.getTaskBoardId()
+        sectionId = self.selectTask.getTaskSectionId()
+        taskId = self.selectTask.getTaskId()
+            
+        self.parent.parent.deleteTask(boardId, sectionId, taskId)
 
     def setNewTaskWidgetOrder(self):
         for i in range(self.sectionTaskLayout.count()):
