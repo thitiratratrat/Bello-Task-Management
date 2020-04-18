@@ -30,7 +30,8 @@ class TaskWidget(QWidget):
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
         self.deleteTaskBtn.clicked.connect(self.deleteTask)
 
-        self.dueDateBtn = QPushButton("12-05-2020")
+        self.dueDateBtn = QLabel("12-05-2020")
+        self.dueDateBtn.setStyleSheet("background-color: #FA8072; ")
         self.tagColor = QPushButton("tag")
 
         self.member = QLabel("c") 
@@ -51,7 +52,6 @@ class TaskWidget(QWidget):
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
         self.taskLayout.addLayout(self.taskDueDateTagLayout)
-        #self.taskLayout.setAlignment(Qt.AlignTop)
         self.setLayout(self.taskLayout)
 
     def setTaskTitle(self,newTaskTitle):
@@ -116,6 +116,9 @@ class TaskWidget(QWidget):
         self.palette.setColor(QPalette.Window, QColor('#FAE76E'))
         self.setPalette(self.palette)
     
+    def mouseDoubleClickEvent(self,event):
+        print("hit")
+
     def mouseMoveEvent(self, event):
         drag = QDrag(self)
         mimeData = QMimeData()
