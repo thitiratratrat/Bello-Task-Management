@@ -48,7 +48,7 @@ class Board:
         
         return section.removeTask(taskId)
         
-    def reoderTaskInSameSection(self, sectionId, taskId, taskOrder):
+    def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         section = self.__sections[sectionId]
 
         section.reorderTaskInSameSection(taskId, taskOrder)

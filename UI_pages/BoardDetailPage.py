@@ -71,6 +71,7 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.setSectionIndex(index)
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
+        self.sectionWidget.setBoardId(self.boardId)
         self.sectionLayout.addWidget(self.sectionWidget)
     
     def validateSectionTitle(self):
