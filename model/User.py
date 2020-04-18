@@ -26,12 +26,12 @@ class User:
 
         board.addSection(section)
         
-    def createTask(self, boardId, sectionId, taskId, taskTitle, dueDate=None, responsibleMemberUsernames=set(), comments=[], tags=[]):
+    def createTask(self, boardId, sectionId, taskId, taskTitle, taskOrder, dueDate=None, responsibleMemberUsernames=set(), comments=[], tags=[]):
         board = self.__boards[boardId]
         task = Task(taskTitle, taskId, dueDate,
                     responsibleMemberUsernames, comments, tags)
       
-        board.addTask(sectionId, task)
+        board.addTask(sectionId, taskOrder, task)
 
     def deleteBoard(self, boardId):
         self.__boards.pop(boardId, None)
@@ -41,10 +41,10 @@ class User:
 
         board.removeSection(sectionId)
         
-    def deleteTask(self, boardId, sectionid, taskId):
+    def deleteTask(self, boardId, sectionId, taskId):
         board = self.__boards[boardId]
 
-        board.removeTask(sectionId, taskId)
+        return board.removeTask(sectionId, taskId)
         
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         board = self.__boards[boardId]
@@ -63,6 +63,8 @@ class User:
 
             self.createSection(boardId, sectionId, sectionTitle)
 
+            taskOrder = 0
+            
             for taskId, taskDetail in sectionTasks.items():
                 taskTitle = taskDetail["title"]
                 responsibleMemberUsernames = taskDetail["responsibleMembers"]
@@ -70,6 +72,25 @@ class User:
                 comments = taskDetail["comments"]
                 tags = taskDetail["tags"]
 
-                self.createTask(boardId, sectionId, taskId, taskTitle,
+                self.createTask(boardId, sectionId, taskId, taskTitle, taskOrder,
                                 dueDate, responsibleMemberUsernames, comments, tags)
+                
+                taskOrder += 1
+                
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        board = self.__boards[boardId]
+        
+        board.reorderTaskInSameSection(sectionId, taskId, taskOrder)
+        
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        task = self.deleteTask(boardId, sectionId, taskId)
+        board = self.__boards[boardId]
+        
+        board.addTask(newSectionId, taskOrder, task)
+        
+        
+        
+        
+        
+    
 
