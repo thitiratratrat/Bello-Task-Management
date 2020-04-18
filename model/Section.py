@@ -24,6 +24,11 @@ class Section:
         self.__tasks[task.getId()] = task
         
         self.__taskOrders.insert(taskOrder, task.getId())
+        
+    def addTaskComment(self, taskId, taskComment):
+        task = self.__tasks[taskId]
+        
+        task.addComment(taskComment)
 
     def removeTask(self, taskId):
         self.__taskOrders.remove(taskId)

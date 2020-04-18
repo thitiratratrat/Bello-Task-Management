@@ -119,6 +119,15 @@ class Bello:
             message = json.loads(message)
             
             self.__handleMessage(message)
+            
+    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
+        self.__user.commentTask(boardId, sectionId, taskId, taskComment)
+        
+        self.__websocket.send(json.dumps({"action": "addTaskComment",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskComment": taskComment
+                                          }}))
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
