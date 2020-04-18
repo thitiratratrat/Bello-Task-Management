@@ -14,7 +14,7 @@ class Task:
     def getId(self):
         return self.__id
 
-    def getTitle(self) -> str:
+    def getTitle(self):
         return self.__title
 
     def getResponsibleMemberUsernames(self) -> List[str]:
@@ -28,7 +28,7 @@ class Task:
 
     def getTags(self) -> List[str]:
         return self.__tags
-
+    
     def addTag(self, tag: str):
         self.__tags.append(tag)
 

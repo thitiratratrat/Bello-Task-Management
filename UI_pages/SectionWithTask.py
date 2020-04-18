@@ -24,13 +24,30 @@ class SectionWithTask(QWidget):
         event.accept()
         
     def dropEvent(self, event):
+
+        isTaskIsSameSection = True
         cardSource=event.source()
-        #print(self.parent.getSectionId())
+        
+        sectionId = cardSource.getTaskSectionId()
         newSectionId =  self.parent.getSectionId()
+
+        if(newSectionId == sectionId):
+            isTaskIsSameSection = True
+        else: 
+            isTaskIsSameSection = False
+
         cardSource.setTaskSectionId(newSectionId)
         self.parent.sectionTaskLayout.addWidget(cardSource)
-
-        #get the new taskWidget order after move the taskWidget to another section
         self.parent.setNewTaskWidgetOrder()
+        
+        boardId = self.parent.getSectionBoardId()
+        taskId = cardSource.getTaskId()
+        taskOrder = cardSource.getTaskIndex()
+        
+        if(isTaskIsSameSection):
+            self.parent.parent.parent.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        else:
+            self.parent.parent.parent.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
+
         event.setDropAction(Qt.MoveAction)
         event.accept()

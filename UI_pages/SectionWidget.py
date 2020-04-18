@@ -91,6 +91,9 @@ class SectionWidget(QWidget):
     def getSectionTitle(self):
         return self.sectionTitle.text()
 
+    def getSectionBoardId(self):
+        return self.boardId
+
     def getSectionId(self):
         return self.sectionId
 
@@ -181,7 +184,3 @@ class SectionWidget(QWidget):
             sectionId = self.sectionTaskLayout.itemAt(i).widget().getTaskSectionId()
             taskTitle = self.sectionTaskLayout.itemAt(i).widget().getTaskTitle()
             self.sectionTaskLayout.itemAt(i).widget().setTaskIndex(i)
-            taskIndex = self.sectionTaskLayout.itemAt(i).widget().getTaskIndex()
-            print("sectionId: ",sectionId)
-            print("TaskId: ",taskIndex)
-            print("taskTitle: ", taskTitle)

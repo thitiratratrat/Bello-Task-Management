@@ -6,7 +6,8 @@ class Section:
         self.__id = id
         self.__title = title
         self.__tasks = tasks
-
+        self.__taskOrders = []
+    
     def getId(self):
         return self.__id
 
@@ -19,14 +20,23 @@ class Section:
     def editTitle(self, title):
         self.__title = title
 
-    def addTask(self, task):
+    def addTask(self, taskOrder, task):
         self.__tasks[task.getId()] = task
+        
+        self.__taskOrders.insert(taskOrder, task.getId())
 
     def removeTask(self, taskId):
-        self.__tasks.pop(taskId, None)
+        self.__taskOrders.remove(taskId)
+        
+        return self.__tasks.pop(taskId, None)
 
     def editTaskTitle(self, taskId, newTitle):
         task = self.__tasks[taskId]
 
         task.editTitle(newTitle)
+    
+    def reorderTaskInSameSection(self, taskId, taskOrder):
+        self.__taskOrders.remove(taskId)
+        self.__taskOrders.insert(taskOrder, taskId)
+        
 

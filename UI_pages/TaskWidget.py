@@ -24,7 +24,7 @@ class TaskWidget(QWidget):
         self.editTaskBtn.clicked.connect(self.editTask)
         self.editTaskTitleDialog = CustomDialog(
             self, 'Edit task title', 'Task name: ', 'Save')
-        self.editTaskTitleDialog.button.clicked.connect(self.handleEditSectionTitleBtn)
+        self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
 
         self.deleteTaskBtn = QToolButton()
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
@@ -91,13 +91,16 @@ class TaskWidget(QWidget):
     def editTask(self):
         self.editTaskTitleDialog.show()
     
-    def handleEditSectionTitleBtn(self):
+    def handleEditTaskTitleBtn(self):
         if not self.validateNewTaskTitle():
             return
+        
         newTaskTitle = self.getNewTaskTitle()
 
         self.setTaskTitle(newTaskTitle)
         self.closeEditDialogBox()
+        
+        self.parent.parent.parent.editTaskTitle(self.taskSectionId, self.taskId, self.getTaskTitle())
 
     def validateNewTaskTitle(self):
         newTaskTitle = self.getNewTaskTitle()
@@ -125,7 +128,7 @@ class TaskWidget(QWidget):
         print(mimeData)
         drag.setMimeData(mimeData)
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
-        self.parent.setNewTaskWidgetOrder()
+        #self.parent.setNewTaskWidgetOrder()
 
 '''
 if __name__ == "__main__":

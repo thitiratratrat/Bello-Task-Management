@@ -125,22 +125,25 @@ class Server:
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         taskTitle = data["taskTitle"]
+        taskOrder = data["taskOrder"]
         
         task = Task(title=taskTitle)
+        
         task.save()
         
         taskId = task.id
         section = Section.objects.get(id=sectionId)
+        pushKey = "push__task_ids__{}".format(taskOrder)
         
-        section.task_ids.append(taskId)
-        section.save()
+        section.update(**{pushKey: [taskId]})
         
         await websocket.send(json.dumps({"response": "createdTask",
                                          "data": {
                                              "boardId": boardId,
                                              "sectionId": sectionId,
                                              "taskId": str(taskId),
-                                             "taskTitle": taskTitle
+                                             "taskTitle": taskTitle,
+                                             "taskOrder": taskOrder
                                          }}))
 
     async def __editSectionTitle(self, data, websocket):
@@ -192,6 +195,38 @@ class Server:
         
         self.__deleteTaskById(taskId)
         section.update(pull__task_ids=taskId)
+        section.save()
+        
+    async def __reorderTaskInSameSection(self, data, websocket):
+        sectionId = data["sectionId"]
+        taskId = data["taskId"]
+        taskOrder = data["taskOrder"]
+        
+        section = Section.objects.get(id=sectionId)
+        
+        section.update(pull__task_ids=taskId)
+        
+        pushKey = "push__task_ids__{}".format(taskOrder)
+        
+        section.update(**{pushKey: [taskId]})
+        section.save()
+        
+    async def __reorderTaskInDifferentSection(self, data, websocket):
+        sectionId = data["sectionId"]
+        newSectionId = data["newSectionId"]
+        taskId = data["taskId"]
+        taskOrder = data["taskOrder"]
+
+        section = Section.objects.get(id=sectionId)
+        
+        section.update(pull__task_ids=taskId)
+        section.save()
+        
+        newSection = Section.objects.get(id=newSectionId)
+        pushKey = "push__task_ids__{}".format(taskOrder)
+        
+        newSection.update(**{pushKey: [taskId]})
+        newSection.save()
         
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
@@ -264,6 +299,12 @@ class Server:
             
         elif action == 'deleteTask':
             await self.__deleteTask(message["data"], websocket)
+            
+        elif action == 'reorderTaskInSameSection':
+            await self.__reorderTaskInSameSection(message["data", websocket])
+            
+        elif action == 'reorderTaskInDifferentSection':
+            await self.__reorderTaskInDifferentSection(message["data"], websocket)
 
         else:
             return

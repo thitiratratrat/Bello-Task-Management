@@ -132,7 +132,7 @@ class BelloUI(QMainWindow):
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
 
-        self.bello.sendRequestBoardDetailoServer(boardId)
+        self.bello.sendRequestBoardDetailToServer(boardId)
 
     def __deleteBoard(self):
         boardId = self.dashboardPage.deleteSelectBoard()
@@ -145,6 +145,9 @@ class BelloUI(QMainWindow):
         
     def deleteSection(self, boardId, sectionId):
         self.bello.deleteSection(boardId, sectionId)
+        
+    def deleteTask(self, boardId, sectionId, taskId):
+        self.bello.deleteTask(boardId, sectionId, taskId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
@@ -159,6 +162,17 @@ class BelloUI(QMainWindow):
         boardId = self.boardDetailPage.getBoardId()
 
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
+        
+    def editTaskTitle(self, sectionId, taskId, taskTitle):
+        boardId = self.boardDetailPage.getBoardId()
+        
+        self.bello.editTaskTitle(boardId, sectionId, taskId, taskTitle)
+        
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        self.bello.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        self.bello.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
