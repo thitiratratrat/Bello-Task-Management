@@ -3,12 +3,11 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
-from User import User
-from Board import Board
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
+from User import User
 
 
 class Bello:
@@ -17,9 +16,8 @@ class Bello:
         self.__uri = "ws://localhost:8765"
         self.__user = None
         self.__ui = None
-
+        
         self.__connect()
-
         self.receiveThread = threading.Thread(
             target=self.__handleServer, args=[])
         self.receiveThread.start()
@@ -30,48 +28,54 @@ class Bello:
 
     def __handleMessage(self, message):
         response = message["response"]
-
+        
         if response == "existedUsername":
             self.__ui.signalShowUsernameAlreadyExists.signalDict.emit(None)
-
+            
         elif response == "createdAccount":
             self.__ui.gotoLoginTab()
-
+            
         elif response == "loginSuccessful":
             username = self.__ui.getUsernameLogin()
-            
+
             self.__ui.goToDashboardPage()
             self.__initUser(username)
-
+            
         elif response == "loginFail":
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
-
+            
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-
+            
             self.__initUserBoards(boardTitlesAndIds)
             self.__ui.addBoard(boardTitlesAndIds)
-
+            
         elif response == "createdBoard":
-            boardTitleAndId = message["data"]
-            boardDict = {boardTitleAndId['boardId']: boardTitleAndId['boardTitle']}
-
-            self.__createBoard(boardTitleAndId)
+            boardDetail = message["data"]
+            boardDict = {boardDetail['boardId']: boardDetail['boardTitle']}
+            
+            self.__createBoard(boardDetail)
             self.__ui.addBoard(boardDict)
-
+            
         elif response == "createdSection":
             sectionDetail = message["data"]
-
+            
             self.__createSection(sectionDetail)
             self.__ui.signalAddSection.signalDict.emit(sectionDetail)
 
+        elif response == "createdTask":
+            taskDetail = message["data"]
+            
+            self.__createTask(taskDetail)
+            self.__ui.signalAddTask.signalDict.emit(taskDetail)
+            
         elif response == "boardDetail":
             boardDetail = message["data"]
-
+            
             self.__addBoardDetail(boardDetail)
             self.__ui.goToBoardDetailPage()
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
-
+            
         else:
             return
 
@@ -80,43 +84,59 @@ class Bello:
 
     def __initUserBoards(self, boardTitlesAndIds):
         for boardId, boardTitle in boardTitlesAndIds.items():
-            self.__user.addBoard(boardId, boardTitle)
+            self.__user.createBoard(boardId, boardTitle)
 
-    def __createBoard(self, boardTitleAndId):
-        boardTitle = boardTitleAndId["boardTitle"]
-        boardId = boardTitleAndId["boardId"]
-
-        self.__user.addBoard(boardId, boardTitle)
+    def __createBoard(self, boardDetail):
+        boardTitle = boardDetail["boardTitle"]
+        boardId = boardDetail["boardId"]
+        self.__user.createBoard(boardId, boardTitle)
 
     def __createSection(self, sectionDetail):
         boardId = sectionDetail["boardId"]
         sectionId = sectionDetail["sectionId"]
         sectionTitle = sectionDetail["sectionTitle"]
+        
+        self.__user.createSection(boardId, sectionId, sectionTitle)
 
-        self.__user.addSection(boardId, sectionId, sectionTitle)
+    def __createTask(self, taskDetail):
+        boardId = taskDetail["boardId"]
+        sectionId = taskDetail["sectionId"]
+        taskId = taskDetail["taskId"]
+        taskTitle = taskDetail["taskTitle"]
+        taskOrder = taskDetail["taskOrder"]
+
+        self.__user.createTask(boardId, sectionId, taskId, taskTitle, taskOrder)
 
     def __addBoardDetail(self, boardDetail):
         boardId = boardDetail["boardId"]
         boardDetail = boardDetail["boardDetail"]
-
+        
         self.__user.addBoardDetail(boardId, boardDetail)
 
     def __handleServer(self):
         while True:
             message = self.__websocket.recv()
             message = json.loads(message)
-
+            
             self.__handleMessage(message)
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
+
         self.__websocket.send(json.dumps({"action": "editSectionTitle",
                                           "data": {
                                               "sectionId": sectionId,
                                               "sectionTitle": sectionTitle
                                           }}))
 
-        # TODO: update other members section title change
+    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
+        self.__user.editTaskTitle(boardId, sectionId, taskId, taskTitle)
+
+        self.__websocket.send(json.dumps({"action": "editTaskTitle",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskTitle": taskTitle
+                                          }}))
 
     def signUp(self, username, password):
         self.__websocket.send(json.dumps({"action": "signUp",
@@ -130,26 +150,57 @@ class Bello:
                                           "data": {
                                               "username": username,
                                               "password": password
-                                        }}))
+                                          }}))
 
     def validatePassword(self, password):
         return True if len(password) >= 4 else False
-    
+
     def deleteBoard(self, boardId):
         self.__user.deleteBoard(boardId)
-        
+
         self.__websocket.send(json.dumps({"action": "deleteBoard",
                                           "data": {
                                               "boardId": boardId
                                           }}))
-        
+
     def deleteSection(self, boardId, sectionId):
         self.__user.deleteSection(boardId, sectionId)
-        
+
         self.__websocket.send(json.dumps({"action": "deleteSection",
                                           "data": {
                                               "boardId": boardId,
                                               "sectionId": sectionId
+                                          }}))
+
+    def deleteTask(self, boardId, sectionId, taskId):
+        self.__user.deleteTask(boardId, sectionId, taskId)
+        
+        self.__websocket.send(json.dumps({"action": "deleteTask",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId,
+                                              "taskId": taskId
+                                          }}))
+        
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        self.__user.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        
+        self.__websocket.send(json.dumps({"action": "reorderTaskInSameSection",
+                                          "data": {
+                                              "sectionId": sectionId,
+                                              "taskId": taskId,
+                                              "taskOrder": taskOrder
+                                          }}))
+
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        self.__user.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
+        
+        self.__websocket.send(json.dumps({"action": "reorderTaskInDifferentSection",
+                                          "data": {
+                                              "sectionId": sectionId,
+                                              "newSectionId": newSectionId,
+                                              "taskId": taskId,
+                                              "taskOrder": taskOrder
                                           }}))
 
     def sendCreateBoardToServer(self, boardTitle):
@@ -166,16 +217,25 @@ class Bello:
                                               "sectionTitle": sectionTitle
                                           }}))
 
-    def sendRequestBoardDetailoServer(self, boardId):
+    def sendCreateTaskToServer(self, boardId, sectionId, taskTitle, taskOrder):
+        self.__websocket.send(json.dumps({"action": "createTask",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "sectionId": sectionId,
+                                              "taskTitle": taskTitle,
+                                              "taskOrder": taskOrder
+                                          }}))
+
+    def sendRequestBoardDetailToServer(self, boardId):
         self.__websocket.send(json.dumps({"action": "requestBoardDetail",
                                           "data": {
                                               "boardId": boardId}
                                           }))
-        
+
     def isExistedBoardTitle(self, boardTitle):
         boards = self.__user.getBoards()
         boardTitles = map(lambda board: board.getTitle(), boards.values())
-        
+
         return boardTitle in boardTitles
 
     def addUI(self, ui):
@@ -184,9 +244,8 @@ class Bello:
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)
-
     bello = Bello()
     belloUI = BelloUI(None, bello)
-
+    
     bello.addUI(belloUI)
     sys.exit(application.exec_())

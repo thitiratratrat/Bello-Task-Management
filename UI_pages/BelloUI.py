@@ -3,13 +3,13 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashboardPage import *
+from DashBoardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -22,6 +22,8 @@ class BelloUI(QMainWindow):
 
         self.signalAddSection = CustomSignal()
         self.signalInitBoardDetail = CustomSignal()
+        self.signalAddTask = CustomSignal()
+
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
 
@@ -31,6 +33,8 @@ class BelloUI(QMainWindow):
 
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
+        self.signalAddTask.signalDict.connect(self.addTask)
+
         self.signalShowUsernameAlreadyExists.signalDict.connect(
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
@@ -51,9 +55,8 @@ class BelloUI(QMainWindow):
         self.dashboardPage.deleteBoardBtn.clicked.connect(self.__deleteBoard)
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
-
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
-
+        
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -123,10 +126,13 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
 
+    def createTask(self,boardId, sectionId, taskTitle):
+        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle)
+
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
 
-        self.bello.sendRequestBoardDetailoServer(boardId)
+        self.bello.sendRequestBoardDetailToServer(boardId)
 
     def __deleteBoard(self):
         boardId = self.dashboardPage.deleteSelectBoard()
@@ -139,6 +145,9 @@ class BelloUI(QMainWindow):
         
     def deleteSection(self, boardId, sectionId):
         self.bello.deleteSection(boardId, sectionId)
+        
+    def deleteTask(self, boardId, sectionId, taskId):
+        self.bello.deleteTask(boardId, sectionId, taskId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
@@ -146,10 +155,24 @@ class BelloUI(QMainWindow):
     def addSection(self, sectionDict):
         self.boardDetailPage.createSection(sectionDict)
     
+    def addTask(self,taskDict):
+        self.boardDetailPage.createNewTask(taskDict)
+
     def editSectionTitle(self, sectionId, sectionTitle):
         boardId = self.boardDetailPage.getBoardId()
 
         self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
+        
+    def editTaskTitle(self, sectionId, taskId, taskTitle):
+        boardId = self.boardDetailPage.getBoardId()
+        
+        self.bello.editTaskTitle(boardId, sectionId, taskId, taskTitle)
+        
+    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+        self.bello.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+        
+    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+        self.bello.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)

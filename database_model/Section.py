@@ -3,7 +3,7 @@ from mongoengine import *
 
 class Section(Document):
     title = StringField(required=True)
-    task_ids = ListField(StringField(), default=list)
+    task_ids = ListField(ObjectIdField(), default=list)
 
     meta = {
         "collection": "section",

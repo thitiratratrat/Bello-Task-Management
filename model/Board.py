@@ -26,9 +26,29 @@ class Board:
         self.__sections[section.getId()] = section
 
     def removeSection(self, sectionId):
-        self.__sections.pop(sectionId, None)
+        return self.__sections.pop(sectionId, None)
 
     def editSectionTitle(self, sectionId, newSectionTitle):
         section = self.__sections[sectionId]
 
         section.editTitle(newSectionTitle)
+        
+    def editTaskTitle(self, sectionId, taskId, taskTitle):
+        section = self.__sections[sectionId]
+        
+        section.editTaskTitle(taskId, taskTitle)
+
+    def addTask(self, sectionId, taskOrder, task):
+        section = self.__sections[sectionId]
+        
+        section.addTask(taskOrder, task)
+        
+    def removeTask(self, sectionId, taskId):
+        section = self.__sections[sectionId]
+        
+        return section.removeTask(taskId)
+        
+    def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
+        section = self.__sections[sectionId]
+
+        section.reorderTaskInSameSection(taskId, taskOrder)
