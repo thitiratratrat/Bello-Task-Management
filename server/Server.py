@@ -232,9 +232,18 @@ class Server:
         taskId = data["taskId"]
         taskComment = data["taskComment"]
         
-        task = task.objects.get(id=taskId)
+        task = Task.objects.get(id=taskId)
     
         task.comments.append(taskComment)
+        task.save()
+        
+    async def __setTaskDueDate(self, data, websocket):
+        taskId = data["taskId"]
+        taskDueDate = data["taskDueDate"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.due_date = taskDueDate
         task.save()
         
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
@@ -317,6 +326,9 @@ class Server:
             
         elif action == 'addTaskComment':
             await self.__addTaskComment(message["data"], websocket)
+            
+        elif action == 'setTaskDueDate':
+            await self.__setTaskDueDate(message["data"], websocket)
 
         else:
             return
