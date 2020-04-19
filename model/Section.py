@@ -29,6 +29,11 @@ class Section:
         task = self.__tasks[taskId]
         
         task.addComment(taskComment)
+        
+    def setTaskDueDate(self, taskId, taskDueDate):
+        task = self.__tasks[taskId]
+        
+        task.setDueDate(taskDueDate)
 
     def removeTask(self, taskId):
         self.__taskOrders.remove(taskId)

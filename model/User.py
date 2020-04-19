@@ -91,7 +91,12 @@ class User:
     def commentTask(self, boardId, sectionId, taskId, taskComment):
         board = self.__boards[boardId]
         
-        board.addTaskComment(sectionid, taskId, taskComment)
+        board.addTaskComment(sectionId, taskId, taskComment)
+        
+    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
+        board = self.__boards[boardId]
+        
+        board.setTaskDueDate(sectionId, taskId, taskDueDate)
         
         
         
