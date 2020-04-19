@@ -8,6 +8,7 @@ class Task(Document):
     due_date = StringField()
     comments = ListField(StringField(), default=list)
     tags = ListField(StringField(), default=list)
+    is_finished = BooleanField(default=False)
 
     meta = {
         "collection": "task",

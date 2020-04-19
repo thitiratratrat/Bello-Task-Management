@@ -144,6 +144,13 @@ class Bello:
                                               "taskId": taskId,
                                               "taskDueDate": taskDueDate
                                           }}))
+        
+    def setTaskFinishState(self, taskId, taskState):
+        self.__websocket.send(json.dumps({"action": "setFinishTask",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskState": taskState
+                                          }}))
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
