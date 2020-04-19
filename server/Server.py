@@ -67,6 +67,7 @@ class Server:
                 taskDetail["dueDate"] = task.due_date
                 taskDetail["comments"] = task.comments
                 taskDetail["tags"] = task.tags
+                taskDetail["isFinished"] = task.is_finished
                 
                 taskDict[str(taskId)] = taskDetail
             
@@ -255,6 +256,15 @@ class Server:
         task.due_date = taskDueDate
         task.save()
         
+    aysnc def __setTaskFinishState(self, data, websocket):
+        taskId = data["taskId"]
+        taskState = data["taskState"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.is_finished = taskState
+        task.save()
+        
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
         boardIds = account.board_ids
@@ -341,6 +351,9 @@ class Server:
             
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)
+            
+        elif action == 'setTaskFinishState':
+            await self.__setTaskFinishState(message["data"], websocket)
 
         else:
             return
