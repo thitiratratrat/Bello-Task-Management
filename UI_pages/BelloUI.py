@@ -3,13 +3,13 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from LoginSignUpPage import *
-from DashboardPage import *
+from DashBoardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -126,8 +126,8 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
 
-    def createTask(self,boardId, sectionId, taskTitle):
-        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle)
+    def createTask(self,boardId, sectionId, taskTitle,taskOrder):
+        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle,taskOrder)
 
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()

@@ -14,7 +14,7 @@ class TaskWidget(QWidget):
         self.taskBoardId = None
         self.taskId =None
         self.taskIndex = 0
-        self.setFixedSize(180,100)
+        #self.setFixedSize(180,100)
         self.taskTitle = QLabel("name")
         self.taskTitle.setFont(QFont("Century Gothic",10,QFont.Bold))
         self.taskTitle.setStyleSheet("color: #31446F")
@@ -49,11 +49,19 @@ class TaskWidget(QWidget):
         self.taskDueDateTagLayout.addStretch(1)
         self.taskDueDateTagLayout.addWidget(self.member)
 
+
+        '''
+        self.calendar = QCalendarWidget()
+        self.calendar.locale()
+        print(self.calendar.locale())
+        print(self.calendar.selectedDate().toString())
+        date = self.calendar.selectedDate().toString()'''
+
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
         self.taskLayout.addLayout(self.taskDueDateTagLayout)
         self.setLayout(self.taskLayout)
-
+        
     def setTaskTitle(self,newTaskTitle):
         self.taskTitle.setText(newTaskTitle)
     
@@ -72,6 +80,9 @@ class TaskWidget(QWidget):
     def getTaskTitle(self):
         return self.taskTitle.text()
     
+    def getTaskBoardId(self):
+        return self.taskBoardId
+
     def getTaskId(self):
         return self.taskId 
 
@@ -83,9 +94,6 @@ class TaskWidget(QWidget):
 
     def getTaskSectionId(self):
         return self.taskSectionId
-    
-    def getTaskBoardId(self):
-        return self.taskBoardId
 
     def deleteTask(self):
         index = self.getTaskIndex()
@@ -131,7 +139,6 @@ class TaskWidget(QWidget):
         print(mimeData)
         drag.setMimeData(mimeData)
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
-        #self.parent.setNewTaskWidgetOrder()
 
 '''
 if __name__ == "__main__":
