@@ -126,8 +126,8 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
 
-    def createTask(self,boardId, sectionId, taskTitle):
-        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle)
+    def createTask(self,boardId, sectionId, taskTitle,taskOrder):
+        self.bello.sendCreateTaskToServer(boardId, sectionId, taskTitle,taskOrder)
 
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()

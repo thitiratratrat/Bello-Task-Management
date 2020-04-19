@@ -155,9 +155,10 @@ class SectionWidget(QWidget):
             return 
         boardId = self.parent.getBoardId()
         sectionId = self.getSectionId()
+        taskOrder  = self.sectionTaskLayout.count()
         self.createTaskTitleDialog.close()
 
-        self.parent.parent.createTask(boardId, sectionId, taskTitle)
+        self.parent.parent.createTask(boardId, sectionId, taskTitle,taskOrder)
 
     def addTask(self, taskTitle, boardId, sectionId, taskId, index):
         self.taskWidget = TaskWidget(self)
