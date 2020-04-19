@@ -237,6 +237,15 @@ class Server:
         task.comments.append(taskComment)
         task.save()
         
+    async def __addTaskTag(self, data, websocket):
+        taskId = data["taskId"]
+        taskTag = data["taskTag"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.tags.append(taskTag)
+        task.save()
+        
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
         taskDueDate = data["taskDueDate"]
@@ -326,6 +335,9 @@ class Server:
             
         elif action == 'addTaskComment':
             await self.__addTaskComment(message["data"], websocket)
+            
+        elif action == 'addTaskTag':
+            await self.__addTaskTag(message["data"], websocket)
             
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)

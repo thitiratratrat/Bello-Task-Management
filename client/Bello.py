@@ -129,6 +129,13 @@ class Bello:
                                               "taskComment": taskComment
                                           }}))
         
+    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+        self.__websocket.send(json.dumps({"action": "addTaskTag",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskTag": taskTag
+                                          }}))
+        
     def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
         self.__user.setDueDate(boardId, sectionId, taskId, taskDueDate)
         
