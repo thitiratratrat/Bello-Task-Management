@@ -27,7 +27,6 @@ class SectionWithTask(QWidget):
         event.accept()
         
     def dropEvent(self, event):
-        print(event.pos())
         isTaskIsSameSection = True
         cardSource=event.source()
 
