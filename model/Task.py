@@ -2,15 +2,19 @@ from typing import List
 
 
 class Task:
-    def __init__(self, title: str):
+    def __init__(self, title, id, dueDate=None, reponsibleMemberUsernames=set(), comments=[], tags=[]):
+        self.__id = id
         self.__title = title
-        self.__dueDate = None
+        self.__dueDate = dueDate
         self.__image = None
-        self.__responsibleMemberUsernames = []
-        self.__comments = []
-        self.__tags = []
+        self.__responsibleMemberUsernames = reponsibleMemberUsernames
+        self.__comments = comments
+        self.__tags = tags
 
-    def getTitle(self) -> str:
+    def getId(self):
+        return self.__id
+
+    def getTitle(self):
         return self.__title
 
     def getResponsibleMemberUsernames(self) -> List[str]:
@@ -24,7 +28,7 @@ class Task:
 
     def getTags(self) -> List[str]:
         return self.__tags
-
+    
     def addTag(self, tag: str):
         self.__tags.append(tag)
 
@@ -35,10 +39,13 @@ class Task:
         self.__comments.append(comment)
 
     def addResponsibleMemberUsername(self, username: str):
-        self.__responsibleMemberUsernames.append(username)
+        self.__responsibleMemberUsernames.add(username)
 
     def addDueDate(self, date: str):
         self.__dueDate = date
 
     def removeDueDate(self):
         self.__dueDate = None
+
+    def editTitle(self, newTitle):
+        self.__title = newTitle

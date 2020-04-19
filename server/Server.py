@@ -5,10 +5,11 @@ from mongoengine import *
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\database_model')
 from Section import Section
 from Board import Board
 from Account import Account
+from Task import Task
 
 connect('bello')
 
@@ -51,12 +52,28 @@ class Server:
         for sectionId in sectionIds:
             sectionDetail = {}
             section = Section.objects.get(id=sectionId)
-            title = section.title
-            sectionDetail["title"] = title
+            sectionTitle = section.title
+            sectionDetail["title"] = sectionTitle
+            
+            taskDict = {}
+            taskIds = section.task_ids
+            
+            for taskId in taskIds:
+                taskDetail = {}
+                task = Task.objects.get(id=taskId)
+                taskTitle = task.title
+                taskDetail["title"] = taskTitle
+                taskDetail["responsibleMembers"] = task.responsible_members
+                taskDetail["dueDate"] = task.due_date
+                taskDetail["comments"] = task.comments
+                taskDetail["tags"] = task.tags
+                
+                taskDict[str(taskId)] = taskDetail
+            
+            sectionDetail["task"] = taskDict
 
             detail[str(sectionId)] = sectionDetail
 
-        # TODO: get tasks
         await websocket.send(json.dumps({"response": "boardDetail",
                                          "data": {
                                              "boardId": boardId,
@@ -103,7 +120,31 @@ class Server:
                                              "sectionTitle": sectionTitle,
                                              "sectionId": str(sectionId)
                                          }}))
-        # TODO: notify other members
+        
+    async def __createTask(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        taskTitle = data["taskTitle"]
+        taskOrder = data["taskOrder"]
+        
+        task = Task(title=taskTitle)
+        
+        task.save()
+        
+        taskId = task.id
+        section = Section.objects.get(id=sectionId)
+        pushKey = "push__task_ids__{}".format(taskOrder)
+        
+        section.update(**{pushKey: [taskId]})
+        
+        await websocket.send(json.dumps({"response": "createdTask",
+                                         "data": {
+                                             "boardId": boardId,
+                                             "sectionId": sectionId,
+                                             "taskId": str(taskId),
+                                             "taskTitle": taskTitle,
+                                             "taskOrder": taskOrder
+                                         }}))
 
     async def __editSectionTitle(self, data, websocket):
         sectionId = data["sectionId"]
@@ -111,9 +152,17 @@ class Server:
 
         section = Section.objects.get(id=sectionId)
         section.title = sectionTitle
+        
         section.save()
-
-        # TODO: notify other members
+        
+    async def __editTaskTitle(self, data, websocket):
+        taskId = data["taskId"]
+        taskTitle = data["taskTitle"]
+        
+        task = Task.objects.get(id=taskId)
+        task.title = taskTitle
+        
+        task.save()
         
     async def __deleteBoard(self, data, websocket):
         boardId = data["boardId"]
@@ -122,26 +171,63 @@ class Server:
         memberUsernames = board.members
         
         for sectionId in sectionIds:
-            section = Section.objects.get(id=sectionId)
-            section.delete()
+            self.__deleteSectionById(sectionId)
         
         for memberUsername in memberUsernames:
             account = Account.objects.get(username=memberUsername)
             account.update(pull__board_ids=boardId)
             
         board.delete()
-        #TODO: delete tasks
         
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
         sectionId = data["sectionId"]
         board = Board.objects.get(id=boardId)
+        
+        self.__deleteSectionById(sectionId)
+        board.update(pull__section_ids=sectionId)
+        
+    async def __deleteTask(self, data, websocket):
+        boardId = data["boardId"]
+        sectionId = data["sectionId"]
+        taskId = data["taskId"]
         section = Section.objects.get(id=sectionId)
         
-        #TODO: delete tasks
-        board.update(pull__section_ids=sectionId)
-        section.delete()
+        self.__deleteTaskById(taskId)
+        section.update(pull__task_ids=taskId)
+        section.save()
+        
+    async def __reorderTaskInSameSection(self, data, websocket):
+        sectionId = data["sectionId"]
+        taskId = data["taskId"]
+        taskOrder = data["taskOrder"]
+        
+        section = Section.objects.get(id=sectionId)
+        
+        section.update(pull__task_ids=taskId)
+        
+        pushKey = "push__task_ids__{}".format(taskOrder)
+        
+        section.update(**{pushKey: [taskId]})
+        section.save()
+        
+    async def __reorderTaskInDifferentSection(self, data, websocket):
+        sectionId = data["sectionId"]
+        newSectionId = data["newSectionId"]
+        taskId = data["taskId"]
+        taskOrder = data["taskOrder"]
 
+        section = Section.objects.get(id=sectionId)
+        
+        section.update(pull__task_ids=taskId)
+        section.save()
+        
+        newSection = Section.objects.get(id=newSectionId)
+        pushKey = "push__task_ids__{}".format(taskOrder)
+        
+        newSection.update(**{pushKey: [taskId]})
+        newSection.save()
+        
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
         boardIds = account.board_ids
@@ -157,6 +243,20 @@ class Server:
             boardTitles[str(boardId)] = board.title
 
         return boardTitles
+    
+    def __deleteTaskById(self, taskId):
+        task = Task.objects.get(id=taskId)
+        
+        task.delete()
+        
+    def __deleteSectionById(self, sectionId):
+        section = Section.objects.get(id=sectionId)
+        taskIds = section.task_ids
+        
+        for taskId in taskIds:
+            self.__deleteTaskById(taskId)
+            
+        section.delete()
 
     def __isValidAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
@@ -176,20 +276,35 @@ class Server:
         elif action == 'createBoard':
             await self.__createBoard(message["data"], websocket)
 
+        elif action == 'createSection':
+            await self.__createSection(message["data"], websocket)
+            
+        elif action == 'createTask':
+            await self.__createTask(message["data"], websocket)
+        
         elif action == 'requestBoardDetail':
             await self.__sendBoardDetail(message["data"], websocket)
 
-        elif action == 'createSection':
-            await self.__createSection(message["data"], websocket)
-
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
-        
+            
+        elif action == 'editTaskTitle':
+            await self.__editTaskTitle(message["data"], websocket)
+            
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)
             
         elif action == 'deleteSection':
             await self.__deleteSection(message["data"], websocket)
+            
+        elif action == 'deleteTask':
+            await self.__deleteTask(message["data"], websocket)
+            
+        elif action == 'reorderTaskInSameSection':
+            await self.__reorderTaskInSameSection(message["data"], websocket)
+            
+        elif action == 'reorderTaskInDifferentSection':
+            await self.__reorderTaskInDifferentSection(message["data"], websocket)
 
         else:
             return

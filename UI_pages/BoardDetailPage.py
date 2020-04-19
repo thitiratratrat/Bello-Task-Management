@@ -14,7 +14,7 @@ class BoardDetailPage(QWidget):
         self.boardId = None
         self.menuBar = MenuBar()
         self.sectionLayout = QHBoxLayout()
-        self.sectionWidget = None
+        self.taskWidget = None
         self.widget = QWidget()
         self.dialogCreate = CustomDialog(
             self, "create new section", "Section name:", "Create")
@@ -23,9 +23,11 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
         self.widget.setLayout(self.sectionLayout)
+        
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -69,26 +71,40 @@ class BoardDetailPage(QWidget):
         self.sectionWidget.setSectionIndex(index)
         self.sectionWidget.setSectionId(sectionId)
         self.sectionWidget.editTitle(sectionTitle)
+        self.sectionWidget.setBoardId(self.boardId)
         self.sectionLayout.addWidget(self.sectionWidget)
-
+    
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
                 self, "Error", "Board titile can not be empty")
-
             return False
-
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        self.setBoardId(boardDetailDict.get("boardId"))
+        boardId = boardDetailDict.get("boardId")
+        self.setBoardId(boardId)
         sectionDict = boardDetailDict.get("boardDetail")
-        index = 0 
+        indexSection = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
             sectionTitle = sectionTitleDict.get("title")
-            self.addSectionToWidget(sectionTitle, sectionId,index)
-            index += 1
+            taskDict = sectionTitleDict.get("task")
+            self.addSectionToWidget(sectionTitle, sectionId,indexSection)
+            indexSection += 1
+            for taskId, taskInfo in taskDict.items():
+                taskInfoDict = taskInfo
+                taskTitle = taskInfoDict.get("title")
+                taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
+                taskDuedate = taskInfoDict.get("duedate")
+                taskComments = taskInfoDict.get("comments")
+                taskTags = taskInfoDict.get("tags")
+
+                #TODO setTaskComment, setTaskRespon, setTaskDuedate, setTaskComment
+                for i in range (self.sectionLayout.count()):
+                    if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
+                        indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
+                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -99,7 +115,20 @@ class BoardDetailPage(QWidget):
             self.item.setSectionIndex(index)
             
         self.parent.deleteSection(self.getBoardId(), self.newWidget.getSectionId())
-    
+
     def clearAllSection(self):
         for i in reversed(range(self.sectionLayout.count())): 
             self.sectionLayout.itemAt(i).widget().deleteLater()
+    
+    def createNewTask(self,taskDict):
+        boardId = taskDict.get("boardId")
+        sectionId = taskDict.get("sectionId")
+        taskId = taskDict.get("taskId")
+        taskTitle = taskDict.get("taskTitle")
+        
+        for i in range (self.sectionLayout.count()):
+            if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
+                index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
+                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index)
+    
+    
