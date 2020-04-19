@@ -5,7 +5,7 @@ from mongoengine import *
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\database_model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
 from Section import Section
 from Board import Board
 from Account import Account
@@ -228,6 +228,15 @@ class Server:
         newSection.update(**{pushKey: [taskId]})
         newSection.save()
         
+    async def __addTaskComment(self, data, websocket):
+        taskId = data["taskId"]
+        taskComment = data["taskComment"]
+        
+        task = task.objects.get(id=taskId)
+    
+        task.comments.append(taskComment)
+        task.save()
+        
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
         boardIds = account.board_ids
@@ -305,6 +314,9 @@ class Server:
             
         elif action == 'reorderTaskInDifferentSection':
             await self.__reorderTaskInDifferentSection(message["data"], websocket)
+            
+        elif action == 'addTaskComment':
+            await self.__addTaskComment(message["data"], websocket)
 
         else:
             return
