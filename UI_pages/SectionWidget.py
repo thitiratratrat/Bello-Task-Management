@@ -177,8 +177,8 @@ class SectionWidget(QWidget):
         for index in range(newIndex):
             self.item = self.sectionTaskLayout.itemAt(index).widget()
             self.item.setTaskIndex(index)
-            print("index: ",index)
-            print("Title: ", self.item.getTaskTitle())
+            #print("index: ",index)
+            #print("Title: ", self.item.getTaskTitle())
         
         boardId = self.selectTask.getTaskBoardId()
         sectionId = self.selectTask.getTaskSectionId()

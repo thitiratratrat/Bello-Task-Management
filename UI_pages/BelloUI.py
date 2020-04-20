@@ -109,8 +109,8 @@ class BelloUI(QMainWindow):
 
     def __createBoard(self):
         boardTitle = self.dashboardPage.getBoardTitle()
-
-        if (not self.dashboardPage.validateBoardTitle()) or self.bello.isExistedBoardTitle(boardTitle):
+      
+        if (not self.dashboardPage.validateBoardTitle()) or self.showBoardTitleIsExist(boardTitle):
             return
 
         self.bello.sendCreateBoardToServer(boardTitle)
@@ -194,6 +194,13 @@ class BelloUI(QMainWindow):
 
     def showAccountDoesNotExist(self):
         self.loginSignUpPage.loginWidget.showLoginError()
+    
+    def showBoardTitleIsExist(self,boardTitle):
+        if(self.bello.isExistedBoardTitle(boardTitle)):
+            self.dashboardPage.showBoardTitleIsExist()
+            return True
+        else:
+            return False
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
