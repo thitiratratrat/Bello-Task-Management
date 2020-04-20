@@ -5,9 +5,10 @@ from datetime import datetime
 class Task(Document):
     title = StringField(required=True)
     responsible_members = ListField(StringField(), default=list)
-    due_date = DateTimeField()
+    due_date = StringField()
     comments = ListField(StringField(), default=list)
     tags = ListField(StringField(), default=list)
+    is_finished = BooleanField(default=False)
 
     meta = {
         "collection": "task",

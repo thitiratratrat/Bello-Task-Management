@@ -43,6 +43,16 @@ class Board:
         
         section.addTask(taskOrder, task)
         
+    def addTaskComment(self, sectionId, taskId, taskComment):
+        section = self.__sections[sectionId]
+        
+        section.addTaskComment(taskId, taskComment)
+        
+    def setTaskDueDate(self, sectionId, taskId, taskDueDate):
+        section = self.__sections[sectionId]
+        
+        section.setTaskDueDate(taskId, taskDueDate)
+        
     def removeTask(self, sectionId, taskId):
         section = self.__sections[sectionId]
         

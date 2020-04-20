@@ -3,9 +3,9 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\model')
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from BelloUI import *
 from User import User
 
@@ -119,6 +119,38 @@ class Bello:
             message = json.loads(message)
             
             self.__handleMessage(message)
+            
+    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
+        self.__user.commentTask(boardId, sectionId, taskId, taskComment)
+        
+        self.__websocket.send(json.dumps({"action": "addTaskComment",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskComment": taskComment
+                                          }}))
+        
+    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+        self.__websocket.send(json.dumps({"action": "addTaskTag",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskTag": taskTag
+                                          }}))
+        
+    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
+        self.__user.setDueDate(boardId, sectionId, taskId, taskDueDate)
+        
+        self.__websocket.send(json.dumps({"action": "setTaskDueDate",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskDueDate": taskDueDate
+                                          }}))
+        
+    def setTaskFinishState(self, taskId, taskState):
+        self.__websocket.send(json.dumps({"action": "setFinishTask",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskState": taskState
+                                          }}))
 
     def editSectionTitle(self, boardId, sectionId, sectionTitle):
         self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
