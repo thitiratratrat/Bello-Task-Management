@@ -5,7 +5,7 @@ from mongoengine import *
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\database_model')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
 from Section import Section
 from Board import Board
 from Account import Account
@@ -67,6 +67,7 @@ class Server:
                 taskDetail["dueDate"] = task.due_date
                 taskDetail["comments"] = task.comments
                 taskDetail["tags"] = task.tags
+                taskDetail["isFinished"] = task.is_finished
                 
                 taskDict[str(taskId)] = taskDetail
             
@@ -228,6 +229,42 @@ class Server:
         newSection.update(**{pushKey: [taskId]})
         newSection.save()
         
+    async def __addTaskComment(self, data, websocket):
+        taskId = data["taskId"]
+        taskComment = data["taskComment"]
+        
+        task = Task.objects.get(id=taskId)
+    
+        task.comments.append(taskComment)
+        task.save()
+        
+    async def __addTaskTag(self, data, websocket):
+        taskId = data["taskId"]
+        taskTag = data["taskTag"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.tags.append(taskTag)
+        task.save()
+        
+    async def __setTaskDueDate(self, data, websocket):
+        taskId = data["taskId"]
+        taskDueDate = data["taskDueDate"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.due_date = taskDueDate
+        task.save()
+        
+    aysnc def __setTaskFinishState(self, data, websocket):
+        taskId = data["taskId"]
+        taskState = data["taskState"]
+        
+        task = Task.objects.get(id=taskId)
+        
+        task.is_finished = taskState
+        task.save()
+        
     async def __sendUserBoardTitlesAndIdsToClient(self, usernameInput, websocket):
         account = Account.objects.get(username=usernameInput)
         boardIds = account.board_ids
@@ -305,6 +342,18 @@ class Server:
             
         elif action == 'reorderTaskInDifferentSection':
             await self.__reorderTaskInDifferentSection(message["data"], websocket)
+            
+        elif action == 'addTaskComment':
+            await self.__addTaskComment(message["data"], websocket)
+            
+        elif action == 'addTaskTag':
+            await self.__addTaskTag(message["data"], websocket)
+            
+        elif action == 'setTaskDueDate':
+            await self.__setTaskDueDate(message["data"], websocket)
+            
+        elif action == 'setTaskFinishState':
+            await self.__setTaskFinishState(message["data"], websocket)
 
         else:
             return

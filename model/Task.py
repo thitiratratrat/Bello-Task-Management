@@ -41,7 +41,7 @@ class Task:
     def addResponsibleMemberUsername(self, username: str):
         self.__responsibleMemberUsernames.add(username)
 
-    def addDueDate(self, date: str):
+    def setDueDate(self, date: str):
         self.__dueDate = date
 
     def removeDueDate(self):
