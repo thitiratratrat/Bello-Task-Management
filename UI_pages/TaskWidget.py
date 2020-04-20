@@ -4,6 +4,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from CustomDialog import *
 from dialogBox import *
+from EditTaskDialog import * 
+from TaskDetailDialog import *
 
 class TaskWidget(QWidget):
     def __init__(self,parent =None):
@@ -14,6 +16,10 @@ class TaskWidget(QWidget):
         self.taskBoardId = None
         self.taskId =None
         self.taskIndex = 0
+
+        self.editTaskDialog = EditTaskDialog(self)
+        self.taskDetailDialog = TaskDetailDialog(self)
+        self.taskDetailDialog.enter.clicked.connect(self.getDataFromTaskDialog)
         #self.setFixedSize(180,100)
         self.taskTitle = QLabel("name")
         self.taskTitle.setFont(QFont("Century Gothic",10,QFont.Bold))
@@ -30,10 +36,11 @@ class TaskWidget(QWidget):
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
         self.deleteTaskBtn.clicked.connect(self.deleteTask)
 
-        self.dueDateBtn = QLabel("12-05-2020")
-        self.dueDateBtn.setStyleSheet("background-color: #FA8072; ")
-        self.tagColor = QPushButton("tag")
+        self.dueDateLabel = QLabel("12-05-2020")
+        self.dueDateLabel.setFont(QFont("Century-Gothic", 8, QFont.Bold))
+        self.dueDateLabel.setStyleSheet("background-color: #FA8072; color:white ")
 
+        self.tagColor = QPushButton("tag")
         self.member = QLabel("c") 
         #self.member.setStyleSheet("border-radius:100;background-color:red")
         
@@ -45,17 +52,9 @@ class TaskWidget(QWidget):
 
         self.taskDueDateTagLayout = QHBoxLayout()
         self.taskDueDateTagLayout.addWidget(self.tagColor)
-        self.taskDueDateTagLayout.addWidget(self.dueDateBtn)
+        self.taskDueDateTagLayout.addWidget(self.dueDateLabel)
         self.taskDueDateTagLayout.addStretch(1)
         self.taskDueDateTagLayout.addWidget(self.member)
-
-
-        '''
-        self.calendar = QCalendarWidget()
-        self.calendar.locale()
-        print(self.calendar.locale())
-        print(self.calendar.selectedDate().toString())
-        date = self.calendar.selectedDate().toString()'''
 
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
@@ -100,7 +99,8 @@ class TaskWidget(QWidget):
         taskId = self.parent.deleteTask(index)
 
     def editTask(self):
-        self.editTaskTitleDialog.show()
+        self.editTaskDialog.show()
+        #self.editTaskTitleDialog.show()
     
     def handleEditTaskTitleBtn(self):
         if not self.validateNewTaskTitle():
@@ -131,19 +131,23 @@ class TaskWidget(QWidget):
         self.setPalette(self.palette)
     
     def mouseDoubleClickEvent(self,event):
-        print("hit")
+        self.taskDetailDialog.show()
 
     def mouseMoveEvent(self, event):
         drag = QDrag(self)
         mimeData = QMimeData()
-        print(mimeData)
         drag.setMimeData(mimeData)
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
 
-'''
+    def getDataFromTaskDialog(self):
+        if(self.taskDetailDialog.dueDateCheckBox.isChecked()):
+            self.dueDateLabel.setStyleSheet("background-color: #5FC083; color:white ")
+        else:
+             self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = TaskWidget()
     w.resize(640, 480)
     w.show()
-    sys.exit(app.exec_())'''
+    sys.exit(app.exec_())

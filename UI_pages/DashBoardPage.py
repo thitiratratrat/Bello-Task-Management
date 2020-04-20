@@ -3,7 +3,6 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from random import randint
-from TabBar import *
 from TabWidget import *
 from MenuBar import *
 from DisplayBoardBox import *
@@ -76,6 +75,9 @@ class DashboardPage(QWidget):
             return False
         
         return True
+
+    def showBoardTitleIsExist(self):
+        createErrorDialogBox(self,"Error","Board title is already exist")
 
     def closeDialog(self):
         self.createBoardDialog.reject()

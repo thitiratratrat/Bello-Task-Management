@@ -17,10 +17,7 @@ class SectionWithTask(QWidget):
         self.palette = QPalette()
         self.setAutoFillBackground(True)
         self.palette.setColor(QPalette.Window, QColor('white'))
-        self.setPalette(self.palette)
-    
-    def mousePressEvent(self, event): #PresstheButton
-        print("k")        
+        self.setPalette(self.palette)      
 
     def dragEnterEvent(self, event):
         event.setDropAction(Qt.CopyAction)
@@ -39,7 +36,6 @@ class SectionWithTask(QWidget):
                     break
                 elif(event.pos().y() >= 5*(num-(i+2))+69*(num-(i+1))+10 and event.pos().y()<= 5*(num-(i+1))+69*(num-i)+10):
                     index= num-(i+1)
-                    print("index: ", index)
                     break
                 else:
                     index = num

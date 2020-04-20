@@ -77,7 +77,7 @@ class BoardDetailPage(QWidget):
     def validateSectionTitle(self):
         if self.dialogCreate.lineEdit.text() == '':
             createErrorDialogBox(
-                self, "Error", "Board titile can not be empty")
+                self, "Error", "Section titile can not be empty")
             return False
         return True
 
