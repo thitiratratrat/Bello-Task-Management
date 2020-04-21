@@ -34,10 +34,10 @@ class TaskWidget(QWidget):
         self.taskDetailDialog.saveBtn.clicked.connect(self.getDataFromTaskDialog)
         
         self.dueDateLabel = QLabel()
-        self.dueDateLabel.setText(self.editTaskDialog.dueDateWidget.getCurrentDate())
+        #self.dueDateLabel.setText(self.editTaskDialog.dueDateWidget.getCurrentDate())
         self.dueDateLabel.setFont(QFont("Century-Gothic", 8, QFont.Bold))
-        self.dueDateLabel.setStyleSheet("background-color: #FA8072; color:white ")
-
+        #self.dueDateLabel.setStyleSheet("background-color: #FA8072; color:white ")
+        
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
         
         self.tagColor = QPushButton("tag")
@@ -76,6 +76,9 @@ class TaskWidget(QWidget):
     def setTaskBoardId(self,taskBoardId):
         self.taskBoardId = taskBoardId
 
+    def setDueDateLabel(self,newDueDate):
+        return self.dueDateLabel.setText(newDueDate)
+        
     def getTaskTitle(self):
         return self.taskTitle.text()
     
@@ -97,6 +100,8 @@ class TaskWidget(QWidget):
     def getNewDate(self):
         newDate = self.editTaskDialog.dueDateWidget.date.text()
         self.dueDateLabel.setText(newDate[7:])
+        self.parent.parent.parent.setTaskDueDate(self.parent.parent.getBoardId(), self.parent.getSectionId(),
+                   self.getTaskId(),newDate[7:])
 
     def deleteTask(self):
         index = self.getTaskIndex()

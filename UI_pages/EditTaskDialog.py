@@ -16,7 +16,6 @@ class EditTaskDialog(QDialog):
 
         self.dueDateWidget = DueDateWidget(self)
         self.dueDateWidget.saveDateBtn.clicked.connect(self.parent.getNewDate)
-
         
         '''self.editTaskTitleDialog = CustomDialog(
             self, 'Edit task title', 'Task name: ', 'Save')

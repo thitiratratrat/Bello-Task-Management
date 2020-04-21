@@ -94,17 +94,18 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
+                #print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
-                taskDuedate = taskInfoDict.get("duedate")
+                taskDuedate = taskInfoDict.get("dueDate")
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
-
+                print("Due---- ",taskDuedate)
                 #TODO setTaskComment, setTaskRespon, setTaskDuedate, setTaskComment
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
-                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask)
+                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask,taskDuedate)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -125,10 +126,10 @@ class BoardDetailPage(QWidget):
         sectionId = taskDict.get("sectionId")
         taskId = taskDict.get("taskId")
         taskTitle = taskDict.get("taskTitle")
-        
+        taskDuedate= None
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
-                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index)
+                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index,taskDuedate)
     
     

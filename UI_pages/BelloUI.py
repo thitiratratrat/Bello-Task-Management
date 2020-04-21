@@ -197,7 +197,7 @@ class BelloUI(QMainWindow):
 
     def showAccountDoesNotExist(self):
         self.loginSignUpPage.loginWidget.showLoginError()
-    
+
     def showBoardTitleIsExist(self,boardTitle):
         if(self.bello.isExistedBoardTitle(boardTitle)):
             self.dashboardPage.showBoardTitleIsExist()
