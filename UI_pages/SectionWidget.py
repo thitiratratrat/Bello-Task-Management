@@ -151,7 +151,7 @@ class SectionWidget(QWidget):
         taskTitle = self.getCreateTaskTitle()
         if taskTitle== "":
             createErrorDialogBox(
-                self, "Error", "Task titile can not be empty")
+                self, "Error", "Task title can not be empty")
             return 
         boardId = self.parent.getBoardId()
         sectionId = self.getSectionId()
@@ -167,6 +167,7 @@ class SectionWidget(QWidget):
         self.taskWidget.setTaskBoardId(boardId)
         self.taskWidget.setTaskTitle(taskTitle)
         self.taskWidget.setTaskIndex(index)
+        self.taskWidget.taskDetailDialog.taskTitleLabel.setText(taskTitle)
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
     def deleteTask(self,index):

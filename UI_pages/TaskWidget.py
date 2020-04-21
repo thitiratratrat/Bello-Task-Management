@@ -2,7 +2,6 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-from CustomDialog import *
 from dialogBox import *
 from EditTaskDialog import * 
 from TaskDetailDialog import *
@@ -17,29 +16,30 @@ class TaskWidget(QWidget):
         self.taskId =None
         self.taskIndex = 0
 
-        self.editTaskDialog = EditTaskDialog(self)
-        self.taskDetailDialog = TaskDetailDialog(self)
-        self.taskDetailDialog.enter.clicked.connect(self.getDataFromTaskDialog)
-        #self.setFixedSize(180,100)
-        self.taskTitle = QLabel("name")
+        self.taskTitle = QLabel()
         self.taskTitle.setFont(QFont("Century Gothic",10,QFont.Bold))
         self.taskTitle.setStyleSheet("color: #31446F")
         
         self.editTaskBtn = QToolButton() 
         self.editTaskBtn.setIcon(QIcon("images/editBtn.png"))
         self.editTaskBtn.clicked.connect(self.editTask)
-        self.editTaskTitleDialog = CustomDialog(
-            self, 'Edit task title', 'Task name: ', 'Save')
-        self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
-
+    
         self.deleteTaskBtn = QToolButton()
         self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
         self.deleteTaskBtn.clicked.connect(self.deleteTask)
 
-        self.dueDateLabel = QLabel("12-05-2020")
+        self.editTaskDialog = EditTaskDialog(self)
+        self.taskDetailDialog = TaskDetailDialog(self)
+        self.taskDetailDialog.sectionTitleLabel.setText("in list " + self.parent.getSectionTitle())
+        self.taskDetailDialog.saveBtn.clicked.connect(self.getDataFromTaskDialog)
+        
+        self.dueDateLabel = QLabel()
+        self.dueDateLabel.setText(self.editTaskDialog.dueDateWidget.getCurrentDate())
         self.dueDateLabel.setFont(QFont("Century-Gothic", 8, QFont.Bold))
         self.dueDateLabel.setStyleSheet("background-color: #FA8072; color:white ")
 
+        self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
+        
         self.tagColor = QPushButton("tag")
         self.member = QLabel("c") 
         #self.member.setStyleSheet("border-radius:100;background-color:red")
@@ -94,6 +94,10 @@ class TaskWidget(QWidget):
     def getTaskSectionId(self):
         return self.taskSectionId
 
+    def getNewDate(self):
+        newDate = self.editTaskDialog.dueDateWidget.date.text()
+        self.dueDateLabel.setText(newDate[7:])
+
     def deleteTask(self):
         index = self.getTaskIndex()
         taskId = self.parent.deleteTask(index)
@@ -101,17 +105,6 @@ class TaskWidget(QWidget):
     def editTask(self):
         self.editTaskDialog.show()
         #self.editTaskTitleDialog.show()
-    
-    def handleEditTaskTitleBtn(self):
-        if not self.validateNewTaskTitle():
-            return
-        
-        newTaskTitle = self.getNewTaskTitle()
-
-        self.setTaskTitle(newTaskTitle)
-        self.closeEditDialogBox()
-        
-        self.parent.parent.parent.editTaskTitle(self.taskSectionId, self.taskId, self.getTaskTitle())
 
     def validateNewTaskTitle(self):
         newTaskTitle = self.getNewTaskTitle()
