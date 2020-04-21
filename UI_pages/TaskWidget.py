@@ -78,7 +78,13 @@ class TaskWidget(QWidget):
 
     def setDueDateLabel(self,newDueDate):
         return self.dueDateLabel.setText(newDueDate)
-        
+    
+    def setTaskState(self,taskState):
+        if(taskState == False):
+            self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
+        else:
+            self.dueDateLabel.setStyleSheet("background-color:  #5FC083; color:white")
+
     def getTaskTitle(self):
         return self.taskTitle.text()
     
@@ -138,10 +144,11 @@ class TaskWidget(QWidget):
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
 
     def getDataFromTaskDialog(self):
-        if(self.taskDetailDialog.dueDateCheckBox.isChecked()):
-            self.dueDateLabel.setStyleSheet("background-color: #5FC083; color:white ")
-        else:
-             self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
+        #getDueDateData
+        self.state = self.taskDetailDialog.dueDateCheckBox.isChecked()
+        self.setTaskState(self.state)
+        print("State:" ,self.state)
+        self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

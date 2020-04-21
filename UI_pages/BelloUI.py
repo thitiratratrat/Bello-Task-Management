@@ -199,7 +199,10 @@ class BelloUI(QMainWindow):
         self.bello.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
 
     def setTaskFinishState(self, taskId, taskState):
+        print("taskid: ",taskId)
+        print("taskState: ", taskState)
         self.bello.setTaskFinishState(taskId, taskState)
+        print("finish")
     
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()

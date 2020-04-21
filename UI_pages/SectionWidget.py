@@ -160,7 +160,7 @@ class SectionWidget(QWidget):
 
         self.parent.parent.createTask(boardId, sectionId, taskTitle,taskOrder)
 
-    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate):
+    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState):
         self.taskWidget = TaskWidget(self)
         self.taskWidget.setTaskId(taskId)
         self.taskWidget.setTaskSectionId(sectionId)
@@ -169,6 +169,7 @@ class SectionWidget(QWidget):
         self.taskWidget.setTaskIndex(index)
         self.taskWidget.taskDetailDialog.taskTitleLabel.setText(taskTitle)
         self.taskWidget.setDueDateLabel(taskDueDate)
+        self.taskWidget.setTaskState(taskState)
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
     def deleteTask(self,index):
@@ -179,8 +180,6 @@ class SectionWidget(QWidget):
         for index in range(newIndex):
             self.item = self.sectionTaskLayout.itemAt(index).widget()
             self.item.setTaskIndex(index)
-            #print("index: ",index)
-            #print("Title: ", self.item.getTaskTitle())
         
         boardId = self.selectTask.getTaskBoardId()
         sectionId = self.selectTask.getTaskSectionId()
