@@ -157,6 +157,12 @@ class BelloUI(QMainWindow):
     
     def addTask(self,taskDict):
         self.boardDetailPage.createNewTask(taskDict)
+        
+    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
+        self.bello.addTaskComment(boardId, sectionId, taskId, taskComment)
+        
+    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+        self.bello.addTaskTag(boardId, sectionId, taskId, taskTag)
 
     def editSectionTitle(self, sectionId, sectionTitle):
         boardId = self.boardDetailPage.getBoardId()
@@ -192,6 +198,9 @@ class BelloUI(QMainWindow):
     def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
         self.bello.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
 
+    def setTaskFinishState(self, taskId, taskState):
+        self.bello.setTaskFinishState(taskId, taskState)
+    
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
 
