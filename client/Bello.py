@@ -137,7 +137,7 @@ class Bello:
                                           }}))
         
     def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
-        self.__user.setDueDate(boardId, sectionId, taskId, taskDueDate)
+        #self.__user.setDueDate(boardId, sectionId, taskId, taskDueDate)
         
         self.__websocket.send(json.dumps({"action": "setTaskDueDate",
                                           "data": {

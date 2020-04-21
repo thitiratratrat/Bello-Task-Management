@@ -18,7 +18,6 @@ class TaskDetailDialog(QDialog):
 
         self.dueDateCheckBox = QCheckBox()
         self.dueDateCheckBox.setFont(QFont("Century-Gothic", 9, QFont.Bold))
-        self.dueDateCheckBox.setContentsMargins(30,0,10,10)
         
         self.saveBtn = QPushButton("Save")
         self.saveBtn.setFont(QFont("Moon", 10, QFont.Bold))
