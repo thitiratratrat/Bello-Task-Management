@@ -188,6 +188,9 @@ class BelloUI(QMainWindow):
 
     def setSectionId(self, sectionId):
         self.boardDetailPage.sectionWidget.setSectionId(sectionId)
+        
+    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
+        self.bello.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
 
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
