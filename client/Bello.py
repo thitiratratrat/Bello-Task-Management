@@ -146,7 +146,7 @@ class Bello:
                                           }}))
         
     def setTaskFinishState(self, taskId, taskState):
-        self.__websocket.send(json.dumps({"action": "setFinishTask",
+        self.__websocket.send(json.dumps({"action": "setTaskFinishState",
                                           "data": {
                                               "taskId": taskId,
                                               "taskState": taskState
