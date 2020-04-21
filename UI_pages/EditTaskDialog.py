@@ -4,6 +4,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from TabWidget import *
 from DueDateWidget import *
+from CustomDialog import *
 
 class EditTaskDialog(QDialog):
     def __init__(self,parent =None):
@@ -14,7 +15,13 @@ class EditTaskDialog(QDialog):
         self.tabWidget.setFont(QFont("Moon", 8, QFont.Bold))
 
         self.dueDateWidget = DueDateWidget(self)
-        self.dueDateWidget.saveDateBtn.clicked.connect(self.saveBtnInDueDate)
+        self.dueDateWidget.saveDateBtn.clicked.connect(self.parent.getNewDate)
+
+        
+        '''self.editTaskTitleDialog = CustomDialog(
+            self, 'Edit task title', 'Task name: ', 'Save')
+        #self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
+        '''
 
         self.tabWidget.addTab(QWidget(), QIcon(
             "images/editDialog.png"), " Edit")
@@ -27,10 +34,17 @@ class EditTaskDialog(QDialog):
         self.mainEditTask.addWidget(self.tabWidget)
         self.setFixedSize(400,300)
         self.setLayout(self.mainEditTask)
+    
+    def handleEditTaskTitleBtn(self):
+        if not self.validateNewTaskTitle():
+            return
+        
+        newTaskTitle = self.getNewTaskTitle()
 
-    def saveBtnInDueDate(self):
-        #TODO save duedate function
-        print("---- save due date --- ")
+        self.setTaskTitle(newTaskTitle)
+        self.closeEditDialogBox()
+        
+        self.parent.parent.parent.parent.editTaskTitle(self.taskSectionId, self.taskId, self.getTaskTitle())
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

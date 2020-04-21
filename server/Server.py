@@ -5,7 +5,7 @@ from mongoengine import *
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\database_model')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\database_model')
 from Section import Section
 from Board import Board
 from Account import Account
@@ -256,7 +256,7 @@ class Server:
         task.due_date = taskDueDate
         task.save()
         
-    aysnc def __setTaskFinishState(self, data, websocket):
+    async def __setTaskFinishState(self, data, websocket):
         taskId = data["taskId"]
         taskState = data["taskState"]
         
