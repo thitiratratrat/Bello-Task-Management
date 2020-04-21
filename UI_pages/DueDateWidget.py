@@ -30,7 +30,6 @@ class DueDateWidget(QDialog):
         date = self.calendar.selectedDate()
         message = "Date:  " + date.toString(Qt.ISODate)
         self.date.setText(message)
-        #print(self.date.text())
     
     def getMinDate(self):
         date = self.calendar.selectedDate()

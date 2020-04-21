@@ -5,6 +5,7 @@ from PySide2.QtGui import *
 from MenuBar import *
 from dialogBox import *
 from CustomDialog import CustomDialog
+from DueDateWidget import *
 from SectionWidget import *
 
 class BoardDetailPage(QWidget):
@@ -100,12 +101,14 @@ class BoardDetailPage(QWidget):
                 taskDuedate = taskInfoDict.get("dueDate")
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
-                print("Due---- ",taskDuedate)
-                #TODO setTaskComment, setTaskRespon, setTaskDuedate, setTaskComment
+                taskState = taskInfoDict.get("isFinished")
+                #print("Due---- ",taskDuedate)
+                #TODO setTaskComment, setTaskRespon, setTaskTag
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
-                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, indexTask,taskDuedate)
+                        self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
+                            sectionId, taskId, indexTask,taskDuedate,taskState)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -126,10 +129,14 @@ class BoardDetailPage(QWidget):
         sectionId = taskDict.get("sectionId")
         taskId = taskDict.get("taskId")
         taskTitle = taskDict.get("taskTitle")
-        taskDuedate= None
+        calendarWidget = DueDateWidget()
+        taskDueDate= calendarWidget.getCurrentDate()
+        self.parent.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
+        taskState = False
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
-                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, sectionId, taskId, index,taskDuedate)
+                self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
+                    sectionId, taskId, index,taskDueDate,taskState)
     
     
