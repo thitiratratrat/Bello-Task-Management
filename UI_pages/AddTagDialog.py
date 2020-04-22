@@ -10,7 +10,7 @@ class AddTagDialog(QDialog):
         
         self.setWindowTitle("Create Tag")
         self.listColorCode = ["#87CEEB","#9370DB","#FFB6C1","#FA8072","#FFA500"]
-
+    
         self.tagTitleLabel = QLabel("Create Tag")
         self.tagTitleLabel.setFont(QFont("Moon", 9 , QFont.Bold))
         self.tagTitleLabel.setContentsMargins(5,10,20,10)

@@ -191,10 +191,10 @@ class SectionWidget(QWidget):
             self.item = self.sectionTaskLayout.itemAt(index).widget()
             self.item.setTaskIndex(index)
         
-        boardId = self.selectTask.getTaskBoardId()
+        #boardId = self.selectTask.getTaskBoardId()
         sectionId = self.selectTask.getTaskSectionId()
         taskId = self.selectTask.getTaskId()
             
-        self.parent.parent.deleteTask(boardId, sectionId, taskId)
+        self.parent.parent.deleteTask(sectionId, taskId)
 
  

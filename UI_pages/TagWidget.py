@@ -13,8 +13,7 @@ class TagWidget(QWidget):
         self.tagLabel.setContentsMargins(10,10,0,0)
         self.tagLabel.setFont(QFont("Moon",10, QFont.Bold))
 
-        self.tagColor = None
-        self.tagTitle = None
+        self.colorTag = []
 
         self.addTagDialog = AddTagDialog(self)
 
@@ -108,6 +107,7 @@ class TagWidget(QWidget):
         else:
             self.tagItem = QListWidgetItem(QIcon(self.createIconColor(colorCode)), self.getTagLineEdit())
             self.tagListWidget.addItem(self.tagItem)
+            self.colorTag.append(colorCode)
             self.addTagDialog.close()
     
     def deleteTagInList(self):

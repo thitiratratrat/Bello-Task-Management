@@ -3,18 +3,14 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\model')
-sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
-from User import User
 
 
 class Bello:
     def __init__(self):
         self.__websocket = websocket.WebSocket()
-        self.__uri = "ws://localhost:8765"
-        self.__user = None
+        self.__uri = "ws://127.0.0.1:8765"
         self.__ui = None
         
         self.__connect()
@@ -39,7 +35,6 @@ class Bello:
             username = self.__ui.getUsernameLogin()
 
             self.__ui.goToDashboardPage()
-            self.__initUser(username)
             
         elif response == "loginFail":
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
@@ -47,71 +42,32 @@ class Bello:
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
             
-            self.__initUserBoards(boardTitlesAndIds)
             self.__ui.addBoard(boardTitlesAndIds)
             
         elif response == "createdBoard":
             boardDetail = message["data"]
             boardDict = {boardDetail['boardId']: boardDetail['boardTitle']}
             
-            self.__createBoard(boardDetail)
             self.__ui.addBoard(boardDict)
             
         elif response == "createdSection":
             sectionDetail = message["data"]
             
-            self.__createSection(sectionDetail)
             self.__ui.signalAddSection.signalDict.emit(sectionDetail)
 
         elif response == "createdTask":
             taskDetail = message["data"]
             
-            self.__createTask(taskDetail)
             self.__ui.signalAddTask.signalDict.emit(taskDetail)
             
         elif response == "boardDetail":
             boardDetail = message["data"]
             
-            self.__addBoardDetail(boardDetail)
             self.__ui.goToBoardDetailPage()
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         else:
             return
-
-    def __initUser(self, username):
-        self.__user = User(username)
-
-    def __initUserBoards(self, boardTitlesAndIds):
-        for boardId, boardTitle in boardTitlesAndIds.items():
-            self.__user.createBoard(boardId, boardTitle)
-
-    def __createBoard(self, boardDetail):
-        boardTitle = boardDetail["boardTitle"]
-        boardId = boardDetail["boardId"]
-        self.__user.createBoard(boardId, boardTitle)
-
-    def __createSection(self, sectionDetail):
-        boardId = sectionDetail["boardId"]
-        sectionId = sectionDetail["sectionId"]
-        sectionTitle = sectionDetail["sectionTitle"]
-        
-        self.__user.createSection(boardId, sectionId, sectionTitle)
-
-    def __createTask(self, taskDetail):
-        boardId = taskDetail["boardId"]
-        sectionId = taskDetail["sectionId"]
-        taskId = taskDetail["taskId"]
-        taskTitle = taskDetail["taskTitle"]
-        taskOrder = taskDetail["taskOrder"]
-
-        self.__user.createTask(boardId, sectionId, taskId, taskTitle, taskOrder)
-
-    def __addBoardDetail(self, boardDetail):
-        boardId = boardDetail["boardId"]
-        boardDetail = boardDetail["boardDetail"]
-        
-        self.__user.addBoardDetail(boardId, boardDetail)
 
     def __handleServer(self):
         while True:
@@ -120,50 +76,45 @@ class Bello:
             
             self.__handleMessage(message)
             
-    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
-        self.__user.commentTask(boardId, sectionId, taskId, taskComment)
-        
+    def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
         self.__websocket.send(json.dumps({"action": "addTaskComment",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskComment": taskComment
+                                              "taskComment": taskComment,
+                                              "memberUsername": memberUsername,
+                                              "taskCommentOrder": taskCommentOrder
                                           }}))
         
-    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+    def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.__websocket.send(json.dumps({"action": "addTaskTag",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskTag": taskTag
+                                              "taskTag": taskTag,
+                                              "taskTagColor": taskTagColor
                                           }}))
         
-    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
-        #self.__user.setDueDate(boardId, sectionId, taskId, taskDueDate)
-        
+    def setTaskDueDate(self, taskId, taskDueDate):        
         self.__websocket.send(json.dumps({"action": "setTaskDueDate",
                                           "data": {
                                               "taskId": taskId,
                                               "taskDueDate": taskDueDate
                                           }}))
         
-    def setTaskFinishState(self, taskId, taskState):
+    def setTaskFinishState(self, taskId, taskFinishState):
         self.__websocket.send(json.dumps({"action": "setTaskFinishState",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskState": taskState
+                                              "taskFinishState": taskFinishState
                                           }}))
 
-    def editSectionTitle(self, boardId, sectionId, sectionTitle):
-        self.__user.editSectionTitle(boardId, sectionId, sectionTitle)
-
+    def editSectionTitle(self, sectionId, sectionTitle):
         self.__websocket.send(json.dumps({"action": "editSectionTitle",
                                           "data": {
                                               "sectionId": sectionId,
                                               "sectionTitle": sectionTitle
                                           }}))
 
-    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
-        self.__user.editTaskTitle(boardId, sectionId, taskId, taskTitle)
-
+    def editTaskTitle(self, taskId, taskTitle):
         self.__websocket.send(json.dumps({"action": "editTaskTitle",
                                           "data": {
                                               "taskId": taskId,
@@ -188,35 +139,26 @@ class Bello:
         return True if len(password) >= 4 else False
 
     def deleteBoard(self, boardId):
-        self.__user.deleteBoard(boardId)
-
         self.__websocket.send(json.dumps({"action": "deleteBoard",
                                           "data": {
                                               "boardId": boardId
                                           }}))
 
     def deleteSection(self, boardId, sectionId):
-        self.__user.deleteSection(boardId, sectionId)
-
         self.__websocket.send(json.dumps({"action": "deleteSection",
                                           "data": {
                                               "boardId": boardId,
                                               "sectionId": sectionId
                                           }}))
 
-    def deleteTask(self, boardId, sectionId, taskId):
-        self.__user.deleteTask(boardId, sectionId, taskId)
-        
+    def deleteTask(self, sectionId, taskId):
         self.__websocket.send(json.dumps({"action": "deleteTask",
                                           "data": {
-                                              "boardId": boardId,
                                               "sectionId": sectionId,
                                               "taskId": taskId
                                           }}))
         
-    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
-        self.__user.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
-        
+    def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         self.__websocket.send(json.dumps({"action": "reorderTaskInSameSection",
                                           "data": {
                                               "sectionId": sectionId,
@@ -224,9 +166,7 @@ class Bello:
                                               "taskOrder": taskOrder
                                           }}))
 
-    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
-        self.__user.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
-        
+    def reorderTaskInDifferentSection(self, sectionId, newSectionId, taskId, taskOrder):
         self.__websocket.send(json.dumps({"action": "reorderTaskInDifferentSection",
                                           "data": {
                                               "sectionId": sectionId,
@@ -235,11 +175,11 @@ class Bello:
                                               "taskOrder": taskOrder
                                           }}))
 
-    def sendCreateBoardToServer(self, boardTitle):
+    def sendCreateBoardToServer(self, boardTitle, username):
         self.__websocket.send(json.dumps({"action": "createBoard",
                                           "data": {
                                               "boardTitle": boardTitle,
-                                              "username": self.__user.getUsername()}
+                                              "username": username}
                                           }))
 
     def sendCreateSectionToServer(self, boardId, sectionTitle):
@@ -263,12 +203,6 @@ class Bello:
                                           "data": {
                                               "boardId": boardId}
                                           }))
-
-    def isExistedBoardTitle(self, boardTitle):
-        boards = self.__user.getBoards()
-        boardTitles = map(lambda board: board.getTitle(), boards.values())
-
-        return boardTitle in boardTitles
 
     def addUI(self, ui):
         self.__ui = ui
