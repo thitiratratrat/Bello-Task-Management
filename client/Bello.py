@@ -11,7 +11,6 @@ class Bello:
     def __init__(self):
         self.__websocket = websocket.WebSocket()
         self.__uri = "ws://localhost:8765"
-        self.__user = None
         self.__ui = None
         
         self.__connect()
@@ -152,15 +151,14 @@ class Bello:
                                               "sectionId": sectionId
                                           }}))
 
-    def deleteTask(self, boardId, sectionId, taskId):
+    def deleteTask(self, sectionId, taskId):
         self.__websocket.send(json.dumps({"action": "deleteTask",
                                           "data": {
-                                              "boardId": boardId,
                                               "sectionId": sectionId,
                                               "taskId": taskId
                                           }}))
         
-    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
+    def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         self.__websocket.send(json.dumps({"action": "reorderTaskInSameSection",
                                           "data": {
                                               "sectionId": sectionId,
@@ -168,7 +166,7 @@ class Bello:
                                               "taskOrder": taskOrder
                                           }}))
 
-    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
+    def reorderTaskInDifferentSection(self, sectionId, newSectionId, taskId, taskOrder):
         self.__websocket.send(json.dumps({"action": "reorderTaskInDifferentSection",
                                           "data": {
                                               "sectionId": sectionId,
@@ -177,11 +175,11 @@ class Bello:
                                               "taskOrder": taskOrder
                                           }}))
 
-    def sendCreateBoardToServer(self, boardTitle):
+    def sendCreateBoardToServer(self, boardTitle, username):
         self.__websocket.send(json.dumps({"action": "createBoard",
                                           "data": {
                                               "boardTitle": boardTitle,
-                                              "username": self.__user.getUsername()}
+                                              "username": username}
                                           }))
 
     def sendCreateSectionToServer(self, boardId, sectionTitle):
