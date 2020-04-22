@@ -50,8 +50,8 @@ class Manager:
     def isExistedUsername(self, usernameInput):
         return True if Account.objects(username=usernameInput).count() >= 1 else False
 
-    def createAccount(self, username, password):
-        account = Account(username=username, password=password)
+    def createAccount(self, usernameInput, password):
+        account = Account(username=usernameInput, password=password)
 
         account.save()
 
@@ -91,13 +91,13 @@ class Manager:
 
         return detail
 
-    def createBoard(self, boardTitle, usernameInput):
-        board = Board(title=boardTitle, members=[usernameInput])
+    def createBoard(self, boardTitle, username):
+        board = Board(title=boardTitle, members=[username])
 
         board.save()
 
         boardId = board.id
-        account = self.__getAccountByUsername(usernameInput)
+        account = self.__getAccountByUsername(username)
 
         account.addBoardId(boardId)
 
