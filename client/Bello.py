@@ -77,42 +77,45 @@ class Bello:
             
             self.__handleMessage(message)
             
-    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
+    def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
         self.__websocket.send(json.dumps({"action": "addTaskComment",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskComment": taskComment
+                                              "taskComment": taskComment,
+                                              "memberUsername": memberUsername,
+                                              "taskCommentOrder": taskCommentOrder
                                           }}))
         
-    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+    def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.__websocket.send(json.dumps({"action": "addTaskTag",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskTag": taskTag
+                                              "taskTag": taskTag,
+                                              "taskTagColor": taskTagColor
                                           }}))
         
-    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):        
+    def setTaskDueDate(self, taskId, taskDueDate):        
         self.__websocket.send(json.dumps({"action": "setTaskDueDate",
                                           "data": {
                                               "taskId": taskId,
                                               "taskDueDate": taskDueDate
                                           }}))
         
-    def setTaskFinishState(self, taskId, taskState):
+    def setTaskFinishState(self, taskId, taskFinishState):
         self.__websocket.send(json.dumps({"action": "setTaskFinishState",
                                           "data": {
                                               "taskId": taskId,
-                                              "taskState": taskState
+                                              "taskFinishState": taskFinishState
                                           }}))
 
-    def editSectionTitle(self, boardId, sectionId, sectionTitle):
+    def editSectionTitle(self, sectionId, sectionTitle):
         self.__websocket.send(json.dumps({"action": "editSectionTitle",
                                           "data": {
                                               "sectionId": sectionId,
                                               "sectionTitle": sectionTitle
                                           }}))
 
-    def editTaskTitle(self, boardId, sectionId, taskId, taskTitle):
+    def editTaskTitle(self, taskId, taskTitle):
         self.__websocket.send(json.dumps({"action": "editTaskTitle",
                                           "data": {
                                               "taskId": taskId,
