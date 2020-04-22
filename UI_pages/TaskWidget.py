@@ -30,17 +30,17 @@ class TaskWidget(QWidget):
 
         self.editTaskDialog = EditTaskDialog(self)
         self.taskDetailDialog = TaskDetailDialog(self)
-        self.taskDetailDialog.sectionTitleLabel.setText("in list " + self.parent.getSectionTitle())
+        
+        '''self.taskDetailDialog.sectionTitleLabel.setText("in list " + 
+            self.parent.parent.getSectionTitleFromId(self.getTaskSectionId()))'''
+
         self.taskDetailDialog.saveBtn.clicked.connect(self.getDataFromTaskDialog)
-        
+       
         self.dueDateLabel = QLabel()
-        #self.dueDateLabel.setText(self.editTaskDialog.dueDateWidget.getCurrentDate())
-        self.dueDateLabel.setFont(QFont("Century-Gothic", 8, QFont.Bold))
-        #self.dueDateLabel.setStyleSheet("background-color: #FA8072; color:white ")
-        
+        self.dueDateLabel.setFont(QFont("Century Gothic", 8, QFont.Bold))
+      
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
-        
-        self.tagColor = QPushButton("tag")
+     
         self.member = QLabel("c") 
         #self.member.setStyleSheet("border-radius:100;background-color:red")
         
@@ -50,8 +50,10 @@ class TaskWidget(QWidget):
         self.taskTitleAndEditLayout.addWidget(self.editTaskBtn)
         self.taskTitleAndEditLayout.addWidget(self.deleteTaskBtn)    
 
+        self.tagLayout = QHBoxLayout()
+
         self.taskDueDateTagLayout = QHBoxLayout()
-        self.taskDueDateTagLayout.addWidget(self.tagColor)
+        self.taskDueDateTagLayout.addLayout(self.tagLayout)
         self.taskDueDateTagLayout.addWidget(self.dueDateLabel)
         self.taskDueDateTagLayout.addStretch(1)
         self.taskDueDateTagLayout.addWidget(self.member)
@@ -79,11 +81,12 @@ class TaskWidget(QWidget):
     def setDueDateLabel(self,newDueDate):
         return self.dueDateLabel.setText(newDueDate)
     
-    def setTaskState(self,taskState):
-        if(taskState == False):
-            self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
-        else:
-            self.dueDateLabel.setStyleSheet("background-color:  #5FC083; color:white")
+    def setTaskState(self,taskDueDate,taskState):
+        if(taskDueDate != None):
+            if(taskState == False):
+                self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
+            else:
+                self.dueDateLabel.setStyleSheet("background-color:  #5FC083; color:white")
 
     def getTaskTitle(self):
         return self.taskTitle.text()
@@ -102,13 +105,37 @@ class TaskWidget(QWidget):
 
     def getTaskSectionId(self):
         return self.taskSectionId
+    
+    def getDueDateLabel(self):
+        return self.dueDateLabel.text()
 
     def getNewDate(self):
         newDate = self.editTaskDialog.dueDateWidget.date.text()
         self.dueDateLabel.setText(newDate[7:])
+        self.setTaskState(self.getDueDateLabel(), False)
         self.parent.parent.parent.setTaskDueDate(self.parent.parent.getBoardId(), self.parent.getSectionId(),
                    self.getTaskId(),newDate[7:])
+    
+    def addTagLabel(self):
+        listItem = [] 
+        for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
+            tagItem = self.editTaskDialog.tagWidget.tagListWidget.item(i)
+            self.tagColor = QToolButton()
+            self.tagColor.setIcon(tagItem.icon())
+            self.tagColor.setStyleSheet("background-color: rgba(0, 0, 0, 0%)")
+            listItem.append(self.tagColor)
+        self.addTagToWidget(listItem)
 
+    def addTagToWidget(self,listItem):
+        self.deleteAllTag()
+        for item in listItem:
+            self.tagLayout.setSpacing(0.1)
+            self.tagLayout.addWidget(item)
+
+    def deleteAllTag(self):
+        for i in reversed(range(self.tagLayout.count())): 
+            self.tagLayout.itemAt(i).widget().deleteLater()
+    
     def deleteTask(self):
         index = self.getTaskIndex()
         taskId = self.parent.deleteTask(index)
@@ -146,8 +173,7 @@ class TaskWidget(QWidget):
     def getDataFromTaskDialog(self):
         #getDueDateData
         self.state = self.taskDetailDialog.dueDateCheckBox.isChecked()
-        self.setTaskState(self.state)
-        print("State:" ,self.state)
+        self.setTaskState(self.getDueDateLabel(),self.state)
         self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
 
 if __name__ == "__main__":

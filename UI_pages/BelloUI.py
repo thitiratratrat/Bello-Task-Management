@@ -159,9 +159,11 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.createNewTask(taskDict)
         
     def addTaskComment(self, boardId, sectionId, taskId, taskComment):
+        #TODO
         self.bello.addTaskComment(boardId, sectionId, taskId, taskComment)
         
     def addTaskTag(self, boardId, sectionId, taskId, taskTag):
+        #TODO
         self.bello.addTaskTag(boardId, sectionId, taskId, taskTag)
 
     def editSectionTitle(self, sectionId, sectionTitle):
@@ -211,11 +213,11 @@ class BelloUI(QMainWindow):
         self.loginSignUpPage.loginWidget.showLoginError()
 
     def showBoardTitleIsExist(self,boardTitle):
-        if(self.bello.isExistedBoardTitle(boardTitle)):
-            self.dashboardPage.showBoardTitleIsExist()
-            return True
-        else:
-            return False
+        for i in range(self.dashboardPage.displayBoard.listWidget.count()):
+            if(self.dashboardPage.displayBoard.listWidget.item(i).text() == boardTitle):
+                self.dashboardPage.showBoardTitleIsExist()
+                return True    
+        return False
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
