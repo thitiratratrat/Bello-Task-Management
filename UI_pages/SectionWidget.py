@@ -88,6 +88,21 @@ class SectionWidget(QWidget):
     def setSectionIndex(self,sectionIndex):
         self.sectionIndex = sectionIndex
 
+    def setIndexSection(self, index):  # for delete
+        self.index = index
+
+    def setNewTaskWidgetOrder(self):
+        for i in range(self.sectionTaskLayout.count()):
+            sectionId = self.sectionTaskLayout.itemAt(i).widget().getTaskSectionId()
+            taskTitle = self.sectionTaskLayout.itemAt(i).widget().getTaskTitle()
+            self.sectionTaskLayout.itemAt(i).widget().setTaskIndex(i)
+
+    def setColor(self):
+        self.palette = QPalette()
+        self.setAutoFillBackground(True)
+        self.palette.setColor(QPalette.Window, QColor('#52719F'))
+        self.setPalette(self.palette)
+    
     def getSectionTitle(self):
         return self.sectionTitle.text()
 
@@ -102,7 +117,7 @@ class SectionWidget(QWidget):
 
     def getSectionIndex(self):
         return self.sectionIndex
-
+            
     def handleEditSectionTitleBtn(self):
         if not self.validateNewSectionTitle():
             return
@@ -128,18 +143,13 @@ class SectionWidget(QWidget):
     def closeEditDialogBox(self):
         self.editSectionTitleDialog.close()
 
-    def setIndexSection(self, index):  # for delete
-        self.index = index
+    
 
     def deleteSection(self):
         index = self.getSectionIndex()
         sectionId = self.parent.deleteSection(index)
     
-    def setColor(self):
-        self.palette = QPalette()
-        self.setAutoFillBackground(True)
-        self.palette.setColor(QPalette.Window, QColor('#52719F'))
-        self.setPalette(self.palette)
+   
 
     def getCreateTaskTitle(self):
         return self.createTaskTitleDialog.lineEdit.text()
@@ -169,7 +179,7 @@ class SectionWidget(QWidget):
         self.taskWidget.setTaskIndex(index)
         self.taskWidget.taskDetailDialog.taskTitleLabel.setText(taskTitle)
         self.taskWidget.setDueDateLabel(taskDueDate)
-        self.taskWidget.setTaskState(taskState)
+        self.taskWidget.setTaskState(taskDueDate,taskState)
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
     def deleteTask(self,index):
@@ -187,8 +197,4 @@ class SectionWidget(QWidget):
             
         self.parent.parent.deleteTask(boardId, sectionId, taskId)
 
-    def setNewTaskWidgetOrder(self):
-        for i in range(self.sectionTaskLayout.count()):
-            sectionId = self.sectionTaskLayout.itemAt(i).widget().getTaskSectionId()
-            taskTitle = self.sectionTaskLayout.itemAt(i).widget().getTaskTitle()
-            self.sectionTaskLayout.itemAt(i).widget().setTaskIndex(i)
+ 

@@ -52,7 +52,18 @@ class BoardDetailPage(QWidget):
 
     def getSectionNameFromDialog(self):
         return self.dialogCreate.lineEdit.text()
-
+    
+    def getSectionTitleFromId(self,sectionId):
+        for i in range(self.sectionLayout.count()):
+            sectionIdLayout =  self.sectionLayout.itemAt(i).widget().getSectionId()
+            print(sectionIdLayout)
+            '''if(sectionIdLayout == sectionId):
+                title = self.sectionLayout.itemAt(i).widget().getSectionTitle()
+                print(title)
+                return title'''
+        a= "a"
+        return a
+        
     def createNewSectionDialog(self):
         self.dialogCreate.show()
 
@@ -95,7 +106,7 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
-                print("Info: ", taskInfoDict)
+                #print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
                 taskDuedate = taskInfoDict.get("dueDate")
@@ -129,9 +140,7 @@ class BoardDetailPage(QWidget):
         sectionId = taskDict.get("sectionId")
         taskId = taskDict.get("taskId")
         taskTitle = taskDict.get("taskTitle")
-        calendarWidget = DueDateWidget()
-        taskDueDate= calendarWidget.getCurrentDate()
-        self.parent.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
+        taskDueDate = None
         taskState = False
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
