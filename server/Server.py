@@ -1,7 +1,6 @@
 import websockets
 import asyncio
 import pymongo
-from mongoengine import *
 import json
 from Manager import Manager
 
@@ -9,7 +8,7 @@ from Manager import Manager
 class Server:
     def __init__(self):
         self.__port = 8765
-        self.__address = "localhost"
+        self.__address = "127.0.0.1"
         self.__manager = Manager()
 
     async def __signUp(self, data, websocket):
@@ -76,7 +75,7 @@ class Server:
         taskTitle = data["taskTitle"]
         taskOrder = data["taskOrder"]
 
-        taskId = str(self.__manager.createTask(sectionId, taskId, taskOrder))
+        taskId = str(self.__manager.createTask(sectionId, taskTitle, taskOrder))
 
         await websocket.send(json.dumps({"response": "createdTask",
                                          "data": {
