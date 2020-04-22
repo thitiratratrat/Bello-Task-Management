@@ -1,3 +1,4 @@
+from mongoengine import *
 import sys
 sys.path.append(
     'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\classes')
@@ -50,12 +51,12 @@ class Manager:
     def isExistedUsername(self, usernameInput):
         return True if Account.objects(username=usernameInput).count() >= 1 else False
 
-    def createAccount(self, usernameInput, password):
-        account = Account(username=usernameInput, password=password)
+    def createAccount(self, usernameInput, passwordInput):
+        account = Account(username=usernameInput, password=passwordInput)
 
         account.save()
 
-    def validateAccount(self, usernameInput, password):
+    def validateAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
 
     def getBoardDetail(self, boardId):
@@ -115,7 +116,7 @@ class Manager:
 
         return sectionId
 
-    def createTask(self, sectionId, taskId, taskOrder):
+    def createTask(self, sectionId, taskTitle, taskOrder):
         task = Task(title=taskTitle)
 
         task.save()
@@ -130,7 +131,7 @@ class Manager:
     def editSectionTitle(self, sectionId, sectionTitle):
         section = self.__getSectionById(sectionId)
 
-        section.editTitle()
+        section.editTitle(sectionTitle)
 
     def editTaskTitle(self, taskId, taskTitle):
         task = self.__getTaskById(taskId)

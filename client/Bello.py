@@ -10,7 +10,7 @@ from BelloUI import *
 class Bello:
     def __init__(self):
         self.__websocket = websocket.WebSocket()
-        self.__uri = "ws://localhost:8765"
+        self.__uri = "ws://127.0.0.1:8765"
         self.__ui = None
         
         self.__connect()
