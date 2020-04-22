@@ -7,9 +7,9 @@ class Account(Document):
     board_ids = ListField(ObjectIdField(), default=list)
     meta = {'collection': 'account'}
 
-    def getUsername(self):
-        return self.username
-
     def addBoardId(self, boardId):
         self.board_ids.append(boardId)
         self.save()
+        
+    def removeBoardId(self, boardId):
+        self.update(pull__board_ids=boardId)
