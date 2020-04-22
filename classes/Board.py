@@ -10,15 +10,6 @@ class Board(Document):
         "ordering": ["-date_created"]
     }
 
-    def getMembers(self):
-        return self.members
-
-    def getTitle(self):
-        return self.title
-
-    def getSectionIds(self):
-        return self.section_ids
-
     def addMemberUsername(self, memberUsername):
         self.members.append(memberUsername)
         self.save()
@@ -29,6 +20,7 @@ class Board(Document):
 
     def editTitle(self, title):
         self.title = title
+        
         self.save()
 
     def removeSectionId(self, sectionId):
