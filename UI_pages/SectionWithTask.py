@@ -59,14 +59,14 @@ class SectionWithTask(QWidget):
 
         self.parent.setNewTaskWidgetOrder()
         
-        boardId = self.parent.getSectionBoardId()
+        #boardId = self.parent.getSectionBoardId()
         taskId = cardSource.getTaskId()
         taskOrder = cardSource.getTaskIndex()
         
         if(isTaskIsSameSection):
-            self.parent.parent.parent.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
+            self.parent.parent.parent.reorderTaskInSameSection(sectionId, taskId, taskOrder)
         else:
-            self.parent.parent.parent.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
+            self.parent.parent.parent.reorderTaskInDifferentSection( sectionId, newSectionId, taskId, taskOrder)
 
         event.setDropAction(Qt.MoveAction)
         event.accept()

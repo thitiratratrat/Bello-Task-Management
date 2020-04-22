@@ -113,7 +113,8 @@ class BelloUI(QMainWindow):
         if (not self.dashboardPage.validateBoardTitle()) or self.showBoardTitleIsExist(boardTitle):
             return
 
-        self.bello.sendCreateBoardToServer(boardTitle)
+        username = self.getUsernameLogin()
+        self.bello.sendCreateBoardToServer(boardTitle, username)
         self.dashboardPage.closeDialog()
 
     def __createSection(self):
@@ -145,9 +146,9 @@ class BelloUI(QMainWindow):
         
     def deleteSection(self, boardId, sectionId):
         self.bello.deleteSection(boardId, sectionId)
-        
-    def deleteTask(self, boardId, sectionId, taskId):
-        self.bello.deleteTask(boardId, sectionId, taskId)
+    
+    def deleteTask(self, sectionId, taskId):
+        self.bello.deleteTask(sectionId, taskId)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
@@ -157,30 +158,28 @@ class BelloUI(QMainWindow):
     
     def addTask(self,taskDict):
         self.boardDetailPage.createNewTask(taskDict)
+    
+    #TODO: remove taskId, sectionId in usage    
+    def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
+        self.bello.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
         
-    def addTaskComment(self, boardId, sectionId, taskId, taskComment):
-        #TODO
-        self.bello.addTaskComment(boardId, sectionId, taskId, taskComment)
-        
-    def addTaskTag(self, boardId, sectionId, taskId, taskTag):
-        #TODO
-        self.bello.addTaskTag(boardId, sectionId, taskId, taskTag)
+      
+    def addTaskTag(self, taskId, taskTag, taskTagColor):
+        self.bello.addTaskTag(taskId, taskTag, taskTagColor)
 
     def editSectionTitle(self, sectionId, sectionTitle):
-        boardId = self.boardDetailPage.getBoardId()
-
-        self.bello.editSectionTitle(boardId, sectionId, sectionTitle)
+        self.bello.editSectionTitle(sectionId, sectionTitle)
+    
+    def editTaskTitle(self, taskId, taskTitle):
+        print("taskId: ", taskId)
+        print("taskTitle: ",taskTitle)
+        self.bello.editTaskTitle(taskId, taskTitle)
+    
+    def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
+        self.bello.reorderTaskInSameSection(sectionId, taskId, taskOrder)
         
-    def editTaskTitle(self, sectionId, taskId, taskTitle):
-        boardId = self.boardDetailPage.getBoardId()
-        
-        self.bello.editTaskTitle(boardId, sectionId, taskId, taskTitle)
-        
-    def reorderTaskInSameSection(self, boardId, sectionId, taskId, taskOrder):
-        self.bello.reorderTaskInSameSection(boardId, sectionId, taskId, taskOrder)
-        
-    def reorderTaskInDifferentSection(self, boardId, sectionId, newSectionId, taskId, taskOrder):
-        self.bello.reorderTaskInDifferentSection(boardId, sectionId, newSectionId, taskId, taskOrder)
+    def reorderTaskInDifferentSection(self, sectionId, newSectionId, taskId, taskOrder):
+        self.bello.reorderTaskInDifferentSection(sectionId, newSectionId, taskId, taskOrder)
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
@@ -197,8 +196,8 @@ class BelloUI(QMainWindow):
     def setSectionId(self, sectionId):
         self.boardDetailPage.sectionWidget.setSectionId(sectionId)
         
-    def setTaskDueDate(self, boardId, sectionId, taskId, taskDueDate):
-        self.bello.setTaskDueDate(boardId, sectionId, taskId, taskDueDate)
+    def setTaskDueDate(self, taskId, taskDueDate):
+        self.bello.setTaskDueDate(taskId, taskDueDate)
 
     def setTaskFinishState(self, taskId, taskState):
         print("taskid: ",taskId)

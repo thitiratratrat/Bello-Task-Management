@@ -113,8 +113,7 @@ class TaskWidget(QWidget):
         newDate = self.editTaskDialog.dueDateWidget.date.text()
         self.dueDateLabel.setText(newDate[7:])
         self.setTaskState(self.getDueDateLabel(), False)
-        self.parent.parent.parent.setTaskDueDate(self.parent.parent.getBoardId(), self.parent.getSectionId(),
-                   self.getTaskId(),newDate[7:])
+        self.parent.parent.parent.setTaskDueDate(self.getTaskId(),newDate[7:])
     
     def addTagLabel(self):
         listItem = [] 
@@ -125,12 +124,18 @@ class TaskWidget(QWidget):
             self.tagColor.setStyleSheet("background-color: rgba(0, 0, 0, 0%)")
             listItem.append(self.tagColor)
         self.addTagToWidget(listItem)
+        
 
     def addTagToWidget(self,listItem):
         self.deleteAllTag()
-        for item in listItem:
+        for item in range(len(listItem)):
             self.tagLayout.setSpacing(0.1)
-            self.tagLayout.addWidget(item)
+            self.tagLayout.addWidget(listItem[item])
+            taskId=  self.getTaskId()
+            taskTagTitle = listItem[item].text() #error
+            taskTagColor = self.editTaskDialog.tagWidget.colorTag[item]
+            print("TagL ", taskTagTitle)
+            #self.parent.parent.parent.addTaskTag(taskId,taskTagTitle , taskTagColor)
 
     def deleteAllTag(self):
         for i in reversed(range(self.tagLayout.count())): 
@@ -142,7 +147,6 @@ class TaskWidget(QWidget):
 
     def editTask(self):
         self.editTaskDialog.show()
-        #self.editTaskTitleDialog.show()
 
     def validateNewTaskTitle(self):
         newTaskTitle = self.getNewTaskTitle()
