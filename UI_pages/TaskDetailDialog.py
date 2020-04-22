@@ -9,15 +9,15 @@ class TaskDetailDialog(QDialog):
         self.parent = parent
 
         self.taskTitleLabel = QLabel("kk")
-        self.taskTitleLabel.setFont(QFont("Century-Gothic", 13, QFont.Bold))
+        self.taskTitleLabel.setFont(QFont("Century Gothic", 13, QFont.Bold))
         self.taskTitleLabel.setContentsMargins(20,20,0,0)
        
         self.sectionTitleLabel = QLabel("in list")
-        self.sectionTitleLabel.setFont(QFont("Century-Gothic", 8))
+        self.sectionTitleLabel.setFont(QFont("Century Gothic", 8))
         self.sectionTitleLabel.setContentsMargins(20,0,10,10)
 
         self.dueDateCheckBox = QCheckBox()
-        self.dueDateCheckBox.setFont(QFont("Century-Gothic", 9, QFont.Bold))
+        self.dueDateCheckBox.setFont(QFont("Century Gothic", 9, QFont.Bold))
         
         self.saveBtn = QPushButton("Save")
         self.saveBtn.setFont(QFont("Moon", 10, QFont.Bold))

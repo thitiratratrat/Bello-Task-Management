@@ -98,7 +98,7 @@ class TaskWidget(QWidget):
         return self.taskId 
 
     def getNewTaskTitle(self):
-        return self.editTaskTitleDialog.lineEdit.text()
+        return self.editTaskDialog.editTaskTitleDialog.lineEdit.text()
 
     def getTaskIndex(self):
         return self.taskIndex
@@ -151,10 +151,7 @@ class TaskWidget(QWidget):
         else:
             createErrorDialogBox(self,"Error","Task title can't be null")
             return False
-        
-    def closeEditDialogBox(self):
-        self.editTaskTitleDialog.close()
-
+    
     def setColor(self):
         self.palette = QPalette()
         self.setAutoFillBackground(True)
