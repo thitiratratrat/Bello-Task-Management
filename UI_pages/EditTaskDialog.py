@@ -20,13 +20,13 @@ class EditTaskDialog(QDialog):
 
         self.tagWidget = TagWidget(self)
         self.tagWidget.saveTagBtn.clicked.connect(self.parent.addTagLabel)
-        
-        '''self.editTaskTitleDialog = CustomDialog(
-            self, 'Edit task title', 'Task name: ', 'Save')
-        #self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
-        '''
 
-        self.tabWidget.addTab(QWidget(), QIcon(
+        self.editTaskTitleDialog = CustomDialog(
+            self, 'Edit task title', 'Task name: ', 'Save')
+        self.editTaskTitleDialog.setContentsMargins(10,40,10,40)
+        self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
+
+        self.tabWidget.addTab(self.editTaskTitleDialog, QIcon(
             "images/editDialog.png"), " Edit")
         self.tabWidget.addTab(self.dueDateWidget, QIcon(
             "images/calendar.png"), " Due date")
@@ -45,15 +45,13 @@ class EditTaskDialog(QDialog):
         self.setPalette(self.palette)
 
     def handleEditTaskTitleBtn(self):
-        if not self.validateNewTaskTitle():
+        if not self.parent.validateNewTaskTitle():
             return
         
-        newTaskTitle = self.getNewTaskTitle()
+        newTaskTitle = self.parent.getNewTaskTitle()
 
-        self.setTaskTitle(newTaskTitle)
-        self.closeEditDialogBox()
-        
-        self.parent.parent.parent.parent.editTaskTitle(self.taskSectionId, self.taskId, self.getTaskTitle())
+        self.parent.setTaskTitle(newTaskTitle)
+        self.parent.parent.parent.parent.editTaskTitle(self.parent.taskSectionId, self.parent.taskId, self.parent.getTaskTitle())
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

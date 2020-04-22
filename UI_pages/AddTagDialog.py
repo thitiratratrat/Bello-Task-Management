@@ -9,17 +9,17 @@ class AddTagDialog(QDialog):
         self.parent = parent
         
         self.setWindowTitle("Create Tag")
-        self.listColorCode = ["pink","blue","yellow","red","green"]
+        self.listColorCode = ["#87CEEB","#9370DB","#FFB6C1","#FA8072","#FFA500"]
 
         self.tagTitleLabel = QLabel("Create Tag")
         self.tagTitleLabel.setFont(QFont("Moon", 9 , QFont.Bold))
         self.tagTitleLabel.setContentsMargins(5,10,20,10)
         self.tagComboBox = QComboBox()
-        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[0]), "pink")
-        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[1]), "blue")
-        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[2]), "yellow")
+        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[0]), "blue")
+        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[1]), "purple")
+        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[2]), "pink")
         self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[3]), "red")
-        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[4]), "green")
+        self.tagComboBox.addItem(self.parent.createIconColor(self.listColorCode[4]), "orange")
         
         self.tagComboBox.setFont(QFont("Century Gothic",8,QFont.Bold))
         self.tagLineEdit = QLineEdit()
