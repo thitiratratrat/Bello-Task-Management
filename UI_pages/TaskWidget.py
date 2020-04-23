@@ -192,7 +192,7 @@ class TaskWidget(QWidget):
             self.taskDetailDialog.showTagLayout.addWidget(self.tag)
 
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
-        self.taskDetailDialog.mainDueDateLayout.addWidget(self.taskDetailDialog.dueDateCheckBox)
+        #self.taskDetailDialog.mainDueDateLayout.addWidget(self.taskDetailDialog.dueDateCheckBox)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
