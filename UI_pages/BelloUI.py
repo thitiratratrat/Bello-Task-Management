@@ -9,7 +9,7 @@ from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 
 from Bello import *
 
