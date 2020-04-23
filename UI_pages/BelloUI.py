@@ -171,8 +171,6 @@ class BelloUI(QMainWindow):
         self.bello.editSectionTitle(sectionId, sectionTitle)
     
     def editTaskTitle(self, taskId, taskTitle):
-        print("taskId: ", taskId)
-        print("taskTitle: ",taskTitle)
         self.bello.editTaskTitle(taskId, taskTitle)
     
     def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
@@ -200,10 +198,7 @@ class BelloUI(QMainWindow):
         self.bello.setTaskDueDate(taskId, taskDueDate)
 
     def setTaskFinishState(self, taskId, taskState):
-        print("taskid: ",taskId)
-        print("taskState: ", taskState)
         self.bello.setTaskFinishState(taskId, taskState)
-        print("finish")
     
     def showUsernameAlreadyExists(self):
         self.loginSignUpPage.signUpWidget.showUsernameAlreadyExistsSignUp()
