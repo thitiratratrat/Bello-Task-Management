@@ -170,7 +170,7 @@ class SectionWidget(QWidget):
 
         self.parent.parent.createTask(boardId, sectionId, taskTitle,taskOrder)
 
-    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState,taskTags):
+    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState,taskTags, taskComments):
         self.taskWidget = TaskWidget(self)
         self.taskWidget.setTaskId(taskId)
         self.taskWidget.setTaskSectionId(sectionId)
@@ -185,6 +185,9 @@ class SectionWidget(QWidget):
         for tagTitle, tagColor in taskTags.items():
             self.taskWidget.editTaskDialog.tagWidget.addTag(tagTitle,tagColor)
             self.taskWidget.addTagInit()
+        for i in range(len(taskComments)):
+            for member, commentTxt in taskComments[i].items():
+                self.taskWidget.taskDetailDialog.addComment(member,commentTxt)
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
     def deleteTask(self,index):

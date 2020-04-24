@@ -170,11 +170,23 @@ class TaskWidget(QWidget):
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
 
     def getDataFromTaskDialog(self):
-        #getDueDateData
+        
         self.state = self.taskDetailDialog.dueDateCheckBox.isChecked()
         self.setTaskState(self.getDueDateLabel(),self.state)
         self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
-    
+        
+        self.commentList = self.taskDetailDialog.commentListWidget
+        for i in range(self.commentList.count()):
+            commentItem = self.commentList.item(i)
+            commentWidget = self.commentList.itemWidget(commentItem)
+            taskComment = commentWidget.getComment()
+            memberUsername = commentWidget.getUser()
+            taskCommentOrder =  i
+            taskId = self.getTaskId()
+            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
+            
+        self.taskDetailDialog.close()
+
     def showTaskLayout(self):
         self.taskDetailDialog.taskTitleLabel.setText(self.getTaskTitle())
         self.taskDetailDialog.sectionTitleLabel.setText("in list " + 

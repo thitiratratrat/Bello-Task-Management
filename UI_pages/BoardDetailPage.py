@@ -95,20 +95,19 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
-                #print("Info: ", taskInfoDict)
+                print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
                 taskDuedate = taskInfoDict.get("dueDate")
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
                 taskState = taskInfoDict.get("isFinished")
-                #print("Due---- ",taskDuedate)
-                #TODO setTaskComment, setTaskRespon, setTaskTag
+                #TODO setTaskComment, setTaskRespon
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                         self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags)
+                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -132,10 +131,11 @@ class BoardDetailPage(QWidget):
         taskDueDate = None
         taskState = False
         taskTag = None
+        taskComments = None
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                 self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                    sectionId, taskId, index,taskDueDate,taskState,taskTag)
+                    sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments)
     
     

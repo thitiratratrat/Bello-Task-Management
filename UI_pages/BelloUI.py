@@ -158,8 +158,7 @@ class BelloUI(QMainWindow):
     
     def addTask(self,taskDict):
         self.boardDetailPage.createNewTask(taskDict)
-    
-    #TODO: remove taskId, sectionId in usage    
+      
     def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
         self.bello.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
         
