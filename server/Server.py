@@ -162,6 +162,16 @@ class Server:
         taskTagColor = data["taskTagColor"]
 
         self.__manager.addTaskTag(taskId, taskTag, taskTagColor)
+        
+    async def __addMemberToBoard(self, data, websocket):
+        boardId = data["boardId"]
+        memberUsername = data["memberUsername"]
+        
+        if not self.__manager.isExistedUsername(memberUsername):
+            await websocket.send(json.dumps({"response": "memberUsernameDoesNotExist"}))
+            return
+        
+        self.__manager.addMemberToBoard(boardId, memberUsername)
 
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
@@ -193,7 +203,7 @@ class Server:
             if memberCurrentBoardId != boardId:
                 return
             
-            memberObserver.update(boardDetail)
+            await memberObserver.update(boardDetail)
             
     def __addObserver(self, boardObserver):
         self.__observers[boardObserver.getUsername()] = boardObserver
