@@ -165,6 +165,13 @@ class Bello:
                                               "taskCommentOrder": taskCommentOrder
                                           }}))
         
+    def deleteTaskTag(self, taskId, taskTag):
+        self.__websocket.send(json.dumps({"action": "deleteTaskTag",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "taskTag": taskTag
+                                          }}))
+        
     def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         self.__websocket.send(json.dumps({"action": "reorderTaskInSameSection",
                                           "data": {
