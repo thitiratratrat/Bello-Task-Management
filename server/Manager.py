@@ -49,18 +49,7 @@ class Manager:
             boardTitlesAndIds[str(boardId)] = board.title
 
         return boardTitlesAndIds
-
-    def isExistedUsername(self, usernameInput):
-        return True if Account.objects(username=usernameInput).count() >= 1 else False
-
-    def createAccount(self, usernameInput, passwordInput):
-        account = Account(username=usernameInput, password=passwordInput)
-
-        account.save()
-
-    def validateAccount(self, usernameInput, passwordInput):
-        return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
-
+    
     def getBoardDetail(self, boardId):
         board = self.__getBoardById(boardId)
         sectionIds = board.section_ids
@@ -93,6 +82,17 @@ class Manager:
             detail[str(sectionId)] = sectionDetail
 
         return detail
+
+    def isExistedUsername(self, usernameInput):
+        return True if Account.objects(username=usernameInput).count() >= 1 else False
+
+    def validateAccount(self, usernameInput, passwordInput):
+        return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
+    
+    def createAccount(self, usernameInput, passwordInput):
+        account = Account(username=usernameInput, password=passwordInput)
+
+        account.save()
 
     def createBoard(self, boardTitle, username):
         board = Board(title=boardTitle, members=[username])
@@ -170,6 +170,11 @@ class Manager:
         task = self.__getTaskById(taskId)
         
         task.removeComment(taskCommentOrder)
+        
+    def deleteTaskTag(self, taskId, taskTag):
+        task = self.__getTaskById(taskId)
+        
+        task.removeTag(taskTag)
 
     def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         section = self.__getSectionById(sectionId)
