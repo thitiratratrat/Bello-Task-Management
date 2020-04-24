@@ -114,6 +114,18 @@ class Server:
         taskId = data["taskId"]
         
         self.__manager.deleteTask(sectionId, taskId)
+        
+    async def __deleteTaskComment(self, data, websocket):
+        taskId = data["taskId"]
+        taskCommentOrder = data["taskCommentOrder"]
+        
+        self.__manager.deleteTaskComment(taskId, taskCommentOrder)
+        
+    async def __deleteTaskTag(self, data, websocket):
+        taskId = data["taskId"]
+        taskTag = data["taskTag"]
+        
+        self.__manager.deleteTaskTag(taskId, taskTag)
 
     async def __reorderTaskInSameSection(self, data, websocket):
         sectionId = data["sectionId"]
@@ -197,6 +209,12 @@ class Server:
 
         elif action == 'deleteTask':
             await self.__deleteTask(message["data"], websocket)
+            
+        elif action == 'deleteTaskComment':
+            await self.__deleteTaskComment(message["data"], websocket)
+            
+        elif action == 'deleteTaskTag':
+            await self.__deleteTaskTag(message["data"], websocket)
 
         elif action == 'reorderTaskInSameSection':
             await self.__reorderTaskInSameSection(message["data"], websocket)
