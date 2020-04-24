@@ -3,13 +3,14 @@ import asyncio
 import pymongo
 import json
 from Manager import Manager
-
+from BoardObserver import BoardObserver
 
 class Server:
     def __init__(self):
         self.__port = 8765
         self.__address = "127.0.0.1"
         self.__manager = Manager()
+        self.__observers = {}
 
     async def __signUp(self, data, websocket):
         username = data["username"]
@@ -30,13 +31,18 @@ class Server:
         if not self.__manager.validateAccount(username, password):
             await websocket.send(json.dumps({"response": "loginFail"}))
             return
-
+        
+        memberObserver = memberObserver(username, websocket)
+        self.__addObserver(memberObserver)
+        
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
         await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
 
     async def __sendBoardDetail(self, data, websocket):
         boardId = data["boardId"]
         detail = self.__manager.getBoardDetail(boardId)
+        
+        self.__changeObserverCurrentBoardId(websocket, boardId)
 
         await websocket.send(json.dumps({"response": "boardDetail",
                                          "data": {
@@ -174,6 +180,35 @@ class Server:
         
         await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitlesAndIds}))
         
+    async def __notifyObservers(self, username):
+        observer = self.__observers[username]
+        currentBoardId = observer.getCurrentBoardId()
+        boardDetail = self.__manager.getBoardDetail(currentBoardId)
+        members = boardDetail["members"]
+        
+        for member in members:
+            memberObserver = self.__observers[member]
+            memberCurrentBoardId = memberObserver.getCurrentBoardId()
+            
+            if memberCurrentBoardId != boardId:
+                return
+            
+            memberObserver.update(boardDetail)
+            
+    def __addObserver(self, boardObserver):
+        self.__observers[boardObserver.getUsername()] = boardObserver
+        
+    def __changeObserverCurrentBoardId(self, websocket, boardId):
+        username = self.__getUsernameFromWebsocket(websocket)
+        observer = self.__observers[username]
+        
+        observer.changeCurrentBoardId(boardId)
+    
+    def __getUsernameFromWebsocket(self, websocket):
+        for username, observer in self.__observers.items():
+            if observer.getClientWebsocket() == websocket:
+                return username
+        
     async def __handleMessage(self, message, websocket):
         action = message["action"]
 
@@ -227,6 +262,9 @@ class Server:
 
         elif action == 'addTaskTag':
             await self.__addTaskTag(message["data"], websocket)
+            
+        elif action == 'addMemberToBoard':
+            await self.__addMemberToBoard(message["data"], websocket)
 
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)
