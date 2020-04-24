@@ -149,6 +149,9 @@ class BelloUI(QMainWindow):
     
     def deleteTask(self, sectionId, taskId):
         self.bello.deleteTask(sectionId, taskId)
+        
+    def deleteTaskComment(self, taskId, taskCommentOrder):
+        self.bello.deleteTaskComment(taskId, taskCommentOrder)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
