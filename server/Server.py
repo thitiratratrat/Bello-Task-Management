@@ -3,7 +3,7 @@ import asyncio
 import pymongo
 import json
 from Manager import Manager
-from BoardObserver import BoardObserver
+from MemberObserver import MemberObserver
 
 class Server:
     def __init__(self):
@@ -32,7 +32,7 @@ class Server:
             await websocket.send(json.dumps({"response": "loginFail"}))
             return
         
-        memberObserver = memberObserver(username, websocket)
+        memberObserver = MemberObserver(username, websocket)
         self.__addObserver(memberObserver)
         
         await websocket.send(json.dumps({"response": "loginSuccessful"}))
@@ -203,7 +203,7 @@ class Server:
         observer = self.__observers[username]
         
         observer.changeCurrentBoardId(boardId)
-    
+        
     def __getUsernameFromWebsocket(self, websocket):
         for username, observer in self.__observers.items():
             if observer.getClientWebsocket() == websocket:

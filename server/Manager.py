@@ -82,7 +82,7 @@ class Manager:
 
             sections[str(sectionId)] = sectionDetail
         
-        detail["sections": sections]
+        detail["sections"] = sections
 
         return detail
 

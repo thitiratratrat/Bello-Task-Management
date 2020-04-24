@@ -22,4 +22,4 @@ class MemberObserver:
         await websocket.send(json.dumps({"response": "updateBoard",
                                          "data": {
                                             "boardDetail": boardDetail
-                                        }})))
+                                        }}))
