@@ -170,7 +170,7 @@ class SectionWidget(QWidget):
 
         self.parent.parent.createTask(boardId, sectionId, taskTitle,taskOrder)
 
-    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState):
+    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState,taskTags):
         self.taskWidget = TaskWidget(self)
         self.taskWidget.setTaskId(taskId)
         self.taskWidget.setTaskSectionId(sectionId)
@@ -178,8 +178,13 @@ class SectionWidget(QWidget):
         self.taskWidget.setTaskTitle(taskTitle)
         self.taskWidget.setTaskIndex(index)
         self.taskWidget.taskDetailDialog.taskTitleLabel.setText(taskTitle)
+        if(taskState == True):
+            self.taskWidget.taskDetailDialog.dueDateCheckBox.setChecked(taskState)
         self.taskWidget.setDueDateLabel(taskDueDate)
         self.taskWidget.setTaskState(taskDueDate,taskState)
+        for tagTitle, tagColor in taskTags.items():
+            self.taskWidget.editTaskDialog.tagWidget.addTag(tagTitle,tagColor)
+            self.taskWidget.addTagInit()
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
     def deleteTask(self,index):
