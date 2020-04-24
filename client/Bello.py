@@ -93,6 +93,13 @@ class Bello:
                                               "taskTagColor": taskTagColor
                                           }}))
         
+    def addMemberToBoard(self, boardId, memberUsername):
+        self.__websocket.send(json.dumps({"action": "addMemberToBoard",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "memberUsername": memberUsername
+                                          }}))
+        
     def setTaskDueDate(self, taskId, taskDueDate):        
         self.__websocket.send(json.dumps({"action": "setTaskDueDate",
                                           "data": {
