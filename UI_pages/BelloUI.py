@@ -162,7 +162,6 @@ class BelloUI(QMainWindow):
     #TODO: remove taskId, sectionId in usage    
     def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
         self.bello.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
-        
       
     def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
