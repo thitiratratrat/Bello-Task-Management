@@ -2,6 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
+from CommentWidget import * 
 
 class TaskDetailDialog(QDialog):
     def __init__(self,parent =None):
@@ -31,7 +32,7 @@ class TaskDetailDialog(QDialog):
         self.mainTagLayout.addWidget(self.tagLabel)
         self.mainTagLayout.addLayout(self.showTagLayout)
 
-        self.nameAndSquare = QLabel("  C")
+        self.nameAndSquare = QLabel("  C ")
         self.nameAndSquare.setFont(QFont("Moon",9,QFont.Bold))
         self.nameAndSquare.setStyleSheet("background-color: #FAE76E ;color:#31446F ")
         self.nameAndSquare.setFixedSize(20,20)
@@ -56,11 +57,34 @@ class TaskDetailDialog(QDialog):
         self.commentLabel.setContentsMargins(20,0,0,0)
 
         self.commentLayout = QHBoxLayout()
-        self.commentListWidget = QListWidget()
+        self.commentListWidget = QListWidget(self)
+
+        self.addCommentBtn = QPushButton("Add")
+        self.addCommentBtn.setIcon(QIcon("images/add.png"))
+        self.addCommentBtn.setStyleSheet(
+            "background-color:rgb(14,172,120);color:rgb(255,255,255)")
+        self.addCommentBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))
+        self.addCommentBtn.clicked.connect(self.clickAddCommentBtn)
+
+        self.deleteCommentBtn = QPushButton("Delete")
+        self.deleteCommentBtn.setIcon(QIcon("images/delete.png"))
+        self.deleteCommentBtn.setStyleSheet(
+            "background-color:rgb(210,39,62);color:rgb(255,255,255)")
+        self.deleteCommentBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))
+        self.deleteCommentBtn.clicked.connect(self.clickDelCommentButton)
+
+        self.addAndDeleteBtnLayout = QVBoxLayout()
+        self.addAndDeleteBtnLayout.setAlignment(Qt.AlignTop)
+        self.addAndDeleteBtnLayout.addWidget(self.addCommentBtn)
+        self.addAndDeleteBtnLayout.addWidget(self.deleteCommentBtn)
+
         self.commentLayout.addSpacing(20)
         self.commentLayout.addWidget(self.commentListWidget)
-        #self.commentListWidget.setFixedSize(70,70)
-
+        self.commentLayout.addLayout(self.addAndDeleteBtnLayout)
+        
+        self.commentLineEdit = QLineEdit("Write a comment..")
+        self.commentLineEdit.setFont(QFont("Century Gothic",7))
+        self.commentLineEdit.setContentsMargins(20,10,80,30)
 
         self.saveBtn = QPushButton("Save")
         self.saveBtn.setFont(QFont("Moon", 10, QFont.Bold))
@@ -76,6 +100,7 @@ class TaskDetailDialog(QDialog):
         self.mainTaskDetailLayout.addSpacing(10)
         self.mainTaskDetailLayout.addWidget(self.commentLabel)
         self.mainTaskDetailLayout.addLayout(self.commentLayout)
+        self.mainTaskDetailLayout.addWidget(self.commentLineEdit)
         self.mainTaskDetailLayout.addWidget(self.saveBtn,1,Qt.AlignCenter)
         self.setLayout(self.mainTaskDetailLayout)
 
@@ -89,6 +114,27 @@ class TaskDetailDialog(QDialog):
         paint.drawEllipse(QPoint(20, 350), 90, 90)
         paint.drawEllipse(QPoint(390, 60), 75, 75)
         paint.end()
+    
+    def clickAddCommentBtn(self):
+        if self.commentLineEdit.text() == "Write a comment..":
+            return 
+        else:
+            member = self.parent.parent.parent.parent.getUsernameLogin()
+            commentTxt = self.commentLineEdit.text()
+            self.addComment(member,commentTxt)
+
+    def addComment(self,member,commentTxt):
+        self.commentWidget = CommentWidget(self)
+        self.commentWidget.setUser(member)
+        self.commentWidget.setCommentTxt(commentTxt)
+        self.commentItem = QListWidgetItem(self.commentListWidget)
+        self.commentItem.setSizeHint(self.commentWidget.sizeHint())
+        self.commentListWidget.addItem(self.commentItem)
+        self.commentListWidget.setItemWidget(self.commentItem, self.commentWidget)
+
+    def clickDelCommentButton(self):
+        for selectedItem in self.commentListWidget.selectedItems():
+            self.commentListWidget.takeItem(self.commentListWidget.row(selectedItem))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
