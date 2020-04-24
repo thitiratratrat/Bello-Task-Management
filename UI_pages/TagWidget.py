@@ -18,6 +18,7 @@ class TagWidget(QWidget):
 
         self.tagListAndBtnLayout = QHBoxLayout()
         self.tagListWidget = QListWidget()
+        self.tagListWidget.setMovement(QListView.Static)
         #self.tagListWidget.setFixedSize(170,70)
         self.tagListWidget.setViewMode(QListWidget.IconMode)
         
