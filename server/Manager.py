@@ -165,6 +165,11 @@ class Manager:
 
         self.__deleteTaskById(taskId)
         section.removeTaskId(taskId)
+        
+    def deleteTaskComment(self, taskId, taskCommentOrder):
+        task = self.__getTaskById(taskId)
+        
+        task.removeComment(taskCommentOrder)
 
     def reorderTaskInSameSection(self, sectionId, taskId, taskOrder):
         section = self.__getSectionById(sectionId)
