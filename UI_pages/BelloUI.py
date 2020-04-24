@@ -9,7 +9,7 @@ from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
 
 from Bello import *
 
@@ -149,6 +149,12 @@ class BelloUI(QMainWindow):
     
     def deleteTask(self, sectionId, taskId):
         self.bello.deleteTask(sectionId, taskId)
+        
+    def deleteTaskComment(self, taskId, taskCommentOrder):
+        self.bello.deleteTaskComment(taskId, taskCommentOrder)
+        
+    def deleteTaskTag(self, taskId, taskTag):
+        self.bello.deleteTaskTag(taskId, taskTag)
 
     def addBoard(self, boardDict):
         self.dashboardPage.addBoard(boardDict)
@@ -161,7 +167,6 @@ class BelloUI(QMainWindow):
       
     def addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder):
         self.bello.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
-        
       
     def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
