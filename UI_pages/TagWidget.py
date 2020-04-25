@@ -102,7 +102,14 @@ class TagWidget(QWidget):
 
     def addTagInList(self):
         colorCode = self.getSelectedColor()
-        if(self.getTagLineEdit() == False):
+        if(self.getTagLineEdit() == False  ):
+            createErrorDialogBox(self, "Error","Your tag title can not be null")
+            return
+        elif(self.isAlreadyHasTag(self.getTagLineEdit(),colorCode) == 2):
+            createErrorDialogBox(self, "Error","Tag title already in use")
+            return
+        elif(self.isAlreadyHasTag(self.getTagLineEdit(),colorCode) == 3):
+            createErrorDialogBox(self, "Error","Tag color already in use")
             return
         else:
             self.tagItem = QListWidgetItem(QIcon(self.createIconColor(colorCode)), self.getTagLineEdit())
@@ -110,18 +117,31 @@ class TagWidget(QWidget):
             self.colorTag[self.getTagLineEdit()] = colorCode
             self.addTagDialog.close()
     
+    def isAlreadyHasTag(self,tagTitleLineEdit,tagColorBox):
+        for tagTitle, tagColor in self.colorTag.items():
+            if(tagTitle == tagTitleLineEdit ):
+                return 2
+            elif(tagColor == tagColorBox):
+                return 3
+        return 1
+        
     def addTag(self,tagTitle,tagColor):
         self.tagItem = QListWidgetItem(QIcon(self.createIconColor(tagColor)),tagTitle)
         self.tagListWidget.addItem(self.tagItem)
         self.colorTag[tagTitle] = tagColor
-        
+        taskId= self.parent.parent.getTaskId()
 
     def deleteTagInList(self):
         self.selectTag = self.tagListWidget.selectedItems()
         if not self.selectTag:
             return
         for item in self.selectTag:
-            print(item.icon())
             self.tagListWidget.takeItem(
                 self.tagListWidget.row(item))
-            self.colorTag.pop(item.text())
+
+            tagTitle = item.text()
+            tagColor = self.colorTag.pop(item.text())
+
+            taskId = self.parent.parent.getTaskId()
+
+            self.parent.parent.parent.parent.parent.deleteTaskTag(taskId, tagTitle)

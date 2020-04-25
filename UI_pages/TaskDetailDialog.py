@@ -134,7 +134,10 @@ class TaskDetailDialog(QDialog):
 
     def clickDelCommentButton(self):
         for selectedItem in self.commentListWidget.selectedItems():
+            taskCommentOrder =self.commentListWidget.row(selectedItem)
             self.commentListWidget.takeItem(self.commentListWidget.row(selectedItem))
+            taskId = self.parent.getTaskId()
+            self.parent.parent.parent.parent.deleteTaskComment(taskId, taskCommentOrder)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
