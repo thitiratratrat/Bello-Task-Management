@@ -35,7 +35,7 @@ class Server:
         memberObserver = MemberObserver(username, websocket)
         self.__addObserver(memberObserver)
         
-        await self.__sendResponseToClient("loginSuccessful", none, websocket)
+        await self.__sendResponseToClient("loginSuccessful", None, websocket)
 
         boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(username)
         
@@ -209,7 +209,7 @@ class Server:
             
             await memberObserver.update(boardDetail)
             
-    async def __sendResponseToClient(response, data, websocket):
+    async def __sendResponseToClient(self, response, data, websocket):
         await websocket.send(json.dumps({"response": response, "data": data}))
             
     def __addObserver(self, boardObserver):
