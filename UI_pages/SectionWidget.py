@@ -92,7 +92,6 @@ class SectionWidget(QWidget):
         self.index = index
 
     def setNewTaskWidgetOrder(self):
-        print("setNew")
         for i in range(self.sectionTaskLayout.count()):
             sectionId = self.sectionTaskLayout.itemAt(i).widget().getTaskSectionId()
             taskTitle = self.sectionTaskLayout.itemAt(i).widget().getTaskTitle()
