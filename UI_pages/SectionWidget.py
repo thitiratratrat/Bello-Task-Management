@@ -92,6 +92,7 @@ class SectionWidget(QWidget):
         self.index = index
 
     def setNewTaskWidgetOrder(self):
+        print("setNew")
         for i in range(self.sectionTaskLayout.count()):
             sectionId = self.sectionTaskLayout.itemAt(i).widget().getTaskSectionId()
             taskTitle = self.sectionTaskLayout.itemAt(i).widget().getTaskTitle()
@@ -143,14 +144,10 @@ class SectionWidget(QWidget):
     def closeEditDialogBox(self):
         self.editSectionTitleDialog.close()
 
-    
-
     def deleteSection(self):
         index = self.getSectionIndex()
         sectionId = self.parent.deleteSection(index)
     
-   
-
     def getCreateTaskTitle(self):
         return self.createTaskTitleDialog.lineEdit.text()
 
@@ -190,19 +187,5 @@ class SectionWidget(QWidget):
                 self.taskWidget.taskDetailDialog.addComment(member,commentTxt)
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
-    def deleteTask(self,index):
-        self.selectTask = self.sectionTaskLayout.takeAt(index).widget()
-        self.selectTask.setParent(None)
-        newIndex = self.sectionTaskLayout.count()
-
-        for index in range(newIndex):
-            self.item = self.sectionTaskLayout.itemAt(index).widget()
-            self.item.setTaskIndex(index)
-        
-        #boardId = self.selectTask.getTaskBoardId()
-        sectionId = self.selectTask.getTaskSectionId()
-        taskId = self.selectTask.getTaskId()
-            
-        self.parent.parent.deleteTask(sectionId, taskId)
 
  

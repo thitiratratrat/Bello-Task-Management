@@ -82,6 +82,9 @@ class TaskWidget(QWidget):
                 self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
             else:
                 self.dueDateLabel.setStyleSheet("background-color:  #5FC083; color:white")
+            self.taskDetailDialog.mainDueDateLayout.addWidget(self.taskDetailDialog.dueDateCheckBox)
+        else:
+            return
 
     def getTaskTitle(self):
         return self.taskTitle.text()
@@ -112,6 +115,12 @@ class TaskWidget(QWidget):
     
     def addTagLabel(self):
         self.deleteAllTag(self.tagLayout)
+
+        '''taskTag = self.editTaskDialog.tagWidget.deleteTagInList() 
+        if (taskTag != {} ):
+            taskId=  self.getTaskId()
+            self.parent.parent.parent.deleteTaskTag(taskId, taskTag)'''
+
         for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
             tagItem = self.editTaskDialog.tagWidget.tagListWidget.item(i)
             tagColorBtn = QToolButton()
@@ -123,6 +132,11 @@ class TaskWidget(QWidget):
             self.tagLayout.addWidget(tagColorBtn)
             tagColorList = self.editTaskDialog.tagWidget.colorTag.get(tagItem.text())
             self.parent.parent.parent.addTaskTag(taskId,tagTitle, tagColorList)
+
+    def deleteTagInList(self):
+        taskTag = self.editTaskDialog.tagWidget.deleteTagInList()
+        taskId = self.getTaskId()
+        self.parent.parent.parent.deleteTaskTag(taskId, taskTag)
 
     def addTagInit(self):
         self.deleteAllTag(self.tagLayout)
@@ -140,7 +154,8 @@ class TaskWidget(QWidget):
     
     def deleteTask(self):
         index = self.getTaskIndex()
-        taskId = self.parent.deleteTask(index)
+        sectionId = self.getTaskSectionId()
+        self.parent.parent.deleteTask(index,sectionId)
 
     def editTask(self):
         self.editTaskDialog.show()
@@ -168,10 +183,12 @@ class TaskWidget(QWidget):
         mimeData = QMimeData()
         drag.setMimeData(mimeData)
         dropAction = drag.start(Qt.CopyAction | Qt.MoveAction)
+        self.parent.setNewTaskWidgetOrder()
 
     def getDataFromTaskDialog(self):
         
         self.state = self.taskDetailDialog.dueDateCheckBox.isChecked()
+        
         self.setTaskState(self.getDueDateLabel(),self.state)
         self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
         
@@ -183,14 +200,13 @@ class TaskWidget(QWidget):
             memberUsername = commentWidget.getUser()
             taskCommentOrder =  i
             taskId = self.getTaskId()
-            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
-            
+        
         self.taskDetailDialog.close()
 
     def showTaskLayout(self):
         self.taskDetailDialog.taskTitleLabel.setText(self.getTaskTitle())
         self.taskDetailDialog.sectionTitleLabel.setText("in list " + 
-            self.parent.getSectionTitle())
+            self.parent.parent.getSectioNameFromId(self.getTaskSectionId()))
     
         length = self.editTaskDialog.tagWidget.tagListWidget.count()
         self.deleteAllTag(self.taskDetailDialog.showTagLayout)
@@ -204,7 +220,7 @@ class TaskWidget(QWidget):
             self.taskDetailDialog.showTagLayout.addWidget(self.tag)
 
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
-        #self.taskDetailDialog.mainDueDateLayout.addWidget(self.taskDetailDialog.dueDateCheckBox)
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
