@@ -74,6 +74,11 @@ class Bello:
             boardDetail = message["data"]
             #TODO: update board ps. can just use same case as "boardDetail" anything is fine
             
+        elif response == "updateBoardTitlesAndIds":
+            boardTitlesAndIds = message["data"]
+            
+            #TODO: update dashboard page with new board titles and ids
+            
         else:
             return
 

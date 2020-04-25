@@ -175,6 +175,9 @@ class BelloUI(QMainWindow):
       
     def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
+        
+    def addMemberToBoard(self, boardId, memberUsername):
+        self.bello.addMemberToBoard(boardId, memberUsername)
 
     def editSectionTitle(self, sectionId, sectionTitle):
         self.bello.editSectionTitle(sectionId, sectionTitle)
