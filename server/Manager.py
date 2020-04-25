@@ -53,7 +53,8 @@ class Manager:
     def getBoardDetail(self, boardId):
         board = self.__getBoardById(boardId)
         sectionIds = board.section_ids
-        detail = {}
+        detail = {"members": board.members}
+        sections = {}
 
         for sectionId in sectionIds:
             sectionDetail = {}
@@ -79,7 +80,9 @@ class Manager:
 
             sectionDetail["task"] = taskDict
 
-            detail[str(sectionId)] = sectionDetail
+            sections[str(sectionId)] = sectionDetail
+        
+        detail["sections"] = sections
 
         return detail
 
@@ -197,7 +200,12 @@ class Manager:
         task = self.__getTaskById(taskId)
 
         task.addTag(taskTag, taskTagColor)
-
+        
+    def addMemberToBoard(self, boardId, memberUsername):
+        board = self.__getBoardById(boardId)
+        
+        board.addMemberUsername(memberUsername)
+        
     def setTaskDueDate(self, taskId, taskDueDate):
         task = self.__getTaskById(taskId)
 
