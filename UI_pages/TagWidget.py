@@ -103,7 +103,6 @@ class TagWidget(QWidget):
     def addTagInList(self):
         colorCode = self.getSelectedColor()
         if(self.getTagLineEdit() == False  ):
-            createErrorDialogBox(self, "Error","Your tag title can not be null")
             return
         elif(self.isAlreadyHasTag(self.getTagLineEdit(),colorCode) == 2):
             createErrorDialogBox(self, "Error","Tag title already in use")

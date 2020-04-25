@@ -23,8 +23,6 @@ class SectionWithTask(QWidget):
         event.setDropAction(Qt.CopyAction)
         event.accept()
     
-    def mousePressEvent(self,event):
-        print(event.pos().y())
     def dropEvent(self, event):
         isTaskIsSameSection = True
         cardSource=event.source()
@@ -32,7 +30,6 @@ class SectionWithTask(QWidget):
         num = self.parent.sectionTaskLayout.count()
         if(num != 0 ):
             for i in range(num):
-                print(event.pos().y())
                 it = self.parent.sectionTaskLayout.itemAt(i)
                 size = it.widget().sizeHint().height()
                 
@@ -70,10 +67,8 @@ class SectionWithTask(QWidget):
         taskOrder = cardSource.getTaskIndex()
         
         if(isTaskIsSameSection):
-            print("taskOrder: ", taskOrder)
             self.parent.parent.parent.reorderTaskInSameSection(sectionId, taskId, taskOrder)
         else:
-            print("taskOrder: ", taskOrder)
             self.parent.parent.parent.reorderTaskInDifferentSection( sectionId, newSectionId, taskId, taskOrder)
 
         event.setDropAction(Qt.MoveAction)
