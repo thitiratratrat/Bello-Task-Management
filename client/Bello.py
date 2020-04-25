@@ -39,6 +39,10 @@ class Bello:
         elif response == "loginFail":
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
             
+        elif response == "memberUsernameDoesNotExist":
+            #TODO: display UI member username does not exist
+            pass
+            
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
             
@@ -66,6 +70,10 @@ class Bello:
             self.__ui.goToBoardDetailPage()
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
+        elif response == "updateBoard":
+            boardDetail = message["data"]
+            #TODO: update board ps. can just use same case as "boardDetail" anything is fine
+            
         else:
             return
 
@@ -91,6 +99,13 @@ class Bello:
                                               "taskId": taskId,
                                               "taskTag": taskTag,
                                               "taskTagColor": taskTagColor
+                                          }}))
+        
+    def addMemberToBoard(self, boardId, memberUsername):
+        self.__websocket.send(json.dumps({"action": "addMemberToBoard",
+                                          "data": {
+                                              "boardId": boardId,
+                                              "memberUsername": memberUsername
                                           }}))
         
     def setTaskDueDate(self, taskId, taskDueDate):        
