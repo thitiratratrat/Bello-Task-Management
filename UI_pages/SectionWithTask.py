@@ -22,19 +22,25 @@ class SectionWithTask(QWidget):
     def dragEnterEvent(self, event):
         event.setDropAction(Qt.CopyAction)
         event.accept()
-        
+    
+    def mousePressEvent(self,event):
+        print(event.pos().y())
     def dropEvent(self, event):
         isTaskIsSameSection = True
         cardSource=event.source()
 
         num = self.parent.sectionTaskLayout.count()
-
         if(num != 0 ):
             for i in range(num):
-                if(event.pos().y()>=0 and event.pos().y() <= 79 ):
+                print(event.pos().y())
+                it = self.parent.sectionTaskLayout.itemAt(i)
+                size = it.widget().sizeHint().height()
+                
+                if(event.pos().y()>=0 and event.pos().y() <= 69):
                     index = 0 
                     break
-                elif(event.pos().y() >= 5*(num-(i+2))+69*(num-(i+1))+10 and event.pos().y()<= 5*(num-(i+1))+69*(num-i)+10):
+
+                elif(event.pos().y() >= 5*(num-(i+2))+size*(num-(i+1)) and event.pos().y()<= 5*(num-(i+1))+size*(num-i)):
                     index= num-(i+1)
                     break
                 else:
@@ -42,6 +48,7 @@ class SectionWithTask(QWidget):
         else:
             index = 0 
         
+       
         sectionId = cardSource.getTaskSectionId()
         newSectionId =  self.parent.getSectionId()
 
@@ -49,7 +56,7 @@ class SectionWithTask(QWidget):
             isTaskIsSameSection = True
         else: 
             isTaskIsSameSection = False
-
+        
         cardSource.setTaskSectionId(newSectionId)
         
         if (self.parent.sectionTaskLayout.count() == 0 ):
@@ -59,13 +66,14 @@ class SectionWithTask(QWidget):
 
         self.parent.setNewTaskWidgetOrder()
         
-        #boardId = self.parent.getSectionBoardId()
         taskId = cardSource.getTaskId()
         taskOrder = cardSource.getTaskIndex()
         
         if(isTaskIsSameSection):
+            print("taskOrder: ", taskOrder)
             self.parent.parent.parent.reorderTaskInSameSection(sectionId, taskId, taskOrder)
         else:
+            print("taskOrder: ", taskOrder)
             self.parent.parent.parent.reorderTaskInDifferentSection( sectionId, newSectionId, taskId, taskOrder)
 
         event.setDropAction(Qt.MoveAction)
