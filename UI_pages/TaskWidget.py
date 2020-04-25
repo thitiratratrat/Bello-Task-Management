@@ -32,7 +32,7 @@ class TaskWidget(QWidget):
         
         self.taskDetailDialog.saveBtn.clicked.connect(self.getDataFromTaskDialog)
        
-        self.dueDateLabel = QLabel()
+        self.dueDateLabel = QLabel("")
         self.dueDateLabel.setFont(QFont("Century Gothic", 8, QFont.Bold))
       
      
@@ -77,14 +77,16 @@ class TaskWidget(QWidget):
         return self.dueDateLabel.setText(newDueDate)
     
     def setTaskState(self,taskDueDate,taskState):
-        if(taskDueDate != None):
+        print("setTask")
+        print("taskDueDate: ",taskDueDate,"a")
+        if(taskDueDate == None or taskDueDate == ""):
+            return
+        else:
             if(taskState == False):
                 self.dueDateLabel.setStyleSheet("background-color:  #FA8072; color:white ")
             else:
                 self.dueDateLabel.setStyleSheet("background-color:  #5FC083; color:white")
             self.taskDetailDialog.mainDueDateLayout.addWidget(self.taskDetailDialog.dueDateCheckBox)
-        else:
-            return
 
     def getTaskTitle(self):
         return self.taskTitle.text()

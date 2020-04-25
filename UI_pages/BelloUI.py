@@ -26,6 +26,7 @@ class BelloUI(QMainWindow):
 
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
+        #self.signalShowMemberUsernameDoesNotExists = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -39,6 +40,10 @@ class BelloUI(QMainWindow):
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
+            
+        '''
+        self.signalShowMemberUsernameDoesNotExists.signalDict.connect(
+            self.showMemberDoesNotExists)'''
 
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
