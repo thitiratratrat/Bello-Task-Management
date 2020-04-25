@@ -178,6 +178,9 @@ class BelloUI(QMainWindow):
         
     def addMemberToBoard(self, boardId, memberUsername):
         self.bello.addMemberToBoard(boardId, memberUsername)
+        
+    def addResponsibleMemberToTask(self, taskId, memberUsername):
+        self.bello.addResponsibleMemberToTask(taskId, memberUsername)
 
     def editSectionTitle(self, sectionId, sectionTitle):
         self.bello.editSectionTitle(sectionId, sectionTitle)

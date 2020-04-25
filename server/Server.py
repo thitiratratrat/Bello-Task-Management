@@ -175,6 +175,12 @@ class Server:
         boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(memberUsername)
         
         await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, websocket)
+        
+    async def __addResponsibleMemberToTask(self, data, websocket):
+        taskId = data["taskId"]
+        memberUsername = data["memberUsername"]
+        
+        self.__manager.addResponsibleMemberToTask(taskId, memberUsername)
 
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
@@ -204,7 +210,7 @@ class Server:
             await memberObserver.update(boardDetail)
             
     async def __sendResponseToClient(response, data, websocket):
-        await websocket.send(json.dumps("response": response, "data": data))
+        await websocket.send(json.dumps({"response": response, "data": data}))
             
     def __addObserver(self, boardObserver):
         self.__observers[boardObserver.getUsername()] = boardObserver
@@ -276,6 +282,9 @@ class Server:
             
         elif action == 'addMemberToBoard':
             await self.__addMemberToBoard(message["data"], websocket)
+            
+        elif action == 'addResponsibleMemberToTask':
+            await self.__addResponsibleMemberToTask(message["data"], websocket)
 
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)
