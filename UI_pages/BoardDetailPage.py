@@ -93,7 +93,9 @@ class BoardDetailPage(QWidget):
     def initBoardDetail(self, boardDetailDict):
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
-        sectionDict = boardDetailDict.get("boardDetail")
+        boardDetailDict = boardDetailDict.get("boardDetail")
+        boardMembers = boardDetailDict.get("members")
+        sectionDict = boardDetailDict.get("sections")
         indexSection = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
             sectionTitleDict = sectionAndTaskTitle
