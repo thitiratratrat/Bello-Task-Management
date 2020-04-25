@@ -113,6 +113,13 @@ class Bello:
                                               "memberUsername": memberUsername
                                           }}))
         
+    def addResponsibleMemberToTask(self, taskId, memberUsername):
+        self.__websocket.send(json.dumps({"action": "addResponsibleMemberToTask",
+                                          "data": {
+                                              "taskId": taskId,
+                                              "memberUsername": memberUsername
+                                          }}))
+        
     def setTaskDueDate(self, taskId, taskDueDate):        
         self.__websocket.send(json.dumps({"action": "setTaskDueDate",
                                           "data": {
