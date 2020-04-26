@@ -206,6 +206,11 @@ class Manager:
         
         board.addMemberUsername(memberUsername)
         
+    def addResponsibleMemberToTask(self, taskId, memberUsername):
+        task = self.__getTaskById(taskId)
+        
+        task.addResponsibleMemberUsername(memberUsername)
+        
     def setTaskDueDate(self, taskId, taskDueDate):
         task = self.__getTaskById(taskId)
 
