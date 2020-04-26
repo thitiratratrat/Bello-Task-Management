@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-from MenuBar import *
+from MenuBarBoard import *
 from dialogBox import *
 from CustomDialog import CustomDialog
 from DueDateWidget import *
@@ -13,12 +13,17 @@ class BoardDetailPage(QWidget):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
         self.boardId = None
-        self.menuBar = MenuBar()
+
+        self.menuBar = MenuBarBoard()
+
         self.sectionLayout = QHBoxLayout()
         self.taskWidget = None
         self.widget = QWidget()
         self.dialogCreate = CustomDialog(
             self, "create new section", "Section name:", "Create")
+
+        self.addBtnLayout = QVBoxLayout()
+
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet(
@@ -26,6 +31,15 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
 
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
+
+        self.memberBtn = QPushButton("Add member")
+        self.memberBtn.setIcon(QIcon('images/addMember.png'))
+        self.memberBtn.setStyleSheet(
+            "background-color: rgb(250,231,111); color: rgb(49,68,111)")
+        self.memberBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+
+        self.addBtnLayout.addWidget(self.addSectionBtn)
+        self.addBtnLayout.addWidget(self.memberBtn)
 
         self.widget.setLayout(self.sectionLayout)
         
@@ -37,13 +51,14 @@ class BoardDetailPage(QWidget):
 
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea, 0, 0, 4, 1)
-        self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn, 0, 1, 1, 1)
+        self.sectionAndAddBtnLayout.addLayout(self.addBtnLayout, 0, 1, 1, 1)
 
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)
         self.setLayout(self.boardDetailLayout)
 
+        
     def setBoardId(self, boardId):
         self.boardId = boardId
 
@@ -91,7 +106,6 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        print("boardDetail: ", boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
@@ -113,7 +127,7 @@ class BoardDetailPage(QWidget):
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
                 taskState = taskInfoDict.get("isFinished")
-                #TODO setTaskComment, setTaskRespon
+                #TODO setTaskRespon
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()

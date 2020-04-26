@@ -77,8 +77,6 @@ class TaskWidget(QWidget):
         return self.dueDateLabel.setText(newDueDate)
     
     def setTaskState(self,taskDueDate,taskState):
-        print("setTask")
-        print("taskDueDate: ",taskDueDate,"a")
         if(taskDueDate == None or taskDueDate == ""):
             return
         else:
