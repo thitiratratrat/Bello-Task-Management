@@ -74,6 +74,11 @@ class Bello:
             boardDetail = message["data"]
             #TODO: update board ps. can just use same case as "boardDetail" anything is fine
             
+        elif response == "updateBoardTitlesAndIds":
+            boardTitlesAndIds = message["data"]
+            
+            #TODO: update dashboard page with new board titles and ids
+            
         else:
             return
 
@@ -105,6 +110,13 @@ class Bello:
         self.__websocket.send(json.dumps({"action": "addMemberToBoard",
                                           "data": {
                                               "boardId": boardId,
+                                              "memberUsername": memberUsername
+                                          }}))
+        
+    def addResponsibleMemberToTask(self, taskId, memberUsername):
+        self.__websocket.send(json.dumps({"action": "addResponsibleMemberToTask",
+                                          "data": {
+                                              "taskId": taskId,
                                               "memberUsername": memberUsername
                                           }}))
         

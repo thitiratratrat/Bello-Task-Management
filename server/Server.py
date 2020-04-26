@@ -22,7 +22,7 @@ class Server:
 
         self.__manager.createAccount(username, password)
         
-        await websocket.send(json.dumps({"response": "createdAccount"}))
+        await self.__sendResponseToClient("createdAccount", None, websocket)
 
     async def __login(self, data, websocket):
         username = data["username"]
@@ -35,8 +35,11 @@ class Server:
         memberObserver = MemberObserver(username, websocket)
         self.__addObserver(memberObserver)
         
-        await websocket.send(json.dumps({"response": "loginSuccessful"}))
-        await self.__sendUserBoardTitlesAndIdsToClient(username, websocket)
+        await self.__sendResponseToClient("loginSuccessful", None, websocket)
+
+        boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(username)
+        
+        await self.__sendResponseToClient("userBoardTitlesAndIds", boardTitlesAndIds, websocket)
 
     async def __sendBoardDetail(self, data, websocket):
         boardId = data["boardId"]
@@ -44,36 +47,33 @@ class Server:
         
         self.__changeObserverCurrentBoardId(websocket, boardId)
 
-        await websocket.send(json.dumps({"response": "boardDetail",
-                                         "data": {
+        await self.__sendResponseToClient("boardDetail", {
                                              "boardId": boardId,
                                              "boardDetail": detail
-                                         }}))
+                                         }, websocket)
 
     async def __createBoard(self, data, websocket):
         boardTitle = data["boardTitle"]
         username = data["username"]
 
         boardId = str(self.__manager.createBoard(boardTitle, username))
-
-        await websocket.send(json.dumps({"response": "createdBoard",
-                                         "data": {
+        
+        await self.__sendResponseToClient("createdBoard", {
                                              'boardTitle': boardTitle,
                                              'boardId': boardId
-                                         }}))
+                                         }, websocket)
 
     async def __createSection(self, data, websocket):
         boardId = data["boardId"]
         sectionTitle = data["sectionTitle"]
 
         sectionId = str(self.__manager.createSection(boardId, sectionTitle))
-
-        await websocket.send(json.dumps({"response": "createdSection",
-                                         "data": {
+        
+        await self.__sendResponseToClient("createdSection", {
                                              "boardId": boardId,
                                              "sectionTitle": sectionTitle,
                                              "sectionId": sectionId
-                                         }}))
+                                         }, websocket)
 
     async def __createTask(self, data, websocket):
         boardId = data["boardId"]
@@ -82,15 +82,14 @@ class Server:
         taskOrder = data["taskOrder"]
 
         taskId = str(self.__manager.createTask(sectionId, taskTitle, taskOrder))
-
-        await websocket.send(json.dumps({"response": "createdTask",
-                                         "data": {
+        
+        await self.__sendResponseToClient("createdTask", {
                                              "boardId": boardId,
                                              "sectionId": sectionId,
                                              "taskId": taskId,
                                              "taskTitle": taskTitle,
                                              "taskOrder": taskOrder
-                                         }}))
+                                         }, websocket)
 
     async def __editSectionTitle(self, data, websocket):
         sectionId = data["sectionId"]
@@ -168,10 +167,20 @@ class Server:
         memberUsername = data["memberUsername"]
         
         if not self.__manager.isExistedUsername(memberUsername):
-            await websocket.send(json.dumps({"response": "memberUsernameDoesNotExist"}))
+            await self.__sendResponseToClient("memberUsernameDoesNotExist", None, websocket)
             return
         
         self.__manager.addMemberToBoard(boardId, memberUsername)
+        
+        boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(memberUsername)
+        
+        await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, websocket)
+        
+    async def __addResponsibleMemberToTask(self, data, websocket):
+        taskId = data["taskId"]
+        memberUsername = data["memberUsername"]
+        
+        self.__manager.addResponsibleMemberToTask(taskId, memberUsername)
 
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
@@ -185,11 +194,6 @@ class Server:
 
         self.__manager.setTaskFinishState(taskId, taskFinishState)
 
-    async def __sendUserBoardTitlesAndIdsToClient(self, username, websocket):
-        boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(username)
-        
-        await websocket.send(json.dumps({"response": "userBoardTitlesAndIds", "data": boardTitlesAndIds}))
-        
     async def __notifyObservers(self, username):
         observer = self.__observers[username]
         currentBoardId = observer.getCurrentBoardId()
@@ -204,6 +208,9 @@ class Server:
                 return
             
             await memberObserver.update(boardDetail)
+            
+    async def __sendResponseToClient(self, response, data, websocket):
+        await websocket.send(json.dumps({"response": response, "data": data}))
             
     def __addObserver(self, boardObserver):
         self.__observers[boardObserver.getUsername()] = boardObserver
@@ -275,6 +282,9 @@ class Server:
             
         elif action == 'addMemberToBoard':
             await self.__addMemberToBoard(message["data"], websocket)
+            
+        elif action == 'addResponsibleMemberToTask':
+            await self.__addResponsibleMemberToTask(message["data"], websocket)
 
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)
