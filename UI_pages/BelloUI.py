@@ -9,7 +9,7 @@ from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -40,10 +40,11 @@ class BelloUI(QMainWindow):
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
-            
+
         '''
         self.signalShowMemberUsernameDoesNotExists.signalDict.connect(
             self.showMemberDoesNotExists)'''
+
 
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
@@ -236,6 +237,8 @@ class BelloUI(QMainWindow):
     def goToBoardDetailPage(self):
         username = self.getUsernameLogin()
         self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
+        self.boardDetailPage.menuBar.setBoardTitle("  Board title: "+ 
+            self.dashboardPage.displayBoard.getBoardTitle() + "  ")
         if self.getSelectedBoard() == None:
             return
 
