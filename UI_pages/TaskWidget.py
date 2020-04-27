@@ -116,11 +116,6 @@ class TaskWidget(QWidget):
     def addTagLabel(self):
         self.deleteAllTag(self.tagLayout)
 
-        '''taskTag = self.editTaskDialog.tagWidget.deleteTagInList() 
-        if (taskTag != {} ):
-            taskId=  self.getTaskId()
-            self.parent.parent.parent.deleteTaskTag(taskId, taskTag)'''
-
         for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
             tagItem = self.editTaskDialog.tagWidget.tagListWidget.item(i)
             tagColorBtn = QToolButton()

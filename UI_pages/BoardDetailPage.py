@@ -37,6 +37,10 @@ class BoardDetailPage(QWidget):
         self.memberBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.memberBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+        self.addMemberDialog = CustomDialog(self, "Add member to board", "Member username:", "Add" )
+        self.memberBtn.clicked.connect(self.addMemberToBoard)
+        
+        self.addMemberDialog.button.clicked.connect(self.validateMemberUsername)
 
         self.addBtnLayout.addWidget(self.addSectionBtn)
         self.addBtnLayout.addWidget(self.memberBtn)
@@ -46,6 +50,7 @@ class BoardDetailPage(QWidget):
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.widget)
 
@@ -106,10 +111,16 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
+        #print("boardDict: ",boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
         boardMembers = boardDetailDict.get("members")
+        print("Member: ",boardMembers)
+
+        for memberUsername in boardMembers:
+            self.addMember(memberUsername)
+
         sectionDict = boardDetailDict.get("sections")
         indexSection = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
@@ -180,4 +191,22 @@ class BoardDetailPage(QWidget):
                 self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
                     sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments)
     
+    def addMemberToBoard(self):
+        self.addMemberDialog.show()
+    
+    def validateMemberUsername(self):
+        memberUsername  = self.addMemberDialog.lineEdit.text()
+        if(memberUsername == ""):
+            createErrorDialogBox(self,"Error","Member username can not be null")
+            return
+        elif(self.menuBar.mainMemberLayout.count() >= 5):
+            createErrorDialogBox(self,"Error","Member are reached the maximum")
+            return
+        self.addMember(memberUsername)
+        self.addMemberDialog.close()
+        self.parent.addMemberToBoard(self.getBoardId(), memberUsername)
+
+    def addMember(self,memberUsername):
+        self.menuBar.addMemberInMenuBar(memberUsername)
+        
     
