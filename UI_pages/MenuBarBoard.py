@@ -20,55 +20,17 @@ class MenuBarBoard(QWidget):
         self.boardTitle.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         
+        self.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.memberLabel = QLabel("Member: ")
         self.memberLabel.setFont(QFont("Century Gothic", 9, QFont.Bold))
         self.memberLabel.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
 
-        self.memberWidget = QWidget()
         self.mainMemberLayout = QHBoxLayout()
-
-        #self.memberWidget.setFixedSize(,40)
-
-        self.member = QLabel("a")
-        self.member1 = QLabel("b")
-        self.member2 = QLabel("c")
-        self.member3 = QLabel("a")
-        self.member4 = QLabel("b")
-        self.member5 = QLabel("c")
-        self.member6 = QLabel("a")
-        self.member7 = QLabel("b")
-        self.member8 = QLabel("c")
         
-        self.member.setStyleSheet("background-color: red")
-        self.member1.setStyleSheet("background-color: green")
-        self.member2.setStyleSheet("background-color: white")
-        self.member3.setStyleSheet("background-color: red")
-        self.member4.setStyleSheet("background-color: green")
-        self.member5.setStyleSheet("background-color: white")
-        self.member6.setStyleSheet("background-color: red")
-        self.member7.setStyleSheet("background-color: green")
-        self.member8.setStyleSheet("background-color: white")
-
-        self.mainMemberLayout.addWidget(self.member)
-        self.mainMemberLayout.addWidget(self.member1)
-        self.mainMemberLayout.addWidget(self.member2)
-        self.mainMemberLayout.addWidget(self.member3)
-        self.mainMemberLayout.addWidget(self.member4)
-        self.mainMemberLayout.addWidget(self.member5)
-        self.mainMemberLayout.addWidget(self.member6)
-        self.mainMemberLayout.addWidget(self.member7)
-        self.mainMemberLayout.addWidget(self.member8)
-
-        self.memberWidget.setLayout(self.mainMemberLayout)
-        self.memberWidget.setContentsMargins(0,0,10,10)
-
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.verticalScrollBar().setEnabled(False)
-        self.scrollArea.horizontalScrollBar().setEnabled(True)
-        self.scrollArea.setWidget(self.memberWidget)
-        self.scrollArea.setFixedSize(170,20)
+        self.member = QLabel()
+        self.member.setFixedSize(25,20)
+        self.member.setFont(QFont("Century Gothic", 7, QFont.Bold))
 
         self.firstChaOfUsername = QLabel("")
         self.firstChaOfUsername.setFont(QFont("Moon", 10, QFont.Bold))
@@ -81,7 +43,8 @@ class MenuBarBoard(QWidget):
         self.menuBarWidget.addSpacing(30)
         self.menuBarWidget.addWidget(self.memberLabel)
         self.menuBarWidget.addSpacing(10)
-        self.menuBarWidget.addWidget(self.scrollArea)
+        self.menuBarWidget.addLayout(self.mainMemberLayout)
+        #self.scrollArea.setContentsMargins(0,0,0,30)
         self.menuBarWidget.addStretch(1)
         self.menuBarWidget.addWidget(self.firstChaOfUsername)
         self.firstChaOfUsername.setContentsMargins(0, 0, 16, 0)
@@ -100,6 +63,18 @@ class MenuBarBoard(QWidget):
     def randomNum(self, start, end):
         self.rand_num = randint(start, end)
         return self.rand_num
+
+    def addMemberInMenuBar(self,memberUsername ):
+        member = QLabel("   "+ memberUsername[0]+" ")
+        member.setFixedSize(25,20)
+        member.setFont(QFont("Century Gothic", 7, QFont.Bold))
+        member.setStyleSheet("background-color:"+self.memberColor.pop()+";  color: white")
+        self.mainMemberLayout.addWidget(member)
+    
+    def addMainMember(self,username):
+        self.member.setText("   " + username[0] + " ")
+        self.member.setStyleSheet("background-color:"+self.memberColor.pop()+";  color: white")
+        self.mainMemberLayout.addWidget(self.member)
 
     def paintEvent(self, e):
         paint = QPainter()

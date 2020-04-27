@@ -62,7 +62,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
-        
+
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -178,6 +178,8 @@ class BelloUI(QMainWindow):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
         
     def addMemberToBoard(self, boardId, memberUsername):
+        print("boardId: ",boardId)
+        print("memberUsername: ", memberUsername)
         self.bello.addMemberToBoard(boardId, memberUsername)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
@@ -242,7 +244,11 @@ class BelloUI(QMainWindow):
 
     def goToBoardDetailPage(self):
         username = self.getUsernameLogin()
+        #self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
+        
+        #self.boardDetailPage.menuBar.addMainMember(username)
+       
         self.boardDetailPage.menuBar.setBoardTitle("  Board title: "+ 
             self.dashboardPage.displayBoard.getBoardTitle() + "  ")
         if self.getSelectedBoard() == None:
