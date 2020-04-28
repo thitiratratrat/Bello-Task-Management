@@ -34,7 +34,7 @@ class AddTagDialog(QDialog):
         self.mainLayout.addWidget(self.tagComboBox,1,0)
         self.mainLayout.addWidget(self.tagLineEdit,1,1)
         self.mainLayout.addWidget(self.saveCreateTagBtn,2,0,1,0,Qt.AlignCenter)
-
+    
         self.setLayout(self.mainLayout)
         self.setFixedSize(260,150)
     

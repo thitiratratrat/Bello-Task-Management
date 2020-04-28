@@ -38,7 +38,6 @@ class TaskDetailDialog(QDialog):
         self.nameAndSquare.setFixedSize(20,20)
         self.mainMemberLayout = QVBoxLayout()
         self.mainMemberLayout.addWidget(self.memberLabel)
-        self.mainMemberLayout.addWidget(self.nameAndSquare)
 
         self.memberAndTagLayout = QHBoxLayout()
         self.memberAndTagLayout.addSpacing(20)
@@ -122,6 +121,10 @@ class TaskDetailDialog(QDialog):
             member = self.parent.parent.parent.parent.getUsernameLogin()
             commentTxt = self.commentLineEdit.text()
             self.addComment(member,commentTxt)
+
+    def addMemberToTask(self,memberName):
+        self.nameAndSquare.setText("  " +memberName[0]+" ")
+        self.mainMemberLayout.addWidget(self.nameAndSquare)
 
     def addComment(self,member,commentTxt):
         self.commentWidget = CommentWidget(self)

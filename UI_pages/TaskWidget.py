@@ -29,7 +29,7 @@ class TaskWidget(QWidget):
 
         self.editTaskDialog = EditTaskDialog(self)
         self.taskDetailDialog = TaskDetailDialog(self)
-        
+    
         self.taskDetailDialog.saveBtn.clicked.connect(self.getDataFromTaskDialog)
        
         self.dueDateLabel = QLabel("")
@@ -44,6 +44,8 @@ class TaskWidget(QWidget):
         self.taskTitleAndEditLayout.addStretch(1)
         self.taskTitleAndEditLayout.addWidget(self.editTaskBtn)
         self.taskTitleAndEditLayout.addWidget(self.deleteTaskBtn)    
+
+        self.editTaskDialog.memberWidget.saveBtn.clicked.connect(self.showMemberRespon)
 
         self.tagLayout = QHBoxLayout()
 
@@ -142,6 +144,14 @@ class TaskWidget(QWidget):
             tagColorBtn.setStyleSheet("background-color: rgba(0, 0, 0, 0%)")
             self.tagLayout.setSpacing(0.1)
             self.tagLayout.addWidget(tagColorBtn)
+
+    def showMemberRespon(self):
+        memberUsername = self.editTaskDialog.memberWidget.addMemberToTask()
+        if(memberUsername == ""):
+            return
+        self.taskDetailDialog.addMemberToTask(memberUsername)
+        self.parent.parent.parent.addResponsibleMemberToTask(self.getTaskId(), memberUsername)
+
 
     def deleteAllTag(self,tagLayout):
         for i in reversed(range(tagLayout.count())): 

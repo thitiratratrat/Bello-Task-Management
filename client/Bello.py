@@ -40,8 +40,8 @@ class Bello:
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
             
         elif response == "memberUsernameDoesNotExist":
-            #TODO: display UI member username does not exist
-            pass
+            self.__ui.signalShowMemberUsernameDoesNotExists.signalDict.emit(None)
+            
             
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
