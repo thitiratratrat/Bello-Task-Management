@@ -111,7 +111,7 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        #print("boardDict: ",boardDetailDict)
+        print("boardDict: ",boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
@@ -204,8 +204,7 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
         self.addMemberDialog.close()
-        
-        #self.parent.addMemberToBoard(self.getBoardId(), memberUsername)
+        self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
 
     def addMember(self,memberUsername):
         self.menuBar.addMemberInMenuBar(memberUsername)

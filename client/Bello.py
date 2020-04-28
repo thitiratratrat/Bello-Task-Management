@@ -64,6 +64,10 @@ class Bello:
             
             self.__ui.signalAddTask.signalDict.emit(taskDetail)
             
+        elif response == "addedMemberToBoard":
+            #TODO: display member username in board
+            self.__ui.signalAddMemberInMenuBar.signalDict.emit(None)
+
         elif response == "boardDetail":
             boardDetail = message["data"]
             

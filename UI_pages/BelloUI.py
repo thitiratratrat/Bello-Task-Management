@@ -27,6 +27,7 @@ class BelloUI(QMainWindow):
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
         self.signalShowMemberUsernameDoesNotExists = CustomSignal()
+        self.signalAddMemberInMenuBar = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -35,6 +36,7 @@ class BelloUI(QMainWindow):
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
         self.signalAddTask.signalDict.connect(self.addTask)
+        self.signalAddMemberInMenuBar.signalDict.connect(self.addMember)
 
         self.signalShowUsernameAlreadyExists.signalDict.connect(
             self.showUsernameAlreadyExists)
@@ -174,12 +176,15 @@ class BelloUI(QMainWindow):
       
     def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
+
+    def addMember(self ):
+        boardId = self.boardDetailPage.getBoardId()
+        memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
         
-    def addMemberToBoard(self, boardId, memberUsername):
-        print("boardId: ",boardId)
-        print("memberUsername: ", memberUsername)
-        self.bello.addMemberToBoard(boardId, memberUsername)
         self.boardDetailPage.addMember(memberUsername)
+
+    def addMemberToBoard(self,boardId,memberUsername):
+        self.bello.addMemberToBoard(boardId, memberUsername)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
         self.bello.addResponsibleMemberToTask(taskId, memberUsername)
