@@ -26,7 +26,7 @@ class BelloUI(QMainWindow):
 
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
-        #self.signalShowMemberUsernameDoesNotExists = CustomSignal()
+        self.signalShowMemberUsernameDoesNotExists = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -41,10 +41,8 @@ class BelloUI(QMainWindow):
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
 
-        '''
         self.signalShowMemberUsernameDoesNotExists.signalDict.connect(
-            self.showMemberDoesNotExists)'''
-
+            self.boardDetailPage.showMemberDoesNotExists)
 
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
@@ -181,6 +179,7 @@ class BelloUI(QMainWindow):
         print("boardId: ",boardId)
         print("memberUsername: ", memberUsername)
         self.bello.addMemberToBoard(boardId, memberUsername)
+        self.boardDetailPage.addMember(memberUsername)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
         self.bello.addResponsibleMemberToTask(taskId, memberUsername)
@@ -244,10 +243,7 @@ class BelloUI(QMainWindow):
 
     def goToBoardDetailPage(self):
         username = self.getUsernameLogin()
-        #self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
-        
-        #self.boardDetailPage.menuBar.addMainMember(username)
        
         self.boardDetailPage.menuBar.setBoardTitle("  Board title: "+ 
             self.dashboardPage.displayBoard.getBoardTitle() + "  ")

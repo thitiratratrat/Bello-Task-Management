@@ -13,7 +13,7 @@ class BoardDetailPage(QWidget):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
         self.boardId = None
-
+        self.boardMembers = []
         self.menuBar = MenuBarBoard()
 
         self.sectionLayout = QHBoxLayout()
@@ -116,7 +116,7 @@ class BoardDetailPage(QWidget):
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
         boardMembers = boardDetailDict.get("members")
-        print("Member: ",boardMembers)
+        self.boardMembers = boardMembers 
 
         for memberUsername in boardMembers:
             self.addMember(memberUsername)
@@ -131,7 +131,7 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
-                #print("Info: ", taskInfoDict)
+                print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
                 taskDuedate = taskInfoDict.get("dueDate")
@@ -143,7 +143,7 @@ class BoardDetailPage(QWidget):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                         self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments)
+                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments,taskResponsibleMembers)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -185,11 +185,12 @@ class BoardDetailPage(QWidget):
         taskState = False
         taskTag = {}
         taskComments = []
+        taskResponsibleMembers = []
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                 self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                    sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments)
+                    sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments,taskResponsibleMembers)
     
     def addMemberToBoard(self):
         self.addMemberDialog.show()
@@ -202,11 +203,13 @@ class BoardDetailPage(QWidget):
         elif(self.menuBar.mainMemberLayout.count() >= 5):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
-        self.addMember(memberUsername)
         self.addMemberDialog.close()
-        self.parent.addMemberToBoard(self.getBoardId(), memberUsername)
+        
+        #self.parent.addMemberToBoard(self.getBoardId(), memberUsername)
 
     def addMember(self,memberUsername):
         self.menuBar.addMemberInMenuBar(memberUsername)
-        
+    
+    def showMemberDoesNotExists(self):
+        dialog = createErrorDialogBox(self,"Error", "This member does not exist")
     
