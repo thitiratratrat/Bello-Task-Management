@@ -1,8 +1,8 @@
 from mongoengine import *
 import sys
 
-sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\classes')
+sys.path.append('..\\classes')
+    # 'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\classes')
 
 from Task import Task
 from Section import Section

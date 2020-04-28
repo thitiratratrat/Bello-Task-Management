@@ -174,7 +174,8 @@ class Server:
         
         boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(memberUsername)
         
-        await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, websocket)
+        await self.__sendResponseToClient("addedMemberToBoard", None, websocket)
+        # await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, websocket)
         
     async def __addResponsibleMemberToTask(self, data, websocket):
         taskId = data["taskId"]
