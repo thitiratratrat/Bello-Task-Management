@@ -3,7 +3,7 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
 
 
@@ -65,7 +65,6 @@ class Bello:
             self.__ui.signalAddTask.signalDict.emit(taskDetail)
             
         elif response == "addedMemberToBoard":
-            #TODO: display member username in board
             self.__ui.signalAddMemberInMenuBar.signalDict.emit(None)
 
         elif response == "boardDetail":
@@ -77,11 +76,13 @@ class Bello:
         elif response == "updateBoard":
             boardDetail = message["data"]
             #TODO: update board ps. can just use same case as "boardDetail" anything is fine
+            self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
             
             #TODO: update dashboard page with new board titles and ids
+            self.__ui.addBoard(boardTitlesAndIds)
             
         else:
             return
