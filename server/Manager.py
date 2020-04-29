@@ -2,7 +2,7 @@ from mongoengine import *
 import sys
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\classes')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\classes')
 
 from Task import Task
 from Section import Section
@@ -91,6 +91,12 @@ class Manager:
 
     def validateAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
+    
+    def isMemberInBoard(self, boardId, username):
+        board = self.__getBoardById(boardId)
+        memberUsernames = board.members
+        
+        return True if username in memberUsernames else False
     
     def createAccount(self, usernameInput, passwordInput):
         account = Account(username=usernameInput, password=passwordInput)
@@ -205,6 +211,10 @@ class Manager:
         board = self.__getBoardById(boardId)
         
         board.addMemberUsername(memberUsername)
+        
+        account = self.__getAccountByUsername(memberUsername)
+        
+        account.addBoardId(boardId)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
         task = self.__getTaskById(taskId)

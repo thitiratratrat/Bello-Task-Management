@@ -170,12 +170,23 @@ class Server:
             await self.__sendResponseToClient("memberUsernameDoesNotExist", None, websocket)
             return
         
+        if self.__manager.isMemberInBoard(boardId, memberUsername):
+            return
+        
         self.__manager.addMemberToBoard(boardId, memberUsername)
         
         boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(memberUsername)
         
         await self.__sendResponseToClient("addedMemberToBoard", None, websocket)
-        # await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, websocket)
+        
+        if self.__isOnline(memberUsername):
+            try:
+                memberObserver = self.__observers[memberUsername]
+                memberWebsocket = memberObserver.getClientWebsocket()
+                
+                await self.__sendResponseToClient("updateBoardTitlesAndIds", boardTitlesAndIds, memberWebsocket)
+            except:
+                return
         
     async def __addResponsibleMemberToTask(self, data, websocket):
         taskId = data["taskId"]
@@ -202,19 +213,25 @@ class Server:
         members = boardDetail["members"]
         
         for member in members:
+            if not self.__isOnline(member):
+                continue
+            
             memberObserver = self.__observers[member]
             memberCurrentBoardId = memberObserver.getCurrentBoardId()
             
             if memberCurrentBoardId != boardId:
-                return
+                continue
             
-            await memberObserver.update(boardDetail)
+            try:
+                await memberObserver.update(boardDetail)
+            except:
+                continue
             
     async def __sendResponseToClient(self, response, data, websocket):
         await websocket.send(json.dumps({"response": response, "data": data}))
             
-    def __addObserver(self, boardObserver):
-        self.__observers[boardObserver.getUsername()] = boardObserver
+    def __addObserver(self, memberObserver):
+        self.__observers[memberObserver.getUsername()] = memberObserver
         
     def __changeObserverCurrentBoardId(self, websocket, boardId):
         username = self.__getUsernameFromWebsocket(websocket)
@@ -226,6 +243,9 @@ class Server:
         for username, observer in self.__observers.items():
             if observer.getClientWebsocket() == websocket:
                 return username
+            
+    def __isOnline(self, username):
+        return username in self.__observers
         
     async def __handleMessage(self, message, websocket):
         action = message["action"]
