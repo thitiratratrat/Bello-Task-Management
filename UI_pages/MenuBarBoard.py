@@ -64,6 +64,10 @@ class MenuBarBoard(QWidget):
         self.rand_num = randint(start, end)
         return self.rand_num
 
+    def clearAllMember(self):
+        for i in reversed(range(self.mainMemberLayout.count())): 
+            self.mainMemberLayout.itemAt(i).widget().deleteLater()
+
     def addMemberInMenuBar(self,memberUsername ):
         member = QLabel("   "+ memberUsername[0]+" ")
         member.setFixedSize(25,20)

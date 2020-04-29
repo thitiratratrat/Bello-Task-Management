@@ -148,6 +148,7 @@ class BelloUI(QMainWindow):
     
     def __homeBtnFunc(self):
         self.boardDetailPage.clearAllSection()
+        self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.goToDashboardPage()
         
     def deleteSection(self, boardId, sectionId):

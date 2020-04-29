@@ -111,13 +111,14 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        print("boardDict: ",boardDetailDict)
+        #print("boardDict: ",boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
         boardMembers = boardDetailDict.get("members")
         self.boardMembers = boardMembers 
-
+        
+        self.menuBar.clearAllMember()
         for memberUsername in boardMembers:
             self.addMember(memberUsername)
 
@@ -131,7 +132,7 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
-                print("Info: ", taskInfoDict)
+                #print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
                 taskDuedate = taskInfoDict.get("dueDate")
@@ -139,6 +140,7 @@ class BoardDetailPage(QWidget):
                 taskTags = taskInfoDict.get("tags")
                 taskState = taskInfoDict.get("isFinished")
                 #TODO setTaskRespon
+
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
@@ -197,6 +199,12 @@ class BoardDetailPage(QWidget):
     
     def validateMemberUsername(self):
         memberUsername  = self.addMemberDialog.lineEdit.text()
+
+        for i in self.boardMembers:
+            if(memberUsername == i ):
+                createErrorDialogBox(self,"Error", "Member username already exists")
+                return
+
         if(memberUsername == ""):
             createErrorDialogBox(self,"Error","Member username can not be null")
             return
