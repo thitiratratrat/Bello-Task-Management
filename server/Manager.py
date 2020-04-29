@@ -92,6 +92,12 @@ class Manager:
     def validateAccount(self, usernameInput, passwordInput):
         return True if Account.objects(username=usernameInput, password=passwordInput).count() == 1 else False
     
+    def isMemberInBoard(self, boardId, username):
+        board = self.__getBoardById(boardId)
+        memberUsernames = board.members
+        
+        return True if username in memberUsernames else False
+    
     def createAccount(self, usernameInput, passwordInput):
         account = Account(username=usernameInput, password=passwordInput)
 

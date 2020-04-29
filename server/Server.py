@@ -170,6 +170,9 @@ class Server:
             await self.__sendResponseToClient("memberUsernameDoesNotExist", None, websocket)
             return
         
+        if self.__manager.isMemberInBoard(boardId, memberUsername):
+            return
+        
         self.__manager.addMemberToBoard(boardId, memberUsername)
         
         boardTitlesAndIds = self.__manager.getUserBoardTitlesAndIds(memberUsername)
