@@ -9,7 +9,7 @@ from CustomSignal import *
 from SectionWidget import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -26,7 +26,8 @@ class BelloUI(QMainWindow):
 
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
-        #self.signalShowMemberUsernameDoesNotExists = CustomSignal()
+        self.signalShowMemberUsernameDoesNotExists = CustomSignal()
+        self.signalAddMemberInMenuBar = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -35,15 +36,15 @@ class BelloUI(QMainWindow):
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
         self.signalAddTask.signalDict.connect(self.addTask)
+        self.signalAddMemberInMenuBar.signalDict.connect(self.addMember)
 
         self.signalShowUsernameAlreadyExists.signalDict.connect(
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
-            
-        '''
+
         self.signalShowMemberUsernameDoesNotExists.signalDict.connect(
-            self.showMemberDoesNotExists)'''
+            self.boardDetailPage.showMemberDoesNotExists)
 
         self.stackedWidget.addWidget(self.loginSignUpPage)
         self.stackedWidget.addWidget(self.dashboardPage)
@@ -61,7 +62,7 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.dialogCreate.button.clicked.connect(
             self.__createSection)
         self.boardDetailPage.menuBar.homeBtn.clicked.connect(self.__homeBtnFunc)
-        
+
         self.setCentralWidget(self.stackedWidget)
         self.setFixedSize(640, 480)
         self.show()
@@ -147,6 +148,7 @@ class BelloUI(QMainWindow):
     
     def __homeBtnFunc(self):
         self.boardDetailPage.clearAllSection()
+        self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.goToDashboardPage()
         
     def deleteSection(self, boardId, sectionId):
@@ -175,8 +177,14 @@ class BelloUI(QMainWindow):
       
     def addTaskTag(self, taskId, taskTag, taskTagColor):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
+
+    def addMember(self ):
+        boardId = self.boardDetailPage.getBoardId()
+        memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
         
-    def addMemberToBoard(self, boardId, memberUsername):
+        self.boardDetailPage.addMember(memberUsername)
+
+    def addMemberToBoard(self,boardId,memberUsername):
         self.bello.addMemberToBoard(boardId, memberUsername)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
@@ -242,6 +250,9 @@ class BelloUI(QMainWindow):
     def goToBoardDetailPage(self):
         username = self.getUsernameLogin()
         self.boardDetailPage.menuBar.setFirstChaOfUsername(username)
+       
+        self.boardDetailPage.menuBar.setBoardTitle("  Board title: "+ 
+            self.dashboardPage.displayBoard.getBoardTitle() + "  ")
         if self.getSelectedBoard() == None:
             return
 

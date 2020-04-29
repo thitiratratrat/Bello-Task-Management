@@ -43,6 +43,9 @@ class DisplayBoardBox(QWidget):
          if val == value: 
              return key 
 
+    def getBoardTitle(self):
+        return self.listWidget.currentItem().text()
+
     def getSelectItemInBoardId(self):
         boardId = self.getKey(self.listWidget.currentItem().text())
         return boardId

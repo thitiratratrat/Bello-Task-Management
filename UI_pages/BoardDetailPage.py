@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-from MenuBar import *
+from MenuBarBoard import *
 from dialogBox import *
 from CustomDialog import CustomDialog
 from DueDateWidget import *
@@ -13,12 +13,17 @@ class BoardDetailPage(QWidget):
         super(BoardDetailPage, self).__init__(parent)
         self.parent = parent
         self.boardId = None
-        self.menuBar = MenuBar()
+        self.boardMembers = []
+        self.menuBar = MenuBarBoard()
+
         self.sectionLayout = QHBoxLayout()
         self.taskWidget = None
         self.widget = QWidget()
         self.dialogCreate = CustomDialog(
             self, "create new section", "Section name:", "Create")
+
+        self.addBtnLayout = QVBoxLayout()
+
         self.addSectionBtn = QPushButton("Add section")
         self.addSectionBtn.setIcon(QIcon('images/add1.png'))
         self.addSectionBtn.setStyleSheet(
@@ -27,23 +32,38 @@ class BoardDetailPage(QWidget):
 
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
+        self.memberBtn = QPushButton("Add member")
+        self.memberBtn.setIcon(QIcon('images/addMember.png'))
+        self.memberBtn.setStyleSheet(
+            "background-color: rgb(250,231,111); color: rgb(49,68,111)")
+        self.memberBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
+        self.addMemberDialog = CustomDialog(self, "Add member to board", "Member username:", "Add" )
+        self.memberBtn.clicked.connect(self.addMemberToBoard)
+        
+        self.addMemberDialog.button.clicked.connect(self.validateMemberUsername)
+
+        self.addBtnLayout.addWidget(self.addSectionBtn)
+        self.addBtnLayout.addWidget(self.memberBtn)
+
         self.widget.setLayout(self.sectionLayout)
         
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.widget)
 
         self.sectionAndAddBtnLayout = QGridLayout()
         self.sectionAndAddBtnLayout.addWidget(self.scrollArea, 0, 0, 4, 1)
-        self.sectionAndAddBtnLayout.addWidget(self.addSectionBtn, 0, 1, 1, 1)
+        self.sectionAndAddBtnLayout.addLayout(self.addBtnLayout, 0, 1, 1, 1)
 
         self.boardDetailLayout = QVBoxLayout()
         self.boardDetailLayout.addWidget(self.menuBar)
         self.boardDetailLayout.addLayout(self.sectionAndAddBtnLayout)
         self.setLayout(self.boardDetailLayout)
 
+        
     def setBoardId(self, boardId):
         self.boardId = boardId
 
@@ -91,11 +111,17 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        print("boardDetail: ", boardDetailDict)
+        #print("boardDict: ",boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
         boardDetailDict = boardDetailDict.get("boardDetail")
         boardMembers = boardDetailDict.get("members")
+        self.boardMembers = boardMembers 
+        
+        self.menuBar.clearAllMember()
+        for memberUsername in boardMembers:
+            self.addMember(memberUsername)
+
         sectionDict = boardDetailDict.get("sections")
         indexSection = 0 
         for sectionId, sectionAndTaskTitle in sectionDict.items():
@@ -113,12 +139,13 @@ class BoardDetailPage(QWidget):
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
                 taskState = taskInfoDict.get("isFinished")
-                #TODO setTaskComment, setTaskRespon
+                #TODO setTaskRespon
+
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                         self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments)
+                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments,taskResponsibleMembers)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -160,10 +187,36 @@ class BoardDetailPage(QWidget):
         taskState = False
         taskTag = {}
         taskComments = []
+        taskResponsibleMembers = []
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                 self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                    sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments)
+                    sectionId, taskId, index,taskDueDate,taskState,taskTag,taskComments,taskResponsibleMembers)
     
+    def addMemberToBoard(self):
+        self.addMemberDialog.show()
+    
+    def validateMemberUsername(self):
+        memberUsername  = self.addMemberDialog.lineEdit.text()
+
+        for i in self.boardMembers:
+            if(memberUsername == i ):
+                createErrorDialogBox(self,"Error", "Member username already exists")
+                return
+
+        if(memberUsername == ""):
+            createErrorDialogBox(self,"Error","Member username can not be null")
+            return
+        elif(self.menuBar.mainMemberLayout.count() >= 5):
+            createErrorDialogBox(self,"Error","Member are reached the maximum")
+            return
+        self.addMemberDialog.close()
+        self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
+
+    def addMember(self,memberUsername):
+        self.menuBar.addMemberInMenuBar(memberUsername)
+    
+    def showMemberDoesNotExists(self):
+        dialog = createErrorDialogBox(self,"Error", "This member does not exist")
     

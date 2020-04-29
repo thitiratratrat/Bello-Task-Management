@@ -3,7 +3,7 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
 
 
@@ -40,8 +40,8 @@ class Bello:
             self.__ui.signalShowAccountDoesNotExist.signalDict.emit(None)
             
         elif response == "memberUsernameDoesNotExist":
-            #TODO: display UI member username does not exist
-            pass
+            self.__ui.signalShowMemberUsernameDoesNotExists.signalDict.emit(None)
+            
             
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
@@ -66,7 +66,8 @@ class Bello:
             
         elif response == "addedMemberToBoard":
             #TODO: display member username in board
-            
+            self.__ui.signalAddMemberInMenuBar.signalDict.emit(None)
+
         elif response == "boardDetail":
             boardDetail = message["data"]
             
