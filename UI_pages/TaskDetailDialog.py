@@ -49,7 +49,6 @@ class TaskDetailDialog(QDialog):
         self.dueDateCheckBox = QCheckBox("Due date: 13-03-2020")
         self.dueDateCheckBox.setFont(QFont("Century Gothic", 9, QFont.Bold))
         self.mainDueDateLayout.addSpacing(20)
-        #self.mainDueDateLayout.addWidget(self.dueDateCheckBox)
 
         self.commentLabel = QLabel("Show comments")
         self.commentLabel.setFont(QFont("Moon",9,QFont.Bold))
