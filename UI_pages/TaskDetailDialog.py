@@ -38,7 +38,6 @@ class TaskDetailDialog(QDialog):
         self.nameAndSquare.setFixedSize(20,20)
         self.mainMemberLayout = QVBoxLayout()
         self.mainMemberLayout.addWidget(self.memberLabel)
-        self.mainMemberLayout.addWidget(self.nameAndSquare)
 
         self.memberAndTagLayout = QHBoxLayout()
         self.memberAndTagLayout.addSpacing(20)
@@ -50,7 +49,6 @@ class TaskDetailDialog(QDialog):
         self.dueDateCheckBox = QCheckBox("Due date: 13-03-2020")
         self.dueDateCheckBox.setFont(QFont("Century Gothic", 9, QFont.Bold))
         self.mainDueDateLayout.addSpacing(20)
-        #self.mainDueDateLayout.addWidget(self.dueDateCheckBox)
 
         self.commentLabel = QLabel("Show comments")
         self.commentLabel.setFont(QFont("Moon",9,QFont.Bold))
@@ -122,6 +120,10 @@ class TaskDetailDialog(QDialog):
             member = self.parent.parent.parent.parent.getUsernameLogin()
             commentTxt = self.commentLineEdit.text()
             self.addComment(member,commentTxt)
+
+    def addMemberToTask(self,memberName):
+        self.nameAndSquare.setText("  " +memberName[0]+" ")
+        self.mainMemberLayout.addWidget(self.nameAndSquare)
 
     def addComment(self,member,commentTxt):
         self.commentWidget = CommentWidget(self)

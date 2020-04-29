@@ -166,7 +166,7 @@ class SectionWidget(QWidget):
 
         self.parent.parent.createTask(boardId, sectionId, taskTitle,taskOrder)
 
-    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState,taskTags, taskComments):
+    def addTask(self, taskTitle, boardId, sectionId, taskId, index,taskDueDate,taskState,taskTags, taskComments,taskResponsibleMembers):
         self.taskWidget = TaskWidget(self)
         self.taskWidget.setTaskId(taskId)
         self.taskWidget.setTaskSectionId(sectionId)
@@ -184,6 +184,12 @@ class SectionWidget(QWidget):
         for i in range(len(taskComments)):
             for member, commentTxt in taskComments[i].items():
                 self.taskWidget.taskDetailDialog.addComment(member,commentTxt)
+        for i in self.parent.boardMembers: 
+            self.taskWidget.editTaskDialog.memberWidget.memberComboBox.addItem(i)
+
+        for i in taskResponsibleMembers:
+            self.taskWidget.taskDetailDialog.addMemberToTask(i)
+
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
 

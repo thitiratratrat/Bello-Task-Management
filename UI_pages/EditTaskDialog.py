@@ -6,6 +6,7 @@ from TabWidget import *
 from DueDateWidget import *
 from CustomDialog import *
 from TagWidget import * 
+from MemberWidget import * 
 
 class EditTaskDialog(QDialog):
     def __init__(self,parent =None):
@@ -14,7 +15,7 @@ class EditTaskDialog(QDialog):
         self.parent = parent
         self.tabWidget = TabWidget()
         self.tabWidget.setFont(QFont("Moon", 8, QFont.Bold))
-        #self.setColor()
+
         self.dueDateWidget = DueDateWidget(self)
         self.dueDateWidget.saveDateBtn.clicked.connect(self.parent.getNewDate)
 
@@ -26,12 +27,18 @@ class EditTaskDialog(QDialog):
         self.editTaskTitleDialog.setContentsMargins(10,40,10,40)
         self.editTaskTitleDialog.button.clicked.connect(self.handleEditTaskTitleBtn)
 
+
+        self.memberWidget = MemberWidget(self)
+
+
         self.tabWidget.addTab(self.editTaskTitleDialog, QIcon(
             "images/editDialog.png"), " Edit")
         self.tabWidget.addTab(self.dueDateWidget, QIcon(
             "images/calendar.png"), " Due date")
         self.tabWidget.addTab(self.tagWidget, QIcon(
             "images/tag.png"), " Tags")
+        self.tabWidget.addTab(self.memberWidget, QIcon(
+            "images/multiple.png"), " Members")
 
         self.mainEditTask = QVBoxLayout()
         self.mainEditTask.addWidget(self.tabWidget)
