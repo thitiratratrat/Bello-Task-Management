@@ -206,6 +206,10 @@ class Manager:
         
         board.addMemberUsername(memberUsername)
         
+        account = self.__getAccountByUsername(memberUsername)
+        
+        account.addBoardId(boardId)
+        
     def addResponsibleMemberToTask(self, taskId, memberUsername):
         task = self.__getTaskById(taskId)
         
