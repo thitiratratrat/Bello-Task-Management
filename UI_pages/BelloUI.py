@@ -185,6 +185,8 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.addMember(memberUsername)
 
     def addMemberToBoard(self,boardId,memberUsername):
+        print("boardId: ", boardId)
+        print("memberUsername: ", memberUsername)
         self.bello.addMemberToBoard(boardId, memberUsername)
         
     def addResponsibleMemberToTask(self, taskId, memberUsername):
