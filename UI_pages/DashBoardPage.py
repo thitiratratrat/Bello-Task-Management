@@ -34,6 +34,7 @@ class DashboardPage(QWidget):
         self.deleteBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.tabBarBoard.addTab(self.displayBoard, QIcon(
             "images/dashboard.png"), " Board")
+
         self.layout = QGridLayout()
         self.menuBar.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.menuBar, 0, 0)
@@ -44,6 +45,9 @@ class DashboardPage(QWidget):
         self.btnLayout.addWidget(self.addBoardBtn)
         self.btnLayout.addWidget(self.deleteBoardBtn)
         self.layout.addLayout(self.btnLayout, 2, 0)
+        
+        
+
         self.setLayout(self.layout)
         self.show()
 
@@ -92,4 +96,17 @@ class DashboardPage(QWidget):
                 self.displayBoard.listWidget.row(item))
         del self.displayBoard.boardDict[self.selectItemId]
         return self.selectItemId
+    
+    def deleteBoardId(self,boardId):
+        for i in range(self.displayBoard.listWidget.count()):
+            board = self.displayBoard.listWidget.item(i)
+            id = self.displayBoard.getKey(board.text())
+
+            if(id == boardId):
+                selectItem = self.displayBoard.listWidget.takeItem(i)
+                print(selectItem)
+                break
+                
+        
+
 

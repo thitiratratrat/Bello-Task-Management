@@ -49,7 +49,7 @@ class DisplayBoardBox(QWidget):
     def getSelectItemInBoardId(self):
         boardId = self.getKey(self.listWidget.currentItem().text())
         return boardId
-        
+
     def addToListWidget(self, board):
         self.i += 1
         self.listWidget.insertItem(self.i, board)

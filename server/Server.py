@@ -205,25 +205,35 @@ class Server:
         taskFinishState = data["taskFinishState"]
 
         self.__manager.setTaskFinishState(taskId, taskFinishState)
-
-    async def __notifyObservers(self, username):
+        
+    async def __updateBoardDetail(self, websocket):
+        username = self.__getUsernameFromWebsocket(websocket)
         observer = self.__observers[username]
         currentBoardId = observer.getCurrentBoardId()
         boardDetail = self.__manager.getBoardDetail(currentBoardId)
-        members = boardDetail["members"]
+        members = boardDetail["members"].remove(username)
+        data = {"boardDetail": boardDetail}
+        updateMembers = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
+    
+        await self.__notifyObservers(updateMembers, data, "updateBoard")
         
+    async def __updateDeleteBoard(self, websocket):
+        username = self.__getUsernameFromWebsocket(websocket)
+        observer = self.__observers[username]
+        currentBoardId = observer.getCurrentBoardId()
+        members = self.__manager.getBoardMembers(currentBoardId).remove(username)
+        membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
+        membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, currentBoardId)
+        data = {"deletedBoardId": currentBoardId}
+        
+        await self.__notifyObservers(membersOpeningDeletedBoard, data, "deletedBoardError")
+        await self.__notifyObservers(membersNotOpeningDeletedBoard, data, "deletedBoard")
+
+    async def __notifyObservers(self, members, data, response):
         for member in members:
-            if not self.__isOnline(member):
-                continue
-            
             memberObserver = self.__observers[member]
-            memberCurrentBoardId = memberObserver.getCurrentBoardId()
-            
-            if memberCurrentBoardId != boardId:
-                continue
-            
             try:
-                await memberObserver.update(boardDetail)
+                await memberObserver.update(data, response)
             except:
                 continue
             
@@ -243,10 +253,28 @@ class Server:
         for username, observer in self.__observers.items():
             if observer.getClientWebsocket() == websocket:
                 return username
-            
+    
+    def __getOnlineBoardMembersOpeningCurrentBoard(self, members, boardId):
+        onlineMembers = self.__getOnlineMembers(members)
+        
+        return list(filter(lambda member: self.__isOpeningCurrentBoard(member, boardId), onlineMembers))
+    
+    def __getOnlineBoardMembersNotOpeningCurrentBoard(self, members, boardId):
+        onlineMembers = self.__getOnlineMembers(members)
+        
+        return list(filter(lambda member: not self.__isOpeningCurrentBoard(member, boardId), onlineMembers))
+    
+    def __getOnlineMembers(self, members):
+        return list(filter(lambda member: self.__isOnline(member)), members)
+    
     def __isOnline(self, username):
         return username in self.__observers
+    
+    def __isOpeningCurrentBoard(self, member, boardId):
+        observer = self.__observers[member]
         
+        return observer.getCurrentBoardId() == boardId
+   
     async def __handleMessage(self, message, websocket):
         action = message["action"]
 
@@ -261,57 +289,74 @@ class Server:
 
         elif action == 'createSection':
             await self.__createSection(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'createTask':
             await self.__createTask(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'requestBoardDetail':
             await self.__sendBoardDetail(message["data"], websocket)
 
         elif action == 'editSectionTitle':
             await self.__editSectionTitle(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'editTaskTitle':
             await self.__editTaskTitle(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)
+            await self.__updateDeleteBoard(websocket)
 
         elif action == 'deleteSection':
             await self.__deleteSection(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'deleteTask':
             await self.__deleteTask(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
             
         elif action == 'deleteTaskComment':
             await self.__deleteTaskComment(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
             
         elif action == 'deleteTaskTag':
             await self.__deleteTaskTag(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'reorderTaskInSameSection':
             await self.__reorderTaskInSameSection(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'reorderTaskInDifferentSection':
             await self.__reorderTaskInDifferentSection(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'addTaskComment':
             await self.__addTaskComment(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'addTaskTag':
             await self.__addTaskTag(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
             
         elif action == 'addMemberToBoard':
             await self.__addMemberToBoard(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
             
         elif action == 'addResponsibleMemberToTask':
             await self.__addResponsibleMemberToTask(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'setTaskDueDate':
             await self.__setTaskDueDate(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         elif action == 'setTaskFinishState':
             await self.__setTaskFinishState(message["data"], websocket)
+            await self.__updateBoardDetail(websocket)
 
         else:
             return
