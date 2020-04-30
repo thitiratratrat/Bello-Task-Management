@@ -264,7 +264,7 @@ class Server:
         
         return list(filter(lambda member: not self.__isOpeningCurrentBoard(member, boardId), onlineMembers))
     
-     def __getOnlineMembers(self, members):
+    def __getOnlineMembers(self, members):
         return list(filter(lambda member: self.__isOnline(member)), members)
     
     def __isOnline(self, username):
