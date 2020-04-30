@@ -7,6 +7,7 @@ from DashBoardPage import *
 from BoardDetailPage import *
 from CustomSignal import *
 from SectionWidget import *
+from dialogBox import *
 
 sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
@@ -28,6 +29,7 @@ class BelloUI(QMainWindow):
         self.signalShowAccountDoesNotExist = CustomSignal()
         self.signalShowMemberUsernameDoesNotExists = CustomSignal()
         self.signalAddMemberInMenuBar = CustomSignal()
+        self.signalDeleteBoardDialog =CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -42,6 +44,8 @@ class BelloUI(QMainWindow):
             self.showUsernameAlreadyExists)
         self.signalShowAccountDoesNotExist.signalDict.connect(
             self.showAccountDoesNotExist)
+
+        self.signalDeleteBoardDialog.signalDict.connect(self.showDeletedBoardDialog)
 
         self.signalShowMemberUsernameDoesNotExists.signalDict.connect(
             self.boardDetailPage.showMemberDoesNotExists)
@@ -164,6 +168,7 @@ class BelloUI(QMainWindow):
         self.bello.deleteTaskTag(taskId, taskTag)
 
     def addBoard(self, boardDict):
+        print("boardDict: ", boardDict)
         self.dashboardPage.addBoard(boardDict)
 
     def addSection(self, sectionDict):
@@ -235,6 +240,12 @@ class BelloUI(QMainWindow):
                 self.dashboardPage.showBoardTitleIsExist()
                 return True    
         return False
+
+    def showDeletedBoardDialog(self):
+        createErrorDialogBox(self,"Board is Deleted","This board is deleted")
+
+    def deleteBoardId(self,boardId):
+        self.dashboardPage.deleteBoardId(boardId)
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)

@@ -50,6 +50,11 @@ class Manager:
 
         return boardTitlesAndIds
     
+    def getBoardMembers(self, boardId):
+        board = self.__getBoardById(boardId)
+        
+        return board.members
+    
     def getBoardDetail(self, boardId):
         board = self.__getBoardById(boardId)
         sectionIds = board.section_ids
