@@ -82,6 +82,17 @@ class Bello:
             boardTitlesAndIds = message["data"]
             
             #TODO: update dashboard page with new board titles and ids
+        elif response == "deletedBoardError":
+            data = message["data"]
+            deletedBoardId = data["deletedBoardId"]
+            
+            #TODO: show board is deleted dialog AND go to dashboard page
+            
+        elif response == "deletedBoard":
+            data = message["data"]
+            deletedBoardId = data["deletedBoardId"]
+            
+            #TODO: show board is deleted dialog
             
         else:
             return
