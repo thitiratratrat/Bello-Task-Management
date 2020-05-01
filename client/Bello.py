@@ -79,26 +79,27 @@ class Bello:
             
         elif response == "updateBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
-            
-            #TODO: update dashboard page with new board titles and ids
-            self.__ui.addBoard(boardTitlesAndIds)
+
+            self.__ui.addBoardUpdate(boardTitlesAndIds)
        
         elif response == "deletedBoardError":
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog AND go to dashboard page
-            self.__ui.deleteBoardId(deletedBoardId)
-            self.__ui.signalDeleteBoardDialog.signalDict.emit(None)
-            self.__ui.goToDashboardPage()
+            
+            #self.__ui.addBoardUpdate(boardTitlesAndIds)
+            self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
             
         elif response == "deletedBoard":
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog
-            self.__ui.deleteBoardId(deletedBoardId)
+            #self.__ui.addBoardUpdate(boardTitlesAndIds)
             self.__ui.signalDeleteBoardDialog.signalDict.emit(None)
+            self.__ui.deleteBoardId(deletedBoardId)
+            
         else:
             return
 

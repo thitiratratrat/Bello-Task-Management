@@ -172,7 +172,10 @@ class BelloUI(QMainWindow):
         self.bello.deleteTaskTag(taskId, taskTag)
 
     def addBoard(self, boardDict):
-        print("boardDict: ", boardDict)
+        self.dashboardPage.addBoard(boardDict)
+
+    def addBoardUpdate(self,boardDict):
+        self.dashboardPage.deleteAllBoard()
         self.dashboardPage.addBoard(boardDict)
 
     def addSection(self, sectionDict):
@@ -216,6 +219,7 @@ class BelloUI(QMainWindow):
 
     def initUpdateBoardDetail(self, boardDetailDict):
         self.boardDetailPage.clearAllSection()
+        self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
@@ -249,8 +253,11 @@ class BelloUI(QMainWindow):
                 return True    
         return False
 
-    def showDeletedBoardDialog(self):
+    def showDeletedBoardDialog(self,deletedBoardId):
         createErrorDialogBox(self,"Board is Deleted","This board is deleted")
+        self.dashboardPage.deleteBoardId(deletedBoardId)
+        self.goToDashboardPage()
+
 
     def deleteBoardId(self,boardId):
         self.dashboardPage.deleteBoardId(boardId)

@@ -72,6 +72,9 @@ class DashboardPage(QWidget):
 
     def addBoard(self, boardDict):
         self.displayBoard.createBox(boardDict)
+    
+    def deleteAllBoard(self):
+        self.displayBoard.listWidget.clear()
 
     def validateBoardTitle(self):
         if self.boardTitleValue.text() == '':
@@ -104,8 +107,9 @@ class DashboardPage(QWidget):
 
             if(id == boardId):
                 selectItem = self.displayBoard.listWidget.takeItem(i)
-                print(selectItem)
+                print("itemmmm---: ", selectItem)
                 break
+        print("---finished------")
                 
         
 
