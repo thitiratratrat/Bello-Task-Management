@@ -10,7 +10,7 @@ from SectionWidget import *
 from dialogBox import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -30,6 +30,7 @@ class BelloUI(QMainWindow):
         self.signalShowMemberUsernameDoesNotExists = CustomSignal()
         self.signalAddMemberInMenuBar = CustomSignal()
         self.signalDeleteBoardDialog =CustomSignal()
+        self.signalUpdateBoard = CustomSignal()
 
         self.loginSignUpPage = LoginSignUpPage(self)
         self.dashboardPage = DashboardPage(self)
@@ -37,6 +38,9 @@ class BelloUI(QMainWindow):
 
         self.signalAddSection.signalDict.connect(self.addSection)
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
+
+        self.signalUpdateBoard.signalDict.connect(self.initUpdateBoardDetail)
+
         self.signalAddTask.signalDict.connect(self.addTask)
         self.signalAddMemberInMenuBar.signalDict.connect(self.addMember)
 
@@ -209,6 +213,10 @@ class BelloUI(QMainWindow):
 
     def initBoardDetail(self, boardDetailDict):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
+
+    def initUpdateBoardDetail(self, boardDetailDict):
+        self.boardDetailPage.clearAllSection()
+        self.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()
