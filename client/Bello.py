@@ -3,7 +3,7 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
 
 
@@ -75,8 +75,7 @@ class Bello:
             
         elif response == "updateBoard":
             boardDetail = message["data"]
-            
-            self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
+            self.__ui.signalUpdateBoard.signalDict.emit(boardDetail)
             
         elif response == "updateBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
