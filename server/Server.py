@@ -239,7 +239,6 @@ class Server:
     async def __notifyObservers(self, members, data, response):
         for member in members:
             memberObserver = self.__observers[member]
-            print("pass")
             
             await memberObserver.update(data, response)
             

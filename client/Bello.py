@@ -76,8 +76,6 @@ class Bello:
         elif response == "updateBoard":
             boardDetail = message["data"]
             
-            print("update board detail")
-            print(boardDetail)
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoardTitlesAndIds":
@@ -189,7 +187,6 @@ class Bello:
         return True if len(password) >= 4 else False
 
     def deleteBoard(self, boardId):
-        print(f"deleted boardId: {boardId}")
         self.__websocket.send(json.dumps({"action": "deleteBoard",
                                           "data": {
                                               "boardId": boardId
