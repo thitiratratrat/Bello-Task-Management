@@ -3,7 +3,7 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
 from BelloUI import *
 
 
@@ -75,7 +75,9 @@ class Bello:
             
         elif response == "updateBoard":
             boardDetail = message["data"]
-            #TODO: update board ps. can just use same case as "boardDetail" anything is fine
+            
+            print("update board detail")
+            print(boardDetail)
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoardTitlesAndIds":
@@ -187,6 +189,7 @@ class Bello:
         return True if len(password) >= 4 else False
 
     def deleteBoard(self, boardId):
+        print(f"deleted boardId: {boardId}")
         self.__websocket.send(json.dumps({"action": "deleteBoard",
                                           "data": {
                                               "boardId": boardId

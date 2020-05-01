@@ -105,8 +105,10 @@ class Server:
 
     async def __deleteBoard(self, data, websocket):
         boardId = data["boardId"]
+        members = self.__manager.getBoardMembers(boardId)
         
         self.__manager.deleteBoard(boardId)
+        await self.__updateDeleteBoard(members, websocket)
 
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
@@ -211,20 +213,25 @@ class Server:
         observer = self.__observers[username]
         currentBoardId = observer.getCurrentBoardId()
         boardDetail = self.__manager.getBoardDetail(currentBoardId)
-        members = boardDetail["members"].remove(username)
+        members = self.__manager.getBoardMembers(currentBoardId)
         data = {"boardDetail": boardDetail}
+        
+        members.remove(username)
+        
         updateMembers = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
     
         await self.__notifyObservers(updateMembers, data, "updateBoard")
         
-    async def __updateDeleteBoard(self, websocket):
+    async def __updateDeleteBoard(self, members, websocket):
         username = self.__getUsernameFromWebsocket(websocket)
         observer = self.__observers[username]
         currentBoardId = observer.getCurrentBoardId()
-        members = self.__manager.getBoardMembers(currentBoardId).remove(username)
+        data = {"deletedBoardId": currentBoardId}
+        
+        members.remove(username)
+        
         membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
         membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, currentBoardId)
-        data = {"deletedBoardId": currentBoardId}
         
         await self.__notifyObservers(membersOpeningDeletedBoard, data, "deletedBoardError")
         await self.__notifyObservers(membersNotOpeningDeletedBoard, data, "deletedBoard")
@@ -232,10 +239,10 @@ class Server:
     async def __notifyObservers(self, members, data, response):
         for member in members:
             memberObserver = self.__observers[member]
-            try:
-                await memberObserver.update(data, response)
-            except:
-                continue
+            print("pass")
+            
+            await memberObserver.update(data, response)
+            
             
     async def __sendResponseToClient(self, response, data, websocket):
         await websocket.send(json.dumps({"response": response, "data": data}))
@@ -265,7 +272,7 @@ class Server:
         return list(filter(lambda member: not self.__isOpeningCurrentBoard(member, boardId), onlineMembers))
     
     def __getOnlineMembers(self, members):
-        return list(filter(lambda member: self.__isOnline(member)), members)
+        return list(filter(lambda member: self.__isOnline(member), members))
     
     def __isOnline(self, username):
         return username in self.__observers
@@ -308,7 +315,6 @@ class Server:
 
         elif action == 'deleteBoard':
             await self.__deleteBoard(message["data"], websocket)
-            await self.__updateDeleteBoard(websocket)
 
         elif action == 'deleteSection':
             await self.__deleteSection(message["data"], websocket)

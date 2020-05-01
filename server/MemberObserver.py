@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import json
 
 
 class MemberObserver:
@@ -21,5 +22,5 @@ class MemberObserver:
         self.__currentBoardId = boardId
 
     async def update(self, data, response="updateBoard"):
-        await websocket.send(json.dumps({"response": response,
+        await self.__clientWebsocket.send(json.dumps({"response": response,
                                          "data": data}))
