@@ -24,6 +24,7 @@ class BelloUI(QMainWindow):
         self.signalAddSection = CustomSignal()
         self.signalInitBoardDetail = CustomSignal()
         self.signalAddTask = CustomSignal()
+        self.signalDeleteBoard = CustomSignal()
 
         self.signalShowUsernameAlreadyExists = CustomSignal()
         self.signalShowAccountDoesNotExist = CustomSignal()
@@ -40,7 +41,7 @@ class BelloUI(QMainWindow):
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
 
         self.signalUpdateBoard.signalDict.connect(self.initUpdateBoardDetail)
-
+        self.signalDeleteBoard.signalDict.connect(self.showDeletedDialog)
         self.signalAddTask.signalDict.connect(self.addTask)
         self.signalAddMemberInMenuBar.signalDict.connect(self.addMember)
 
@@ -254,10 +255,17 @@ class BelloUI(QMainWindow):
         return False
 
     def showDeletedBoardDialog(self,deletedBoardId):
-        createErrorDialogBox(self,"Board is Deleted","This board is deleted")
+        boardTitle = self.dashboardPage.getBoardTitle()
+        boardMessage = "  "+ boardTitle + "  is deleted "
+        createErrorDialogBox(self,"Board is Deleted",boardMessage)
         self.dashboardPage.deleteBoardId(deletedBoardId)
         self.goToDashboardPage()
-
+    
+    def showDeletedDialog(self):
+        boardTitle = self.dashboardPage.getBoardTitle()
+        boardMessage = "  "+ boardTitle + "  is deleted "
+        createErrorDialogBox(self,"Board is Deleted",boardMessage)
+        self.dashboardPage.deleteBoardId(deletedBoardId)
 
     def deleteBoardId(self,boardId):
         self.dashboardPage.deleteBoardId(boardId)
