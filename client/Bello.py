@@ -96,9 +96,10 @@ class Bello:
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog
+            
+            self.__ui.signalDeleteBoard.signalDict.emit(deletedBoardId)
+            
             #self.__ui.addBoardUpdate(boardTitlesAndIds)
-            self.__ui.signalDeleteBoardDialog.signalDict.emit(None)
-            self.__ui.deleteBoardId(deletedBoardId)
             
         else:
             return

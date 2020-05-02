@@ -107,10 +107,8 @@ class DashboardPage(QWidget):
 
             if(id == boardId):
                 selectItem = self.displayBoard.listWidget.takeItem(i)
-                print("itemmmm---: ", selectItem)
-                break
-        print("---finished------")
                 
+                break
         
 
 
