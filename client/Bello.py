@@ -97,7 +97,8 @@ class Bello:
             
             #TODO: show board is deleted dialog
             
-            self.__ui.signalDeleteBoard.signalDict.emit(deletedBoardId)
+            self.__ui.signalDeleteBoard.signalDict.emit(None)
+            self.__ui.deleteBoardId(deletedBoardId)
             
             #self.__ui.addBoardUpdate(boardTitlesAndIds)
             
