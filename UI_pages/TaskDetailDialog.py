@@ -116,10 +116,11 @@ class TaskDetailDialog(QDialog):
     def clickAddCommentBtn(self):
         if self.commentLineEdit.text() == "Write a comment..":
             return 
-        else:
-            member = self.parent.parent.parent.parent.getUsernameLogin()
-            commentTxt = self.commentLineEdit.text()
-            self.addComment(member,commentTxt)
+        
+        member = self.parent.parent.parent.parent.getUsernameLogin()
+        commentTxt = self.commentLineEdit.text()
+        self.parent.parent.parent.parent.
+        self.addComment(member,commentTxt)
 
     def addMemberToTask(self,memberName):
         self.nameAndSquare.setText("  " +memberName[0]+" ")
@@ -133,6 +134,8 @@ class TaskDetailDialog(QDialog):
         self.commentItem.setSizeHint(self.commentWidget.sizeHint())
         self.commentListWidget.addItem(self.commentItem)
         self.commentListWidget.setItemWidget(self.commentItem, self.commentWidget)
+        
+        #addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder)
 
     def clickDelCommentButton(self):
         for selectedItem in self.commentListWidget.selectedItems():

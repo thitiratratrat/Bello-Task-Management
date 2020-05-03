@@ -257,6 +257,7 @@ class BelloUI(QMainWindow):
     def showDeletedBoardDialog(self,deletedBoardId):
         boardTitle = self.dashboardPage.getBoardTitle()
         boardMessage = "  "+ boardTitle + "  is deleted "
+        
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
         self.dashboardPage.deleteBoardId(deletedBoardId)
         self.goToDashboardPage()
