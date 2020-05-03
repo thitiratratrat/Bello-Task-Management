@@ -189,6 +189,7 @@ class SectionWidget(QWidget):
 
         for i in taskResponsibleMembers:
             self.taskWidget.taskDetailDialog.addMemberToTask(i)
+            self.taskWidget.editTaskDialog.memberWidget.confirmMember.setText(i)
 
         self.sectionTaskLayout.addWidget(self.taskWidget)
 

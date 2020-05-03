@@ -10,7 +10,7 @@ from SectionWidget import *
 from dialogBox import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -41,7 +41,7 @@ class BelloUI(QMainWindow):
         self.signalInitBoardDetail.signalDict.connect(self.initBoardDetail)
 
         self.signalUpdateBoard.signalDict.connect(self.initUpdateBoardDetail)
-        self.signalDeleteBoard.signalDict.connect(self.showDeletedDialog)
+        #self.signalDeleteBoard.signalDict.connect(self.showDeletedDialog)
         self.signalAddTask.signalDict.connect(self.addTask)
         self.signalAddMemberInMenuBar.signalDict.connect(self.addMember)
 
@@ -137,6 +137,7 @@ class BelloUI(QMainWindow):
             return
 
         boardId = self.boardDetailPage.getBoardId()
+
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
 
         self.boardDetailPage.closeCreateNewSectionDialog()
@@ -194,7 +195,6 @@ class BelloUI(QMainWindow):
     def addMember(self ):
         boardId = self.boardDetailPage.getBoardId()
         memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
-        
         self.boardDetailPage.addMember(memberUsername)
 
     def addMemberToBoard(self,boardId,memberUsername):
@@ -219,8 +219,10 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def initUpdateBoardDetail(self, boardDetailDict):
+        print("boardDetail: ", boardDetailDict)
         self.boardDetailPage.clearAllSection()
         self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
+        self.boardDetailPage.menuBar.setBoardTitle(self.dashboardPage.getBoardTitle())
         self.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
@@ -255,20 +257,20 @@ class BelloUI(QMainWindow):
         return False
 
     def showDeletedBoardDialog(self,deletedBoardId):
-        boardTitle = self.dashboardPage.getBoardTitle()
+        print("ID in function333: ", deletedBoardId)
+        boardTitle = self.dashboardPage.deleteBoardId(deletedBoardId)
+        print("boardName: ",boardTitle)
         boardMessage = "  "+ boardTitle + "  is deleted "
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
-        self.dashboardPage.deleteBoardId(deletedBoardId)
+        
         self.goToDashboardPage()
     
-    def showDeletedDialog(self):
+    def showDeletedDialog(self,deletedBoardId):
+        print("ID in function: ", deletedBoardId)
         boardTitle = self.dashboardPage.getBoardTitle()
         boardMessage = "  "+ boardTitle + "  is deleted "
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
         self.dashboardPage.deleteBoardId(deletedBoardId)
-
-    def deleteBoardId(self,boardId):
-        self.dashboardPage.deleteBoardId(boardId)
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
