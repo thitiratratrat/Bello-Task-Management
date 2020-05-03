@@ -3,7 +3,7 @@ from mongoengine import *
 
 class Task(Document):
     title = StringField(required=True)
-    responsible_members = ListField(StringField(), default=list)
+    responsible_member = StringField()
     due_date = StringField()
     comments = ListField(DictField(default={}), default=list)
     tags = DictField(default={})
@@ -23,8 +23,9 @@ class Task(Document):
         
         self.update(**{pushKey: [{memberUsername: comment}]})
 
-    def addResponsibleMemberUsername(self, memberUsername):
-        self.responsible_members.append(memberUsername)
+    def setTaskResponsibleMember(self, memberUsername):
+        self.responsible_member = memberUsername
+        
         self.save()
 
     def setDueDate(self, dueDate):
