@@ -108,7 +108,7 @@ class Server:
         members = self.__manager.getBoardMembers(boardId)
         
         self.__manager.deleteBoard(boardId)
-        await self.__updateDeleteBoard(members, websocket)
+        await self.__updateDeleteBoard(boardId, members, websocket)
 
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
@@ -190,11 +190,11 @@ class Server:
             except:
                 return
         
-    async def __addResponsibleMemberToTask(self, data, websocket):
+    async def __setTaskResponsibleMember(self, data, websocket):
         taskId = data["taskId"]
         memberUsername = data["memberUsername"]
         
-        self.__manager.addResponsibleMemberToTask(taskId, memberUsername)
+        self.__manager.setTaskResponsibleMember(taskId, memberUsername)
 
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
@@ -222,16 +222,15 @@ class Server:
     
         await self.__notifyObservers(updateMembers, data, "updateBoard")
         
-    async def __updateDeleteBoard(self, members, websocket):
+    async def __updateDeleteBoard(self, boardId, members, websocket):
         username = self.__getUsernameFromWebsocket(websocket)
         observer = self.__observers[username]
-        currentBoardId = observer.getCurrentBoardId()
-        data = {"deletedBoardId": currentBoardId}
+        data = {"deletedBoardId": boardId}
         
         members.remove(username)
         
-        membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
-        membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, currentBoardId)
+        membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, boardId)
+        membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, boardId)
         
         await self.__notifyObservers(membersOpeningDeletedBoard, data, "deletedBoardError")
         await self.__notifyObservers(membersNotOpeningDeletedBoard, data, "deletedBoard")
@@ -351,8 +350,8 @@ class Server:
             await self.__addMemberToBoard(message["data"], websocket)
             await self.__updateBoardDetail(websocket)
             
-        elif action == 'addResponsibleMemberToTask':
-            await self.__addResponsibleMemberToTask(message["data"], websocket)
+        elif action == 'setTaskResponsibleMember':
+            await self.__setTaskResponsibleMember(message["data"], websocket)
             await self.__updateBoardDetail(websocket)
 
         elif action == 'setTaskDueDate':

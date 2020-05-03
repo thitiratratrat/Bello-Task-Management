@@ -77,7 +77,7 @@ class Manager:
                 task = self.__getTaskById(taskId)
                 taskTitle = task.title
                 taskDetail["title"] = taskTitle
-                taskDetail["responsibleMembers"] = task.responsible_members
+                taskDetail["responsibleMember"] = task.responsible_member
                 taskDetail["dueDate"] = task.due_date
                 taskDetail["comments"] = task.comments
                 taskDetail["tags"] = task.tags
@@ -223,10 +223,10 @@ class Manager:
         
         account.addBoardId(boardId)
         
-    def addResponsibleMemberToTask(self, taskId, memberUsername):
+    def setTaskResponsibleMember(self, taskId, memberUsername):
         task = self.__getTaskById(taskId)
         
-        task.addResponsibleMemberUsername(memberUsername)
+        task.setTaskResponsibleMember(memberUsername)
         
     def setTaskDueDate(self, taskId, taskDueDate):
         task = self.__getTaskById(taskId)

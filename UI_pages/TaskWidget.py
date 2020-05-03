@@ -123,7 +123,6 @@ class TaskWidget(QWidget):
             self.tagLayout.setSpacing(0.1)
             self.tagLayout.addWidget(tagColorBtn)
             tagColorList = self.editTaskDialog.tagWidget.colorTag.get(tagItem.text())
-            print("Board : ", self.parent.parent.getBoardId())
             self.parent.parent.parent.addTaskTag(taskId,tagTitle, tagColorList)
 
     def deleteTagInList(self):
@@ -146,8 +145,7 @@ class TaskWidget(QWidget):
         if(memberUsername == ""):
             return
         self.taskDetailDialog.addMemberToTask(memberUsername)
-        print("taskId: ", self.getTaskId())
-        self.parent.parent.parent.addResponsibleMemberToTask(self.getTaskId(), memberUsername)
+        self.parent.parent.parent.setTaskResponsibleMember(self.getTaskId(), memberUsername)
 
 
     def deleteAllTag(self,tagLayout):
@@ -203,7 +201,7 @@ class TaskWidget(QWidget):
             taskCommentOrder =  i
             taskId = self.getTaskId()
             self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
-            
+
         self.taskDetailDialog.close()
 
     def showTaskLayout(self):

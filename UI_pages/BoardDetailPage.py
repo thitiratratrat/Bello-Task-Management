@@ -136,7 +136,7 @@ class BoardDetailPage(QWidget):
                 taskInfoDict = taskInfo
                 #print("Info: ", taskInfoDict)
                 taskTitle = taskInfoDict.get("title")
-                taskResponsibleMembers = taskInfoDict.get("responsibleMembers")
+                taskResponsibleMember = taskInfoDict.get("responsibleMember")
                 taskDuedate = taskInfoDict.get("dueDate")
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
@@ -146,7 +146,7 @@ class BoardDetailPage(QWidget):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                         indexTask = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
                         self.sectionLayout.itemAt(i).widget().addTask(taskTitle, boardId, 
-                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments,taskResponsibleMembers)
+                            sectionId, taskId, indexTask,taskDuedate,taskState,taskTags,taskComments,taskResponsibleMember)
 
     def deleteSection(self,index):
         self.newWidget =  self.sectionLayout.takeAt(index).widget()
@@ -188,7 +188,7 @@ class BoardDetailPage(QWidget):
         taskState = False
         taskTag = {}
         taskComments = []
-        taskResponsibleMembers = []
+        taskResponsibleMembers = None
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
@@ -213,6 +213,8 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
         self.addMemberDialog.close()
+        
+        print(self.getBoardId())
         self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
 
     def addMember(self,memberUsername):

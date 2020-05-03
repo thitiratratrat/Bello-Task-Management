@@ -187,9 +187,9 @@ class SectionWidget(QWidget):
         for i in self.parent.boardMembers: 
             self.taskWidget.editTaskDialog.memberWidget.memberComboBox.addItem(i)
 
-        for i in taskResponsibleMembers:
-            self.taskWidget.taskDetailDialog.addMemberToTask(i)
-            self.taskWidget.editTaskDialog.memberWidget.confirmMember.setText(i)
+        if(taskResponsibleMembers != None):
+            self.taskWidget.taskDetailDialog.addMemberToTask(taskResponsibleMembers)
+            self.taskWidget.editTaskDialog.memberWidget.confirmMember.setText(taskResponsibleMembers)
 
         self.sectionTaskLayout.addWidget(self.taskWidget)
 
