@@ -119,7 +119,7 @@ class TaskDetailDialog(QDialog):
         
         member = self.parent.parent.parent.parent.getUsernameLogin()
         commentTxt = self.commentLineEdit.text()
-        self.parent.parent.parent.parent.
+        # self.parent.parent.parent.parent.
         self.addComment(member,commentTxt)
 
     def addMemberToTask(self,memberName):

@@ -190,11 +190,11 @@ class Server:
             except:
                 return
         
-    async def __addResponsibleMemberToTask(self, data, websocket):
+    async def __setTaskResponsibleMember(self, data, websocket):
         taskId = data["taskId"]
         memberUsername = data["memberUsername"]
         
-        self.__manager.addResponsibleMemberToTask(taskId, memberUsername)
+        self.__manager.setTaskResponsibleMember(taskId, memberUsername)
 
     async def __setTaskDueDate(self, data, websocket):
         taskId = data["taskId"]
@@ -351,8 +351,8 @@ class Server:
             await self.__addMemberToBoard(message["data"], websocket)
             await self.__updateBoardDetail(websocket)
             
-        elif action == 'addResponsibleMemberToTask':
-            await self.__addResponsibleMemberToTask(message["data"], websocket)
+        elif action == 'setTaskResponsibleMember':
+            await self.__setTaskResponsibleMember(message["data"], websocket)
             await self.__updateBoardDetail(websocket)
 
         elif action == 'setTaskDueDate':

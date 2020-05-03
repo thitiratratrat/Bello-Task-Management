@@ -150,7 +150,7 @@ class TaskWidget(QWidget):
         if(memberUsername == ""):
             return
         self.taskDetailDialog.addMemberToTask(memberUsername)
-        self.parent.parent.parent.addResponsibleMemberToTask(self.getTaskId(), memberUsername)
+        self.parent.parent.parent.setTaskResponsibleMember(self.getTaskId(), memberUsername)
 
 
     def deleteAllTag(self,tagLayout):
