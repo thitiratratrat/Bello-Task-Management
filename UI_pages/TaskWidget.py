@@ -34,10 +34,6 @@ class TaskWidget(QWidget):
        
         self.dueDateLabel = QLabel("")
         self.dueDateLabel.setFont(QFont("Century Gothic", 8, QFont.Bold))
-      
-     
-        #self.member = QLabel("c") 
-        #self.member.setStyleSheet("border-radius:100;background-color:red")
         
         self.taskTitleAndEditLayout = QHBoxLayout()
         self.taskTitleAndEditLayout.addWidget(self.taskTitle)
@@ -53,7 +49,6 @@ class TaskWidget(QWidget):
         self.taskDueDateTagLayout.addLayout(self.tagLayout)
         self.taskDueDateTagLayout.addWidget(self.dueDateLabel)
         self.taskDueDateTagLayout.addStretch(1)
-        #self.taskDueDateTagLayout.addWidget(self.member)
 
         self.taskLayout = QVBoxLayout()
         self.taskLayout.addLayout(self.taskTitleAndEditLayout)
@@ -205,7 +200,8 @@ class TaskWidget(QWidget):
             memberUsername = commentWidget.getUser()
             taskCommentOrder =  i
             taskId = self.getTaskId()
-        
+            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
+
         self.taskDetailDialog.close()
 
     def showTaskLayout(self):

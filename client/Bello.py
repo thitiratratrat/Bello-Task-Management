@@ -3,7 +3,7 @@ import threading
 import json
 import sys
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\UI_pages')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
 from BelloUI import *
 
 
@@ -69,8 +69,8 @@ class Bello:
 
         elif response == "boardDetail":
             boardDetail = message["data"]
-            
             self.__ui.goToBoardDetailPage()
+           
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoard":
@@ -82,13 +82,11 @@ class Bello:
 
             self.__ui.addBoardUpdate(boardTitlesAndIds)
        
-        elif response == "deletedBoardError":
+        elif response == "deletedBoardError" :
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog AND go to dashboard page
-            
-            #self.__ui.addBoardUpdate(boardTitlesAndIds)
             self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
             
         elif response == "deletedBoard":
@@ -96,12 +94,9 @@ class Bello:
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog
-            
-            self.__ui.signalDeleteBoard.signalDict.emit(None)
-            self.__ui.deleteBoardId(deletedBoardId)
-            
-            #self.__ui.addBoardUpdate(boardTitlesAndIds)
-            
+            #self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
+            self.__ui.showDeletedDialog.signalDict.emit(deletedBoardId)
+
         else:
             return
 

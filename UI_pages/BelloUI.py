@@ -10,7 +10,7 @@ from SectionWidget import *
 from dialogBox import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -137,7 +137,11 @@ class BelloUI(QMainWindow):
             return
 
         boardId = self.boardDetailPage.getBoardId()
+
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
+
+        print("BoardId: ", boardId)
+        print("sectionTitle: ", sectionTitle)
 
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
@@ -192,9 +196,7 @@ class BelloUI(QMainWindow):
         self.bello.addTaskTag(taskId, taskTag, taskTagColor)
 
     def addMember(self ):
-        boardId = self.boardDetailPage.getBoardId()
         memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
-        
         self.boardDetailPage.addMember(memberUsername)
 
     def addMemberToBoard(self,boardId,memberUsername):
@@ -221,6 +223,7 @@ class BelloUI(QMainWindow):
     def initUpdateBoardDetail(self, boardDetailDict):
         self.boardDetailPage.clearAllSection()
         self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
+        #self.boardDetailPage.menuBar.setBoardTitle(self.dashboardPage.displayBoard.getBoardTitle())
         self.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
@@ -255,21 +258,18 @@ class BelloUI(QMainWindow):
         return False
 
     def showDeletedBoardDialog(self,deletedBoardId):
-        boardTitle = self.dashboardPage.getBoardTitle()
+        boardTitle = self.dashboardPage.deleteBoardId(deletedBoardId)
         boardMessage = "  "+ boardTitle + "  is deleted "
         
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
-        self.dashboardPage.deleteBoardId(deletedBoardId)
+        
         self.goToDashboardPage()
     
-    def showDeletedDialog(self):
+    def showDeletedDialog(self,deletedBoardId):
         boardTitle = self.dashboardPage.getBoardTitle()
         boardMessage = "  "+ boardTitle + "  is deleted "
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
         self.dashboardPage.deleteBoardId(deletedBoardId)
-
-    def deleteBoardId(self,boardId):
-        self.dashboardPage.deleteBoardId(boardId)
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
