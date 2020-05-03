@@ -69,8 +69,8 @@ class Bello:
 
         elif response == "boardDetail":
             boardDetail = message["data"]
-            
             self.__ui.goToBoardDetailPage()
+           
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoard":
@@ -87,7 +87,6 @@ class Bello:
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog AND go to dashboard page
-            print("id dash: ", deletedBoardId)
             self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
             
         elif response == "deletedBoard":
@@ -95,11 +94,9 @@ class Bello:
             deletedBoardId = data["deletedBoardId"]
             
             #TODO: show board is deleted dialog
-            print("id: ", deletedBoardId)
-            self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
-            #self.__ui.showDeletedDialog.signalDict.emit(deletedBoardId)
- 
-            
+            #self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
+            self.__ui.showDeletedDialog.signalDict.emit(deletedBoardId)
+
         else:
             return
 
@@ -134,8 +131,8 @@ class Bello:
                                               "memberUsername": memberUsername
                                           }}))
         
-    def addResponsibleMemberToTask(self, taskId, memberUsername):
-        self.__websocket.send(json.dumps({"action": "addResponsibleMemberToTask",
+    def setTaskResponsibleMember(self, taskId, memberUsername):
+        self.__websocket.send(json.dumps({"action": "setTaskResponsibleMember",
                                           "data": {
                                               "taskId": taskId,
                                               "memberUsername": memberUsername

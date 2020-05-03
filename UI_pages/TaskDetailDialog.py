@@ -134,6 +134,8 @@ class TaskDetailDialog(QDialog):
         self.commentItem.setSizeHint(self.commentWidget.sizeHint())
         self.commentListWidget.addItem(self.commentItem)
         self.commentListWidget.setItemWidget(self.commentItem, self.commentWidget)
+        
+        #addTaskComment(self, taskId, taskComment, memberUsername, taskCommentOrder)
 
     def clickDelCommentButton(self):
         for selectedItem in self.commentListWidget.selectedItems():
