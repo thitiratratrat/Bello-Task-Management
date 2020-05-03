@@ -120,6 +120,7 @@ class TaskDetailDialog(QDialog):
             member = self.parent.parent.parent.parent.getUsernameLogin()
             commentTxt = self.commentLineEdit.text()
             self.addComment(member,commentTxt)
+            self.parent.parent.parent.parent.addTaskComment
 
     def addMemberToTask(self,memberName):
         self.nameAndSquare.setText("  " +memberName[0]+" ")
@@ -140,9 +141,3 @@ class TaskDetailDialog(QDialog):
             self.commentListWidget.takeItem(self.commentListWidget.row(selectedItem))
             taskId = self.parent.getTaskId()
             self.parent.parent.parent.parent.deleteTaskComment(taskId, taskCommentOrder)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    w = TaskDetailDialog()
-    w.show()
-    sys.exit(app.exec_())

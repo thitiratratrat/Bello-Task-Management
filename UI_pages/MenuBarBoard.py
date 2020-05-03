@@ -44,7 +44,7 @@ class MenuBarBoard(QWidget):
         self.menuBarWidget.addWidget(self.memberLabel)
         self.menuBarWidget.addSpacing(10)
         self.menuBarWidget.addLayout(self.mainMemberLayout)
-        #self.scrollArea.setContentsMargins(0,0,0,30)
+
         self.menuBarWidget.addStretch(1)
         self.menuBarWidget.addWidget(self.firstChaOfUsername)
         self.firstChaOfUsername.setContentsMargins(0, 0, 16, 0)
