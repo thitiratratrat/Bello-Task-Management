@@ -108,7 +108,7 @@ class Server:
         members = self.__manager.getBoardMembers(boardId)
         
         self.__manager.deleteBoard(boardId)
-        await self.__updateDeleteBoard(members, websocket)
+        await self.__updateDeleteBoard(boardId, members, websocket)
 
     async def __deleteSection(self, data, websocket):
         boardId = data["boardId"]
@@ -222,16 +222,15 @@ class Server:
     
         await self.__notifyObservers(updateMembers, data, "updateBoard")
         
-    async def __updateDeleteBoard(self, members, websocket):
+    async def __updateDeleteBoard(self, boardId, members, websocket):
         username = self.__getUsernameFromWebsocket(websocket)
         observer = self.__observers[username]
-        currentBoardId = observer.getCurrentBoardId()
-        data = {"deletedBoardId": currentBoardId}
+        data = {"deletedBoardId": boardId}
         
         members.remove(username)
         
-        membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, currentBoardId)
-        membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, currentBoardId)
+        membersOpeningDeletedBoard = self.__getOnlineBoardMembersOpeningCurrentBoard(members, boardId)
+        membersNotOpeningDeletedBoard = self.__getOnlineBoardMembersNotOpeningCurrentBoard(members, boardId)
         
         await self.__notifyObservers(membersOpeningDeletedBoard, data, "deletedBoardError")
         await self.__notifyObservers(membersNotOpeningDeletedBoard, data, "deletedBoard")
