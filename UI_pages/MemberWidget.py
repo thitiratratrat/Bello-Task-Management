@@ -16,7 +16,7 @@ class MemberWidget(QDialog):
         self.memberComboBox.setFont(QFont("Century Gothic", 8 ))
 
         self.memberLayout = QHBoxLayout()
-        self.memberNameLabel = QLabel("Member name: ")
+        self.memberNameLabel = QLabel("Member username: ")
         self.memberNameLabel.setFont(QFont("Century Gothic", 9))
 
         self.confirmMember = QLabel()
@@ -47,9 +47,3 @@ class MemberWidget(QDialog):
         self.confirmMember.setText(memberUsername)
 
         return memberUsername
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    w = MemberWidget()
-    w.show()
-    sys.exit(app.exec_())

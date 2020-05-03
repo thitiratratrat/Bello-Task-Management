@@ -27,6 +27,7 @@ class DashboardPage(QWidget):
             "background-color:rgb(14,172,120);color:rgb(255,255,255)")
         self.addBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.addBoardBtn.clicked.connect(self.createNewBoard)
+
         self.deleteBoardBtn = QPushButton("Delete")
         self.deleteBoardBtn.setIcon(QIcon("images/delete.png"))
         self.deleteBoardBtn.setStyleSheet(
@@ -46,8 +47,6 @@ class DashboardPage(QWidget):
         self.btnLayout.addWidget(self.deleteBoardBtn)
         self.layout.addLayout(self.btnLayout, 2, 0)
         
-        
-
         self.setLayout(self.layout)
         self.show()
 
@@ -90,14 +89,16 @@ class DashboardPage(QWidget):
         self.createBoardDialog.reject()
 
     def deleteSelectBoard(self):
-        self.select_board = self.displayBoard.listWidget.selectedItems()
+        self.selectBoard = self.displayBoard.listWidget.selectedItems()
+        
         self.selectItemId = self.displayBoard.getSelectItemInBoardId()
-        if not self.select_board:
+
+        if not self.selectBoard:
             return
-        for item in self.select_board:
+        for item in self.selectBoard:
             self.displayBoard.listWidget.takeItem(
                 self.displayBoard.listWidget.row(item))
-        del self.displayBoard.boardDict[self.selectItemId]
+        
         return self.selectItemId
     
     def deleteBoardId(self,boardId):
@@ -107,8 +108,7 @@ class DashboardPage(QWidget):
 
             if(id == boardId):
                 selectItem = self.displayBoard.listWidget.takeItem(i)
-                
-                break
-        
+                return board.text()
+
 
 

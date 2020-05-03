@@ -91,8 +91,9 @@ class BoardDetailPage(QWidget):
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
-        self.setBoardId(boardId)
+        self.sectionWidget.setBoardId(boardId)
         index = self.sectionLayout.count()
+        
         self.addSectionToWidget(sectionTitle, sectionId,index)
 
     def addSectionToWidget(self, sectionTitle, sectionId,index):
@@ -114,6 +115,7 @@ class BoardDetailPage(QWidget):
         #print("boardDict: ",boardDetailDict)
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
+
         boardDetailDict = boardDetailDict.get("boardDetail")
         boardMembers = boardDetailDict.get("members")
         self.boardMembers = boardMembers 
@@ -139,7 +141,6 @@ class BoardDetailPage(QWidget):
                 taskComments = taskInfoDict.get("comments")
                 taskTags = taskInfoDict.get("tags")
                 taskState = taskInfoDict.get("isFinished")
-                #TODO setTaskRespon
 
                 for i in range (self.sectionLayout.count()):
                     if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
@@ -187,7 +188,7 @@ class BoardDetailPage(QWidget):
         taskState = False
         taskTag = {}
         taskComments = []
-        taskResponsibleMembers = []
+        taskResponsibleMembers = None
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
@@ -212,6 +213,8 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
         self.addMemberDialog.close()
+        
+        print(self.getBoardId())
         self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
 
     def addMember(self,memberUsername):

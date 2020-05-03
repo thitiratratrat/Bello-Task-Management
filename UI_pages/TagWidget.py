@@ -115,6 +115,7 @@ class TagWidget(QWidget):
             self.tagListWidget.addItem(self.tagItem)
             self.colorTag[self.getTagLineEdit()] = colorCode
             self.addTagDialog.close()
+            print("boardTag: ", self.parent.parent.parent.parent.getBoardId())
     
     def isAlreadyHasTag(self,tagTitleLineEdit,tagColorBox):
         for tagTitle, tagColor in self.colorTag.items():
