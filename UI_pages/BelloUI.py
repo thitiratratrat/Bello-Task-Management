@@ -198,6 +198,8 @@ class BelloUI(QMainWindow):
     def addMember(self ):
         memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
         self.boardDetailPage.addMember(memberUsername)
+        self.boardDetailPage.addMemberInCombo(memberUsername)
+        #self.boardDetailPage.boardMembers.append(member)
 
     def addMemberToBoard(self,boardId,memberUsername):
         self.bello.addMemberToBoard(boardId, memberUsername)

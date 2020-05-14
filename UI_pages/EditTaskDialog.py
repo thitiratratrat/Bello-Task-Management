@@ -59,9 +59,3 @@ class EditTaskDialog(QDialog):
 
         self.parent.setTaskTitle(newTaskTitle)
         self.parent.parent.parent.parent.editTaskTitle( self.parent.taskId, self.parent.getTaskTitle())
-        
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    w = EditTaskDialog()
-    w.show()
-    sys.exit(app.exec_())
