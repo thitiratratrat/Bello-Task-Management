@@ -124,6 +124,17 @@ class TaskWidget(QWidget):
             self.tagLayout.addWidget(tagColorBtn)
             tagColorList = self.editTaskDialog.tagWidget.colorTag.get(tagItem.text())
             self.parent.parent.parent.addTaskTag(taskId,tagTitle, tagColorList)
+        
+        length = self.editTaskDialog.tagWidget.tagListWidget.count()
+        self.deleteAllTag(self.taskDetailDialog.showTagLayout)
+        for i in range(length):
+            tagTitle = self.editTaskDialog.tagWidget.tagListWidget.item(i).text()
+            tagIcon =  self.editTaskDialog.tagWidget.tagListWidget.item(i).icon()
+            self.tag = QLabel("  " +tagTitle)
+            self.tag.setFont(QFont("Moon",7,QFont.Bold))
+            self.tag.setStyleSheet("background-color: "+self.editTaskDialog.tagWidget.colorTag.get(tagTitle)+";color:#31446F ")
+            self.tag.setFixedSize(70,20)
+            self.taskDetailDialog.showTagLayout.addWidget(self.tag)
 
     def deleteTagInList(self):
         taskTag = self.editTaskDialog.tagWidget.deleteTagInList()
@@ -193,6 +204,9 @@ class TaskWidget(QWidget):
         self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
         
         self.commentList = self.taskDetailDialog.commentListWidget
+        
+        for j in range(self.commentList.count()):
+            self.parent.parent.parent.deleteTaskComment(self.getTaskId(), j)
         for i in range(self.commentList.count()):
             commentItem = self.commentList.item(i)
             commentWidget = self.commentList.itemWidget(commentItem)
@@ -200,25 +214,14 @@ class TaskWidget(QWidget):
             memberUsername = commentWidget.getUser()
             taskCommentOrder =  i
             taskId = self.getTaskId()
-            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
 
+            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
         self.taskDetailDialog.close()
 
     def showTaskLayout(self):
         self.taskDetailDialog.taskTitleLabel.setText(self.getTaskTitle())
         self.taskDetailDialog.sectionTitleLabel.setText("in list " + 
             self.parent.parent.getSectioNameFromId(self.getTaskSectionId()))
-    
-        length = self.editTaskDialog.tagWidget.tagListWidget.count()
-        self.deleteAllTag(self.taskDetailDialog.showTagLayout)
-        for i in range(length):
-            tagTitle = self.editTaskDialog.tagWidget.tagListWidget.item(i).text()
-            tagIcon =  self.editTaskDialog.tagWidget.tagListWidget.item(i).icon()
-            self.tag = QLabel("  " +tagTitle)
-            self.tag.setFont(QFont("Moon",7,QFont.Bold))
-            self.tag.setStyleSheet("background-color: "+self.editTaskDialog.tagWidget.colorTag.get(tagTitle)+";color:#31446F ")
-            self.tag.setFixedSize(70,20)
-            self.taskDetailDialog.showTagLayout.addWidget(self.tag)
 
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
         
