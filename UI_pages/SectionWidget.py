@@ -181,9 +181,12 @@ class SectionWidget(QWidget):
         for tagTitle, tagColor in taskTags.items():
             self.taskWidget.editTaskDialog.tagWidget.addTag(tagTitle,tagColor)
             self.taskWidget.addTagInit()
-        for i in range(len(taskComments)):
-            for member, commentTxt in taskComments[i].items():
+    
+        print(taskComments)
+        for taskComment in taskComments: 
+            for member, commentTxt in taskComment.items():
                 self.taskWidget.taskDetailDialog.addComment(member,commentTxt)
+
         for i in self.parent.boardMembers: 
             self.taskWidget.editTaskDialog.memberWidget.memberComboBox.addItem(i)
 
