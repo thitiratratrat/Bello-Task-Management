@@ -203,19 +203,6 @@ class TaskWidget(QWidget):
         self.setTaskState(self.getDueDateLabel(),self.state)
         self.parent.parent.parent.setTaskFinishState(self.getTaskId(),self.state)
         
-        self.commentList = self.taskDetailDialog.commentListWidget
-        
-        for j in range(self.commentList.count()):
-            self.parent.parent.parent.deleteTaskComment(self.getTaskId(), j)
-        for i in range(self.commentList.count()):
-            commentItem = self.commentList.item(i)
-            commentWidget = self.commentList.itemWidget(commentItem)
-            taskComment = commentWidget.getComment()
-            memberUsername = commentWidget.getUser()
-            taskCommentOrder =  i
-            taskId = self.getTaskId()
-
-            self.parent.parent.parent.addTaskComment(taskId, taskComment, memberUsername, taskCommentOrder)
         self.taskDetailDialog.close()
 
     def showTaskLayout(self):

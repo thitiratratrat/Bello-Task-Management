@@ -74,6 +74,7 @@ class MenuBarBoard(QWidget):
         member.setFont(QFont("Century Gothic", 7, QFont.Bold))
         member.setStyleSheet("background-color:"+self.memberColor.pop()+";  color: white")
         self.mainMemberLayout.addWidget(member)
+        
     
     def addMainMember(self,username):
         self.member.setText("   " + username[0] + " ")

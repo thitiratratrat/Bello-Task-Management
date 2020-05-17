@@ -122,7 +122,6 @@ class BoardDetailPage(QWidget):
         self.menuBar.clearAllMember()
 
         for memberUsername in boardMembers:
-            print("boardMembers", memberUsername)
             self.addMember(memberUsername)
 
         sectionDict = boardDetailDict.get("sections")
@@ -190,8 +189,8 @@ class BoardDetailPage(QWidget):
         taskTag = {}
         taskComments = []
         taskResponsibleMembers = None
-        for member in self.boardMembers:
-            self.addMemberInCombo(member)
+        '''for member in self.boardMembers:
+            self.addMemberInCombo(member)'''
 
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
@@ -217,7 +216,6 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
         self.addMemberDialog.close()
-        
         self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
 
     def addMember(self,memberUsername):
