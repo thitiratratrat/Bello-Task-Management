@@ -120,7 +120,9 @@ class TaskDetailDialog(QDialog):
             member = self.parent.parent.parent.parent.getUsernameLogin()
             commentTxt = self.commentLineEdit.text()
             self.addComment(member,commentTxt)
-            self.parent.parent.parent.parent.addTaskComment
+            taskId = self.parent.getTaskId()
+            taskCommentOrder= self.commentListWidget.count() -1
+            self.parent.parent.parent.parent.addTaskComment(taskId, commentTxt, member, taskCommentOrder)
 
     def addMemberToTask(self,memberName):
         self.nameAndSquare.setText("  " +memberName[0]+" ")
@@ -134,7 +136,7 @@ class TaskDetailDialog(QDialog):
         self.commentItem.setSizeHint(self.commentWidget.sizeHint())
         self.commentListWidget.addItem(self.commentItem)
         self.commentListWidget.setItemWidget(self.commentItem, self.commentWidget)
-
+        
     def clickDelCommentButton(self):
         for selectedItem in self.commentListWidget.selectedItems():
             taskCommentOrder =self.commentListWidget.row(selectedItem)
