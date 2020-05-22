@@ -112,7 +112,6 @@ class TaskWidget(QWidget):
     
     def addTagLabel(self):
         self.deleteAllTag(self.tagLayout)
-
         for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
             tagItem = self.editTaskDialog.tagWidget.tagListWidget.item(i)
             tagColorBtn = QToolButton()
@@ -140,16 +139,6 @@ class TaskWidget(QWidget):
         taskTag = self.editTaskDialog.tagWidget.deleteTagInList()
         taskId = self.getTaskId()
         self.parent.parent.parent.deleteTaskTag(taskId, taskTag)
-
-    def addTagInit(self):
-        self.deleteAllTag(self.tagLayout)
-        for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
-            tagItem = self.editTaskDialog.tagWidget.tagListWidget.item(i)
-            tagColorBtn = QToolButton()
-            tagColorBtn.setIcon(tagItem.icon())
-            tagColorBtn.setStyleSheet("background-color: rgba(0, 0, 0, 0%)")
-            self.tagLayout.setSpacing(0.1)
-            self.tagLayout.addWidget(tagColorBtn)
 
     def showMemberRespon(self):
         memberUsername = self.editTaskDialog.memberWidget.addMemberToTask()
