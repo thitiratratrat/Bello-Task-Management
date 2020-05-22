@@ -140,8 +140,6 @@ class BelloUI(QMainWindow):
 
         sectionTitle = self.boardDetailPage.getSectionNameFromDialog()
 
-        print("BoardId: ", boardId)
-        print("sectionTitle: ", sectionTitle)
 
         self.boardDetailPage.closeCreateNewSectionDialog()
         self.bello.sendCreateSectionToServer(boardId, sectionTitle)
@@ -198,6 +196,7 @@ class BelloUI(QMainWindow):
     def addMember(self ):
         memberUsername  = self.boardDetailPage.addMemberDialog.lineEdit.text()
         self.boardDetailPage.addMember(memberUsername)
+        self.boardDetailPage.addMemberInCombo(memberUsername)
 
     def addMemberToBoard(self,boardId,memberUsername):
         self.bello.addMemberToBoard(boardId, memberUsername)

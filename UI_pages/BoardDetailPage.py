@@ -91,7 +91,6 @@ class BoardDetailPage(QWidget):
         boardId = sectionDict.get("boardId")
         sectionTitle = sectionDict.get("sectionTitle")
         sectionId = sectionDict.get("sectionId")
-        self.sectionWidget.setBoardId(boardId)
         index = self.sectionLayout.count()
         
         self.addSectionToWidget(sectionTitle, sectionId,index)
@@ -121,6 +120,7 @@ class BoardDetailPage(QWidget):
         self.boardMembers = boardMembers 
         
         self.menuBar.clearAllMember()
+
         for memberUsername in boardMembers:
             self.addMember(memberUsername)
 
@@ -189,6 +189,9 @@ class BoardDetailPage(QWidget):
         taskTag = {}
         taskComments = []
         taskResponsibleMembers = None
+        '''for member in self.boardMembers:
+            self.addMemberInCombo(member)'''
+
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
@@ -213,13 +216,18 @@ class BoardDetailPage(QWidget):
             createErrorDialogBox(self,"Error","Member are reached the maximum")
             return
         self.addMemberDialog.close()
-        
-        print(self.getBoardId())
         self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
 
     def addMember(self,memberUsername):
         self.menuBar.addMemberInMenuBar(memberUsername)
-    
+        
+    def addMemberInCombo(self,member): 
+        for i in range(self.sectionLayout.count()):
+            sectionWidget = self.sectionLayout.itemAt(i).widget()   
+            for j in range(sectionWidget.sectionTaskLayout.count()): 
+                task = sectionWidget.sectionTaskLayout.itemAt(j).widget()
+                task.editTaskDialog.memberWidget.memberComboBox.addItem(member)
+  
     def showMemberDoesNotExists(self):
         dialog = createErrorDialogBox(self,"Error", "This member does not exist")
     
