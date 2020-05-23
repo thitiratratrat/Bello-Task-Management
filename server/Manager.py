@@ -2,8 +2,7 @@ from mongoengine import *
 import sys
 import copy
 
-sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\classes')
+sys.path.append(sys.path[0] + "\\..\\classes")
 
 from Task import Task
 from Section import Section
