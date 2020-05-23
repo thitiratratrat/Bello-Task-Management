@@ -10,7 +10,7 @@ from SectionWidget import *
 from dialogBox import *
 
 sys.path.append(
-    'C:\\Users\\Lenovo\\Documents\\SE\\Year2S2\\SEP\\Project\Bello\\client')
+    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
 from Bello import *
 
@@ -222,8 +222,7 @@ class BelloUI(QMainWindow):
     def initUpdateBoardDetail(self, boardDetailDict):
         self.boardDetailPage.clearAllSection()
         self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
-        #self.boardDetailPage.menuBar.setBoardTitle(self.dashboardPage.displayBoard.getBoardTitle())
-        self.initBoardDetail(boardDetailDict)
+        self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def getUsernameLogin(self):
         return self.loginSignUpPage.loginWidget.usernameValueLogin.text()

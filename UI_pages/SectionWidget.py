@@ -178,10 +178,9 @@ class SectionWidget(QWidget):
             self.taskWidget.taskDetailDialog.dueDateCheckBox.setChecked(taskState)
         self.taskWidget.setDueDateLabel(taskDueDate)
         self.taskWidget.setTaskState(taskDueDate,taskState)
-        
+
         for tagTitle, tagColor in taskTags.items():
             self.taskWidget.editTaskDialog.tagWidget.addTag(tagTitle,tagColor)
-            self.taskWidget.addTagLabel()
     
         for taskComment in taskComments: 
             for member, commentTxt in taskComment.items():
