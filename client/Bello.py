@@ -92,7 +92,6 @@ class Bello:
         elif response == "deletedBoard":
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
-            print(deletedBoardId)
             #TODO: show board is deleted dialog
             self.__ui.signalDeleteBoard.signalDict.emit(deletedBoardId)
 

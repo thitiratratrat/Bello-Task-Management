@@ -157,7 +157,6 @@ class BelloUI(QMainWindow):
 
     def __deleteBoard(self):
         boardId = self.dashboardPage.deleteSelectBoard()
-
         self.bello.deleteBoard(boardId)
     
     def __homeBtnFunc(self):
@@ -267,11 +266,8 @@ class BelloUI(QMainWindow):
         self.goToDashboardPage()
     
     def showDeletedDialog(self,deletedBoardId):
-        boardTitle = self.dashboardPage.getBoardTitle()
-        boardMessage = "  "+ boardTitle + "  is deleted "
-        createErrorDialogBox(self,"Board is Deleted",boardMessage)
+        createErrorDialogBox(self,"Board is Deleted","Board is deleted")
         self.dashboardPage.deleteBoardId(deletedBoardId)
-        print("done")
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)

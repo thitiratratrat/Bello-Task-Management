@@ -89,9 +89,7 @@ class DashboardPage(QWidget):
         self.createBoardDialog.reject()
 
     def deleteSelectBoard(self):
-        print("select")
         self.selectBoard = self.displayBoard.listWidget.selectedItems()
-        
         self.selectItemId = self.displayBoard.getSelectItemInBoardId()
 
         if not self.selectBoard:
