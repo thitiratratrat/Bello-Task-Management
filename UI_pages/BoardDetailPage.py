@@ -111,7 +111,8 @@ class BoardDetailPage(QWidget):
         return True
 
     def initBoardDetail(self, boardDetailDict):
-        #print("boardDict: ",boardDetailDict)
+        self.clearAllSection()
+        
         boardId = boardDetailDict.get("boardId")
         self.setBoardId(boardId)
 
