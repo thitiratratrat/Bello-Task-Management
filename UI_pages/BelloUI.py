@@ -271,6 +271,7 @@ class BelloUI(QMainWindow):
         boardMessage = "  "+ boardTitle + "  is deleted "
         createErrorDialogBox(self,"Board is Deleted",boardMessage)
         self.dashboardPage.deleteBoardId(deletedBoardId)
+        print("done")
 
     def gotoLoginTab(self):
         self.loginSignUpPage.tabWidget.setCurrentIndex(0)
