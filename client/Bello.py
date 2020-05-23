@@ -2,8 +2,7 @@ import websocket
 import threading
 import json
 import sys
-sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\UI_pages')
+sys.path.append(sys.path[0] + "\\..\\UI_pages")
 from BelloUI import *
 
 

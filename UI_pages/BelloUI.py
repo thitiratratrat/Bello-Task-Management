@@ -10,9 +10,9 @@ from SectionWidget import *
 from dialogBox import *
 
 sys.path.append(
-    'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
+    sys.path[0] + "\\..\\client")
 
-path = "C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\images" 
+path = sys.path[0] + "\\..\\images" 
 
 from Bello import *
 
