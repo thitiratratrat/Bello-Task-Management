@@ -2,6 +2,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from random import randint
+from BoardListWidget import *
 
 class DisplayBoardBox(QWidget):
     def __init__(self):
@@ -27,27 +28,28 @@ class DisplayBoardBox(QWidget):
             self.ran_num1 = randint(0, 150)
             self.ran_num2 = randint(0, 199)
             self.ran_num3 = randint(0, 226)
-            self.board1 = QListWidgetItem()
-            self.board1.setBackground(
+            self.board = BoardListWidget()
+            self.board.setId(boardId)
+            self.board.setBackground(
                 QColor(self.ran_num1, self.ran_num2, self.ran_num3))
-            self.board1.setSizeHint(QSize(120, 80))
-            self.board1.setFont(QFont("Century Gothic", 12, QFont.Bold))
-            self.board1.setTextColor("white")
-            self.board1.setTextAlignment(Qt.AlignLeft)
-            self.board1.setText(self.boardTitle)
-            self.addToListWidget(self.board1)
-            
+            self.board.setSizeHint(QSize(120, 80))
+            self.board.setFont(QFont("Century Gothic", 12, QFont.Bold))
+            self.board.setTextColor("white")
+            self.board.setTextAlignment(Qt.AlignLeft)
+            self.board.setText(self.boardTitle)
+            self.addToListWidget(self.board)
 
-    def getKey(self,val):
-        for key, value in self.boardDict.items(): 
-         if val == value: 
-             return key 
+    # def getKey(self,val):
+    #     for key, value in self.boardDict.items(): 
+    #      if val == value: 
+    #          return key 
 
     def getBoardTitle(self):
         return self.listWidget.currentItem().text()
 
     def getSelectItemInBoardId(self):
-        boardId = self.getKey(self.listWidget.currentItem().text())
+        boardId = self.listWidget.currentItem().getId()
+        
         return boardId
 
     def addToListWidget(self, board):
