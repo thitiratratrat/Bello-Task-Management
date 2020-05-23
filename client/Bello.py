@@ -88,13 +88,12 @@ class Bello:
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
             
-            #TODO: show board is deleted dialog AND go to dashboard page
             self.__ui.signalDeleteBoardDialog.signalDict.emit(deletedBoardId)
             
         elif response == "deletedBoard":
             data = message["data"]
             deletedBoardId = data["deletedBoardId"]
-            #TODO: show board is deleted dialog
+
             self.__ui.signalDeleteBoard.signalDict.emit(deletedBoardId)
 
         else:
