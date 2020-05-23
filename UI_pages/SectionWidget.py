@@ -16,7 +16,7 @@ class SectionWidget(QWidget):
         self.sectionId = None
         self.sectionIndex = 0
         self.setFixedSize(230,380)
-
+        path = self.parent.parent.path
         self.section = SectionWithTask(self)
         self.scrollAreaTask = QScrollArea()
 
@@ -38,12 +38,12 @@ class SectionWidget(QWidget):
         self.editSectionTitleBtn = QToolButton()
         self.editSectionTitleBtn.setStyleSheet(
             "background-color:rgb(250,231,110)")
-        self.editSectionTitleBtn.setIcon(QIcon('images/edit.png'))
+        self.editSectionTitleBtn.setIcon(QIcon(path+'\\edit.png'))
 
         self.deleteSectionBtn = QToolButton()
         self.deleteSectionBtn.setStyleSheet(
             "background-color:rgb(210,39,62); color:white")
-        self.deleteSectionBtn.setIcon(QIcon('images/delete.png'))
+        self.deleteSectionBtn.setIcon(QIcon(path+'\\delete.png'))
 
         self.deleteSectionBtn.clicked.connect(self.deleteSection)
 
@@ -58,7 +58,7 @@ class SectionWidget(QWidget):
             self, 'Create new task', 'Task name: ', 'Create')
 
         self.addTaskBtn =  QPushButton("Add task")
-        self.addTaskBtn.setIcon(QIcon('images/add1.png'))
+        self.addTaskBtn.setIcon(QIcon(path+'\\add1.png'))
         self.addTaskBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addTaskBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))

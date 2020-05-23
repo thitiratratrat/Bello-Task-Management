@@ -6,11 +6,13 @@ from random import randint
 from BelloUI import *
 
 class MenuBarBoard(QWidget):
-    def __init__(self):
-        QWidget.__init__(self, None)
+    def __init__(self,parent= None):
+        super(MenuBarBoard, self).__init__(parent)
+        self.parent =parent
         self.setFixedSize(640, 40)
         self.homeBtn = QPushButton("Home")
-        self.homeBtn.setIcon(QIcon('images/home1.png'))
+        path = self.parent.parent.path
+        self.homeBtn.setIcon(QIcon(path + '\\home1.png'))
         self.homeBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.homeBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))

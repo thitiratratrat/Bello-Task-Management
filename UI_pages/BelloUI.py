@@ -12,6 +12,8 @@ from dialogBox import *
 sys.path.append(
     'C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\client')
 
+path = "C:\\Users\\us\\Desktop\\Y2S2\\SEP\\project\\Bello-Task-Management\\images" 
+
 from Bello import *
 
 class BelloUI(QMainWindow):
@@ -19,6 +21,7 @@ class BelloUI(QMainWindow):
         super(BelloUI, self).__init__(parent)
         self.bello = bello
         self.parent = parent
+        self.path = path
         self.stackedWidget = QStackedWidget()
 
         self.signalAddSection = CustomSignal()

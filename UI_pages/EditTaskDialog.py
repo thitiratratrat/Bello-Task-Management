@@ -15,7 +15,7 @@ class EditTaskDialog(QDialog):
         self.parent = parent
         self.tabWidget = TabWidget()
         self.tabWidget.setFont(QFont("Moon", 8, QFont.Bold))
-
+        path = self.parent.parent.parent.parent.path
         self.dueDateWidget = DueDateWidget(self)
         self.dueDateWidget.saveDateBtn.clicked.connect(self.parent.getNewDate)
 
@@ -32,13 +32,13 @@ class EditTaskDialog(QDialog):
 
 
         self.tabWidget.addTab(self.editTaskTitleDialog, QIcon(
-            "images/editDialog.png"), " Edit")
+            path+'\\editDialog.png'), " Edit")
         self.tabWidget.addTab(self.dueDateWidget, QIcon(
-            "images/calendar.png"), " Due date")
+            path+'\\calendar.png'), " Due date")
         self.tabWidget.addTab(self.tagWidget, QIcon(
-            "images/tag.png"), " Tags")
+            path+'\\tag.png'), " Tags")
         self.tabWidget.addTab(self.memberWidget, QIcon(
-            "images/multiple.png"), " Members")
+            path+'\\multiple.png'), " Members")
 
         self.mainEditTask = QVBoxLayout()
         self.mainEditTask.addWidget(self.tabWidget)

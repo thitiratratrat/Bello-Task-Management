@@ -14,8 +14,8 @@ class BoardDetailPage(QWidget):
         self.parent = parent
         self.boardId = None
         self.boardMembers = []
-        self.menuBar = MenuBarBoard()
-
+        self.menuBar = MenuBarBoard(self)
+        path = self.parent.path
         self.sectionLayout = QHBoxLayout()
         self.taskWidget = None
         self.widget = QWidget()
@@ -25,7 +25,7 @@ class BoardDetailPage(QWidget):
         self.addBtnLayout = QVBoxLayout()
 
         self.addSectionBtn = QPushButton("Add section")
-        self.addSectionBtn.setIcon(QIcon('images/add1.png'))
+        self.addSectionBtn.setIcon(QIcon(path+'\\add1.png'))
         self.addSectionBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.addSectionBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
@@ -33,7 +33,7 @@ class BoardDetailPage(QWidget):
         self.addSectionBtn.clicked.connect(self.createNewSectionDialog)
 
         self.memberBtn = QPushButton("Add member")
-        self.memberBtn.setIcon(QIcon('images/addMember.png'))
+        self.memberBtn.setIcon(QIcon(path+'\\addMember.png'))
         self.memberBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.memberBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))

@@ -8,9 +8,9 @@ class TaskDetailDialog(QDialog):
     def __init__(self,parent =None):
         super(TaskDetailDialog,self).__init__(parent)
         self.parent = parent
-
+        path = self.parent.parent.parent.parent.path
         self.taskTitleLabel = QPushButton(" Widgets")
-        self.taskTitleLabel.setIcon(QIcon("images/boardIcon.png"))
+        self.taskTitleLabel.setIcon(QIcon(path + "\\boardIcon.png"))
         self.taskTitleLabel.setStyleSheet("background-color: rgba(0, 0, 0, 0%)")
 
         self.taskTitleLabel.setFont(QFont("Century Gothic", 13, QFont.Bold))
@@ -58,14 +58,14 @@ class TaskDetailDialog(QDialog):
         self.commentListWidget = QListWidget(self)
 
         self.addCommentBtn = QPushButton("Add")
-        self.addCommentBtn.setIcon(QIcon("images/add.png"))
+        self.addCommentBtn.setIcon(QIcon(path + "\\add.png"))
         self.addCommentBtn.setStyleSheet(
             "background-color:rgb(14,172,120);color:rgb(255,255,255)")
         self.addCommentBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))
         self.addCommentBtn.clicked.connect(self.clickAddCommentBtn)
 
         self.deleteCommentBtn = QPushButton("Delete")
-        self.deleteCommentBtn.setIcon(QIcon("images/delete.png"))
+        self.deleteCommentBtn.setIcon(QIcon(path + "\\delete.png"))
         self.deleteCommentBtn.setStyleSheet(
             "background-color:rgb(210,39,62);color:rgb(255,255,255)")
         self.deleteCommentBtn.setFont(QFont("Century Gothic", 7, QFont.Bold))

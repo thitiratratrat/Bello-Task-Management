@@ -12,7 +12,7 @@ class TagWidget(QWidget):
         self.tagLabel = QLabel("TAGS")
         self.tagLabel.setContentsMargins(10,10,0,0)
         self.tagLabel.setFont(QFont("Moon",10, QFont.Bold))
-
+        path = self.parent.parent.parent.parent.parent.path
         self.colorTag = {}
         self.addTagDialog = AddTagDialog(self)
 
@@ -26,7 +26,7 @@ class TagWidget(QWidget):
         self.tagListWidget.setFont(QFont("Century Gothic",8,QFont.Bold))
 
         self.addTagBtn = QPushButton("Add")
-        self.addTagBtn.setIcon(QIcon("images/add.png"))
+        self.addTagBtn.setIcon(QIcon(path + "\\add.png"))
         self.addTagBtn.setStyleSheet(
             "background-color:rgb(14,172,120);color:rgb(255,255,255)")
         self.addTagBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
@@ -34,7 +34,7 @@ class TagWidget(QWidget):
 
 
         self.deleteTagBtn = QPushButton("Delete")
-        self.deleteTagBtn.setIcon(QIcon("images/delete.png"))
+        self.deleteTagBtn.setIcon(QIcon(path + "\\delete.png"))
         self.deleteTagBtn.setStyleSheet(
             "background-color:rgb(210,39,62);color:rgb(255,255,255)")
         self.deleteTagBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
