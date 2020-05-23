@@ -23,7 +23,7 @@ class BelloUI(QMainWindow):
         self.parent = parent
         self.path = path
         self.stackedWidget = QStackedWidget()
-
+        self.setWindowTitle("Bello")
         self.signalAddSection = CustomSignal()
         self.signalInitBoardDetail = CustomSignal()
         self.signalAddTask = CustomSignal()
@@ -257,16 +257,13 @@ class BelloUI(QMainWindow):
                 return True    
         return False
 
-    def showDeletedBoardDialog(self,deletedBoardId):
-        boardTitle = self.dashboardPage.deleteBoardId(deletedBoardId)
-        boardMessage = "  "+ boardTitle + "  is deleted "
-        
-        createErrorDialogBox(self,"Board is Deleted",boardMessage)
+    def showDeletedBoardDialog(self,deletedBoardId): 
+        createErrorDialogBox(self,"Board is Deleted","Board has been deleted")
         
         self.goToDashboardPage()
     
     def showDeletedDialog(self,deletedBoardId):
-        createErrorDialogBox(self,"Board is Deleted","Board is deleted")
+        createErrorDialogBox(self,"Board is Deleted","Board has been deleted")
         self.dashboardPage.deleteBoardId(deletedBoardId)
 
     def gotoLoginTab(self):
