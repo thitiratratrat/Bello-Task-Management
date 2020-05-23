@@ -41,7 +41,6 @@ class Bello:
         elif response == "memberUsernameDoesNotExist":
             self.__ui.signalShowMemberUsernameDoesNotExists.signalDict.emit(None)
             
-            
         elif response == "userBoardTitlesAndIds":
             boardTitlesAndIds = message["data"]
             
@@ -68,12 +67,13 @@ class Bello:
 
         elif response == "boardDetail":
             boardDetail = message["data"]
+            
             self.__ui.goToBoardDetailPage()
-           
             self.__ui.signalInitBoardDetail.signalDict.emit(boardDetail)
             
         elif response == "updateBoard":
             boardDetail = message["data"]
+            
             self.__ui.signalUpdateBoard.signalDict.emit(boardDetail)
             
         elif response == "updateBoardTitlesAndIds":
