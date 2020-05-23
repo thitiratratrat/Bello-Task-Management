@@ -102,12 +102,7 @@ class DashboardPage(QWidget):
     
     def deleteBoardId(self,boardId):
         for i in range(self.displayBoard.listWidget.count()):
-            board = self.displayBoard.listWidget.item(i)
-            id = self.displayBoard.getKey(board.text())
-
+            id = self.displayBoard.listWidget.item(i).getId()
+            
             if(id == boardId):
                 selectItem = self.displayBoard.listWidget.takeItem(i)
-                return board.text()
-
-
-

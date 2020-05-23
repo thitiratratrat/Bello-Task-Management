@@ -152,7 +152,6 @@ class BelloUI(QMainWindow):
 
     def __requestBoardDetail(self):
         boardId = self.getSelectedBoard()
-
         self.bello.sendRequestBoardDetailToServer(boardId)
 
     def __deleteBoard(self):
@@ -222,7 +221,6 @@ class BelloUI(QMainWindow):
         self.boardDetailPage.initBoardDetail(boardDetailDict)
 
     def initUpdateBoardDetail(self, boardDetailDict):
-        self.boardDetailPage.clearAllSection()
         self.boardDetailPage.menuBar.memberColor = ["#2E8B57", "#4682B4", "#B22222","#008080","#31446F"]
         self.boardDetailPage.initBoardDetail(boardDetailDict)
 
@@ -259,7 +257,7 @@ class BelloUI(QMainWindow):
 
     def showDeletedBoardDialog(self,deletedBoardId): 
         createErrorDialogBox(self,"Board is Deleted","Board has been deleted")
-        
+        self.dashboardPage.deleteBoardId(deletedBoardId)
         self.goToDashboardPage()
     
     def showDeletedDialog(self,deletedBoardId):
