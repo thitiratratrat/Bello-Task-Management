@@ -19,7 +19,7 @@ class TagWidget(QWidget):
         self.tagListAndBtnLayout = QHBoxLayout()
         self.tagListWidget = QListWidget()
         self.tagListWidget.setMovement(QListView.Static)
-        #self.tagListWidget.setFixedSize(170,70)
+
         self.tagListWidget.setViewMode(QListWidget.IconMode)
         
         self.tagListWidget.setIconSize(QSize(50,30))
@@ -50,15 +50,15 @@ class TagWidget(QWidget):
 
         self.addTagDialog.saveCreateTagBtn.clicked.connect(self.addTagInList)
 
-        self.saveTagBtn = QPushButton("Save")
+        '''self.saveTagBtn = QPushButton("Save")
         self.saveTagBtn.setFont(QFont("Moon", 10, QFont.Bold))
         self.saveTagBtn.setStyleSheet(
-            "background-color:rgb(250,231,110);color:rgb(49,68,111)")
+            "background-color:rgb(250,231,110);color:rgb(49,68,111)")'''
         
         self.mainTagLayout = QVBoxLayout()
         self.mainTagLayout.addWidget(self.tagLabel)
         self.mainTagLayout.addLayout(self.tagListAndBtnLayout)
-        self.mainTagLayout.addWidget(self.saveTagBtn,1,Qt.AlignCenter)
+        #self.mainTagLayout.addWidget(self.saveTagBtn,1,Qt.AlignCenter)
        
         self.setLayout(self.mainTagLayout)
 
@@ -111,12 +111,15 @@ class TagWidget(QWidget):
             createErrorDialogBox(self, "Error","Tag color already in use")
             return
         else:
-            self.tagItem = QListWidgetItem(QIcon(self.createIconColor(colorCode)), self.getTagLineEdit())
+            tagTitle =self.getTagLineEdit()
+            self.tagItem = QListWidgetItem(QIcon(self.createIconColor(colorCode)), tagTitle)
             self.tagListWidget.addItem(self.tagItem)
             self.colorTag[self.getTagLineEdit()] = colorCode
             self.addTagDialog.close()
-            print("boardTag: ", self.parent.parent.parent.parent.getBoardId())
-    
+            taskId = self.parent.parent.getTaskId()
+            self.parent.parent.parent.parent.parent.addTaskTag(taskId,tagTitle, colorCode)
+            self.parent.parent.addTagLabel()
+
     def isAlreadyHasTag(self,tagTitleLineEdit,tagColorBox):
         for tagTitle, tagColor in self.colorTag.items():
             if(tagTitle == tagTitleLineEdit ):
@@ -129,8 +132,8 @@ class TagWidget(QWidget):
         self.tagItem = QListWidgetItem(QIcon(self.createIconColor(tagColor)),tagTitle)
         self.tagListWidget.addItem(self.tagItem)
         self.colorTag[tagTitle] = tagColor
-        taskId= self.parent.parent.getTaskId()
-
+        self.parent.parent.addTagLabel()
+    
     def deleteTagInList(self):
         self.selectTag = self.tagListWidget.selectedItems()
         if not self.selectTag:

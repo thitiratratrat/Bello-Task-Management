@@ -109,7 +109,7 @@ class TaskWidget(QWidget):
         self.dueDateLabel.setText(newDate[7:])
         self.setTaskState(self.getDueDateLabel(), False)
         self.parent.parent.parent.setTaskDueDate(self.getTaskId(),newDate[7:])
-    
+
     def addTagLabel(self):
         self.deleteAllTag(self.tagLayout)
         for i in range (self.editTaskDialog.tagWidget.tagListWidget.count()):
@@ -122,7 +122,6 @@ class TaskWidget(QWidget):
             self.tagLayout.setSpacing(0.1)
             self.tagLayout.addWidget(tagColorBtn)
             tagColorList = self.editTaskDialog.tagWidget.colorTag.get(tagItem.text())
-            self.parent.parent.parent.addTaskTag(taskId,tagTitle, tagColorList)
         
         length = self.editTaskDialog.tagWidget.tagListWidget.count()
         self.deleteAllTag(self.taskDetailDialog.showTagLayout)

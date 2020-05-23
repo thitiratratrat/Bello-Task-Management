@@ -189,9 +189,6 @@ class BoardDetailPage(QWidget):
         taskTag = {}
         taskComments = []
         taskResponsibleMembers = None
-        '''for member in self.boardMembers:
-            self.addMemberInCombo(member)'''
-
         for i in range (self.sectionLayout.count()):
             if( self.sectionLayout.itemAt(i).widget().getSectionId() == sectionId):
                 index = self.sectionLayout.itemAt(i).widget().sectionTaskLayout.count()
