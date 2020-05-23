@@ -13,8 +13,11 @@ class Bello:
         self.__ui = None
         
         self.__connect()
+        
         self.receiveThread = threading.Thread(
             target=self.__handleServer, args=[])
+        self.receiveThread.daemon = True
+        
         self.receiveThread.start()
 
     def __connect(self):
