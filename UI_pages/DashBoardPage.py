@@ -8,12 +8,12 @@ from MenuBar import *
 from DisplayBoardBox import *
 from dialogBox import *
 
-
 class DashboardPage(QWidget):
     def __init__(self, parent=None):
         super(DashboardPage, self).__init__(parent)
         self.parent = parent
-        self.menuBar = MenuBar()
+        self.menuBar = MenuBar(self)
+        path = self.parent.path
         self.createBtn = QPushButton('Create')
         self.menuBar.setFirstChaOfUsername("candy")
         self.menuBar.move(QPoint(0, 0))
@@ -22,19 +22,19 @@ class DashboardPage(QWidget):
         self.tabBarBoard.setFont(QFont("Moon", 10, QFont.Bold))
         self.displayBoard = DisplayBoardBox()
         self.addBoardBtn = QPushButton("Add")
-        self.addBoardBtn.setIcon(QIcon("images/add.png"))
+        self.addBoardBtn.setIcon(QIcon(path + "\\add.png"))
         self.addBoardBtn.setStyleSheet(
             "background-color:rgb(14,172,120);color:rgb(255,255,255)")
         self.addBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.addBoardBtn.clicked.connect(self.createNewBoard)
 
         self.deleteBoardBtn = QPushButton("Delete")
-        self.deleteBoardBtn.setIcon(QIcon("images/delete.png"))
+        self.deleteBoardBtn.setIcon(QIcon(path + "\\delete.png"))
         self.deleteBoardBtn.setStyleSheet(
             "background-color:rgb(210,39,62);color:rgb(255,255,255)")
         self.deleteBoardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
         self.tabBarBoard.addTab(self.displayBoard, QIcon(
-            "images/dashboard.png"), " Board")
+            path + "\\dashboard.png"), " Board")
 
         self.layout = QGridLayout()
         self.menuBar.setContentsMargins(0, 0, 0, 0)

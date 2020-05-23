@@ -11,6 +11,7 @@ class TaskWidget(QWidget):
         super(TaskWidget,self).__init__(parent)
         self.parent = parent
         self.setColor()
+        path = self.parent.parent.parent.path
         self.taskSectionId = None
         self.taskBoardId = None
         self.taskId =None
@@ -20,11 +21,11 @@ class TaskWidget(QWidget):
         self.taskTitle.setStyleSheet("color: #31446F")
         
         self.editTaskBtn = QToolButton() 
-        self.editTaskBtn.setIcon(QIcon("images/editBtn.png"))
+        self.editTaskBtn.setIcon(QIcon(path+'\\editBtn.png'))
         self.editTaskBtn.clicked.connect(self.editTask)
     
         self.deleteTaskBtn = QToolButton()
-        self.deleteTaskBtn.setIcon(QIcon("images/deleteTask.png"))
+        self.deleteTaskBtn.setIcon(QIcon(path+'\\deleteTask.png'))
         self.deleteTaskBtn.clicked.connect(self.deleteTask)
 
         self.editTaskDialog = EditTaskDialog(self)
@@ -199,11 +200,3 @@ class TaskWidget(QWidget):
             self.parent.parent.getSectioNameFromId(self.getTaskSectionId()))
 
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
-        
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    w = TaskWidget()
-    w.resize(640, 480)
-    w.show()
-    sys.exit(app.exec_())
