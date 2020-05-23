@@ -42,7 +42,7 @@ class Server:
         await self.__sendResponseToClient("userBoardTitlesAndIds", boardTitlesAndIds, websocket)
 
     async def __sendBoardDetail(self, data, websocket):
-        boardId = data["boardId"]
+        boardId = data["boardId"] 
         detail = self.__manager.getBoardDetail(boardId)
         
         self.__changeObserverCurrentBoardId(websocket, boardId)
@@ -64,7 +64,7 @@ class Server:
                                          }, websocket)
 
     async def __createSection(self, data, websocket):
-        boardId = data["boardId"]
+        boardId = data["boardId"]        
         sectionTitle = data["sectionTitle"]
 
         sectionId = str(self.__manager.createSection(boardId, sectionTitle))
@@ -214,7 +214,7 @@ class Server:
         currentBoardId = observer.getCurrentBoardId()
         boardDetail = self.__manager.getBoardDetail(currentBoardId)
         members = self.__manager.getBoardMembers(currentBoardId)
-        data = {"boardDetail": boardDetail}
+        data = {"boardId": currentBoardId, "boardDetail": boardDetail}
         
         members.remove(username)
         
