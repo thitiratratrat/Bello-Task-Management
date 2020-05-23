@@ -39,11 +39,6 @@ class DisplayBoardBox(QWidget):
             self.board.setText(self.boardTitle)
             self.addToListWidget(self.board)
 
-    # def getKey(self,val):
-    #     for key, value in self.boardDict.items(): 
-    #      if val == value: 
-    #          return key 
-
     def getBoardTitle(self):
         return self.listWidget.currentItem().text()
 
