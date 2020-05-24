@@ -135,7 +135,7 @@ class BoardDetailPage(QWidget):
             indexSection += 1
             for taskId, taskInfo in taskDict.items():
                 taskInfoDict = taskInfo
-                #print("Info: ", taskInfoDict)
+
                 taskTitle = taskInfoDict.get("title")
                 taskResponsibleMember = taskInfoDict.get("responsibleMember")
                 taskDuedate = taskInfoDict.get("dueDate")

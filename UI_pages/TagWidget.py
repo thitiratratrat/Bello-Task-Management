@@ -148,3 +148,4 @@ class TagWidget(QWidget):
             taskId = self.parent.parent.getTaskId()
 
             self.parent.parent.parent.parent.parent.deleteTaskTag(taskId, tagTitle)
+        self.parent.parent.addTagLabel()
