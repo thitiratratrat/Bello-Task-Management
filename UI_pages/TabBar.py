@@ -28,3 +28,9 @@ class TabBar(QTabBar):
             painter.translate(-c)
             painter.drawControl(QStyle.CE_TabBarTabLabel, opt)
             painter.restore()
+    
+    def setColor(self):
+        self.palette = QPalette()
+        self.setAutoFillBackground(True)
+        self.palette.setColor(QPalette.Window, QColor('#F8D73C'))
+        self.setPalette(self.palette)
