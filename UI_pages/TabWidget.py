@@ -11,3 +11,5 @@ class TabWidget(QTabWidget):
         self.tabBar.tabSizeHint(0)
         self.setTabBar(self.tabBar)
         self.setTabPosition(QTabWidget.West)
+
+   

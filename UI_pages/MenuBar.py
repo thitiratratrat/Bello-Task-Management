@@ -6,20 +6,16 @@ from random import randint
 from BelloUI import *
 
 class MenuBar(QWidget):
-    def __init__(self):
-        QWidget.__init__(self, None)
+    def __init__(self, parent= None):
+        super(MenuBar, self).__init__(parent)
+        self.parent =parent
+        path= self.parent.parent.path
         self.setFixedSize(640, 40)
         self.homeBtn = QPushButton("Home")
-        self.homeBtn.setIcon(QIcon('images/home1.png'))
+        self.homeBtn.setIcon(QIcon(path + '\\home1.png'))
         self.homeBtn.setStyleSheet(
             "background-color: rgb(250,231,111); color: rgb(49,68,111)")
         self.homeBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))
-        '''
-        self.boardBtn = QPushButton("Board")
-        self.boardBtn.setIcon(QIcon('images/dashboard.png'))
-        self.boardBtn.setStyleSheet(
-            "background-color: rgb(250,231,111); color: rgb(49,68,111)")
-        self.boardBtn.setFont(QFont("Century Gothic", 8, QFont.Bold))'''
 
         self.firstChaOfUsername = QLabel("")
         self.firstChaOfUsername.setFont(QFont("Moon", 10, QFont.Bold))
@@ -27,7 +23,7 @@ class MenuBar(QWidget):
         self.firstChaOfUsername.setStyleSheet("color:white")
         self.menuBarWidget = QHBoxLayout()
         self.menuBarWidget.addWidget(self.homeBtn)
-        #self.menuBarWidget.addWidget(self.boardBtn)
+
         self.menuBarWidget.addStretch(1)
         self.menuBarWidget.addWidget(self.firstChaOfUsername)
         self.firstChaOfUsername.setContentsMargins(0, 0, 16, 0)
