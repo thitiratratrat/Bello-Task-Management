@@ -15,7 +15,7 @@ class TaskDetailDialog(QDialog):
 
         self.taskTitleLabel.setFont(QFont("Century Gothic", 13, QFont.Bold))
        
-        self.sectionTitleLabel = QLabel("in list bello")
+        self.sectionTitleLabel = QLabel("in section bello")
         self.sectionTitleLabel.setFont(QFont("Century Gothic", 8))
         self.sectionTitleLabel.setContentsMargins(20,0,10,10)
 
