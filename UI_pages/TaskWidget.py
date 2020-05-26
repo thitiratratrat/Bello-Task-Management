@@ -110,6 +110,7 @@ class TaskWidget(QWidget):
         self.dueDateLabel.setText(newDate[7:])
         self.setTaskState(self.getDueDateLabel(), False)
         self.parent.parent.parent.setTaskDueDate(self.getTaskId(),newDate[7:])
+        self.parent.parent.parent.setTaskFinishState(self.getTaskId(), False)
 
     def addTagLabel(self):
         self.deleteAllTag(self.tagLayout)
