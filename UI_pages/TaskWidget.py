@@ -196,7 +196,7 @@ class TaskWidget(QWidget):
 
     def showTaskLayout(self):
         self.taskDetailDialog.taskTitleLabel.setText(self.getTaskTitle())
-        self.taskDetailDialog.sectionTitleLabel.setText("in list " + 
+        self.taskDetailDialog.sectionTitleLabel.setText("in section " + 
             self.parent.parent.getSectioNameFromId(self.getTaskSectionId()))
 
         self.taskDetailDialog.dueDateCheckBox.setText("Due Date:  " +self.dueDateLabel.text())
