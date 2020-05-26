@@ -2,7 +2,7 @@ from mongoengine import *
 import sys
 import copy
 
-sys.path.append(sys.path[0] + "\\..\\classes")
+sys.path.append(sys.path[0] + "\\..\\entity")
 
 from Task import Task
 from Section import Section
