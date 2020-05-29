@@ -98,7 +98,7 @@ class TagWidget(QWidget):
         if(self.tagListWidget.count() < 3):
             self.addTagDialog.show()
         else:
-            createErrorDialogBox(self, "Error","Your tags are reached the maximum")
+            createErrorDialogBox(self, "Error","Your tags have reached the maximum limit")
 
     def addTagInList(self):
         colorCode = self.getSelectedColor()
