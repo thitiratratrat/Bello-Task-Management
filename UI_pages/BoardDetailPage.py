@@ -208,10 +208,10 @@ class BoardDetailPage(QWidget):
                 return
 
         if(memberUsername == ""):
-            createErrorDialogBox(self,"Error","Member username can not be null")
+            createErrorDialogBox(self,"Error","Member username cannot be null")
             return
         elif(self.menuBar.mainMemberLayout.count() >= 5):
-            createErrorDialogBox(self,"Error","Member are reached the maximum")
+            createErrorDialogBox(self,"Error","Members have reached the maximum limit")
             return
         self.addMemberDialog.close()
         self.parent.addMemberToBoard(self.getBoardId(),memberUsername)
