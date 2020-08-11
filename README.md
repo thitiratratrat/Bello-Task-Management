@@ -9,10 +9,10 @@ Thitirat S.
 ## Login Page
 ![image](https://user-images.githubusercontent.com/47154880/89916820-44d48a80-dc22-11ea-9aa5-479495cf91a3.png)
 
-##Dashboard Page
+## Dashboard Page
 ![image](https://user-images.githubusercontent.com/47154880/89916927-6170c280-dc22-11ea-8354-42a37c7b896c.png)
 
-##Board Detail Page
+## Board Detail Page
 Users can drag drop each task onto different task list.
 ![image](https://user-images.githubusercontent.com/47154880/89917036-85cc9f00-dc22-11ea-8044-2f301826b9e0.png)  <br/>
 
