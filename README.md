@@ -29,11 +29,11 @@ Users can edit the task’s title, add due date, add tags, and add a responsible
 
 ![image](https://user-images.githubusercontent.com/47154880/89917657-418dce80-dc23-11ea-8fb6-576906a556a0.png) <br/>
 
-Users can add members to the board.
+Users can add members to the board. <br/>
 ![image](https://user-images.githubusercontent.com/47154880/89917793-6d10b900-dc23-11ea-9152-13c3a66e84cc.png) <br/>
 
-All members are shown in the menu bar.
-![image](https://user-images.githubusercontent.com/47154880/89917828-7a2da800-dc23-11ea-86cb-fec08bea559d.png)
+All members are shown in the menu bar. <br/>
+![image](https://user-images.githubusercontent.com/47154880/89917828-7a2da800-dc23-11ea-86cb-fec08bea559d.png) <br/>
 
 Double clicking on the task shows the task details. Members of the board can comment on each task. If the task is finished, the member can mark the due date checkbox and the due date will be changed to green color.
 ![image](https://user-images.githubusercontent.com/47154880/89918146-e01a2f80-dc23-11ea-89f1-8871fd1a3e4e.png)
