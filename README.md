@@ -13,10 +13,10 @@ Thitirat S.
 ![image](https://user-images.githubusercontent.com/47154880/89916927-6170c280-dc22-11ea-8354-42a37c7b896c.png)
 
 ## Board Detail Page
-Users can drag drop each task onto different task list.
+Users can drag drop each task onto different task list. <br/>
 ![image](https://user-images.githubusercontent.com/47154880/89917036-85cc9f00-dc22-11ea-8044-2f301826b9e0.png)  <br/>
 
-Users can edit the task’s title, add due date, add tags, and add a responsible member.
+Users can edit the task’s title, add due date, add tags, and add a responsible member. <br/>
 ![image](https://user-images.githubusercontent.com/47154880/89917223-be6c7880-dc22-11ea-9127-7f4d3d3ddd8a.png)
 
 ![image](https://user-images.githubusercontent.com/47154880/89917284-d17f4880-dc22-11ea-951b-45c0f63dc282.png)
@@ -35,7 +35,7 @@ Users can add members to the board. <br/>
 All members are shown in the menu bar. <br/>
 ![image](https://user-images.githubusercontent.com/47154880/89917828-7a2da800-dc23-11ea-86cb-fec08bea559d.png) <br/>
 
-Double clicking on the task shows the task details. Members of the board can comment on each task. If the task is finished, the member can mark the due date checkbox and the due date will be changed to green color.
+Double clicking on the task shows the task details. Members of the board can comment on each task. If the task is finished, the member can mark the due date checkbox and the due date will be changed to green color. <br/>
 ![image](https://user-images.githubusercontent.com/47154880/89918146-e01a2f80-dc23-11ea-89f1-8871fd1a3e4e.png)
 
 ![image](https://user-images.githubusercontent.com/47154880/89918180-ead4c480-dc23-11ea-886d-cee5ea62ee97.png)
